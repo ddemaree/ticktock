@@ -4,12 +4,24 @@ class UserTest < ActiveSupport::TestCase
   # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead.
   # Then, you can remove it from this and the functional test.
   include AuthenticatedTestHelper
-  fixtures :users
+  fixtures :users, :accounts
 
-  def test_should_create_user
-    assert_difference 'User.count' do
-      user = create_user
-      assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+  # def test_should_create_user
+  #   assert_difference 'User.count' do
+  #     assert_not_nil accounts(:test_account)
+  #     
+  #     user = create_user
+  #     assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+  #   end
+  # end
+  
+  should_belong_to :account
+  should_require_unique_attributes :login, :email, :scoped_to => :account_id
+  
+  should "require account" do
+    assert_no_difference 'User.count' do
+      u = create_user(:account => nil)
+      assert u.errors.on(:account_id)
     end
   end
 
@@ -96,7 +108,14 @@ class UserTest < ActiveSupport::TestCase
 
 protected
   def create_user(options = {})
-    record = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' }.merge(options))
+    record = User.new({ 
+      :login => 'quire',
+      :email => 'quire@example.com',
+      :password => 'quire69',
+      :password_confirmation => 'quire69',
+      :account => accounts(:test_account)
+    }.merge(options))
+    
     record.save
     record
   end

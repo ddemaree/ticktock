@@ -4,10 +4,13 @@ class User < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
+  
+  belongs_to :account
+  validates_presence_of :account_id, :unless => :account_is_new_record?
 
   validates_presence_of     :login
   validates_length_of       :login,    :within => 3..40
-  validates_uniqueness_of   :login
+  validates_uniqueness_of   :login, :scope => :account_id, :unless => :account_is_new_record?
   validates_format_of       :login,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
 
   validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
@@ -15,10 +18,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
-  
+  validates_uniqueness_of   :email,    :scope => :account_id, :unless => :account_is_new_record?
+  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message  
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
@@ -45,6 +46,10 @@ class User < ActiveRecord::Base
 
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
+  end
+
+  def account_is_new_record?
+    !account.nil? && account.new_record?
   end
 
   protected

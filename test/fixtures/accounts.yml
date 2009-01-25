@@ -1,0 +1,4 @@
+test_account:
+  name:     Test Account
+  domain:   testaccount
+  timezone: UTC

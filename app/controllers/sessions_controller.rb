@@ -1,15 +1,14 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  include AuthenticatedSystem
-
+  skip_before_filter :login_required, :only => [:new, :create]
+  
   # render new.rhtml
   def new
   end
 
   def create
     logout_keeping_session!
-    user = User.authenticate(params[:login], params[:password])
+    user = current_account.users.authenticate(params[:login], params[:password])
     if user
       # Protects against session fixation attacks, causes request forgery
       # protection if user resubmits an earlier form using back

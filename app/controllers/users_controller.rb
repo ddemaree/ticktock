@@ -1,3 +1,5 @@
+# TODO: Refactor to be user manager, not signup form
+
 class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem

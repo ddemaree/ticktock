@@ -1,0 +1,23 @@
+<p class="back"><%= link_to "&lsaquo; Trackables" %></p>
+
+<h1>New trackable</h1>
+
+<% form_for @trackable do |f| %>
+<%= f.error_messages %>
+
+<fieldset>
+	<p class="field">
+		<%= f.label :name %>
+		<%= f.text_field :name %>
+	</p>
+	
+	<p class="field">
+		<%= f.label :nickname %>
+		<%= f.text_field :nickname %>
+	</p>
+</fieldset>
+<p class="form-action">
+	<button type="submit">Create my account now</button>
+</p>
+	
+<% end %>

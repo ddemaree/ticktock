@@ -1,0 +1,53 @@
+<h1>Create my TickTock account now</h1>
+
+<%= error_messages_for :account, :user %>
+
+<% form_for @account, :url => account_path, :method => :post do |f| %>
+
+<fieldset>
+	<p class="field">
+		<%= f.label :name, "Company name" %>
+		<%= f.text_field :name %>
+	</p>
+	<div class="field">
+		<%= f.label :domain %>
+		<p>http://<%= f.text_field :domain, :size => 16 %>.ticktockapp.com/</p>
+	</div>
+	<p class="field">
+		<%= f.label :timezone %>
+		<%= f.time_zone_select :timezone %>
+	</p>
+</fieldset>
+<fieldset>
+	<% fields_for :user do |uf| %>
+	<p class="field">
+		<%= uf.label :email %>
+		<%= uf.text_field :email %>
+	</p>
+	<p class="field">
+		<%= uf.label :login, "Username" %>
+		<%= uf.text_field :login %>
+	</p>
+	<div class="field">
+		<%= uf.label :password %>
+		<p><%= uf.password_field :password %></p>
+		<p class="info">Please re-type your password to confirm</p>
+		<p><%= uf.password_field :password_confirmation %></p>
+	</div>
+	<p class="field">
+		<%= uf.label :name, "Your name" %>
+		<%= uf.text_field :name %>
+	</p>
+	<% end %>
+</fieldset>
+<fieldset>
+	<p>
+		<%= f.check_box :terms_of_service %>
+		If TickTock had <a href="#">Terms of Service</a>, you bet I would accept them
+	</p>
+</fieldset>
+<p class="form-action">
+	<button type="submit">Create my account now</button>
+</p>
+	
+<% end %>

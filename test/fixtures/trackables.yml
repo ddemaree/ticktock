@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+self_trackable:
+  account: test_account
+  name: Practical Creative & Code
+  nickname: PCC
+
+client_trackable:
+  account: test_account
+  name: Client XYZ
+  nickname: XYZ
