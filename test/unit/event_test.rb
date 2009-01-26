@@ -95,16 +95,68 @@ class EventTest < ActiveSupport::TestCase
     should "be settable via username" do
       @event.user = "quentin"
       assert_not_nil @event.user
-      assert_equal @user, @event.user
-      assert_equal @user.name, @event.user_name
+      assert_equal   @user, @event.user
+      assert_equal   @user.name, @event.user_name
     end
     
     should "require user to be from same account" do
       @event.user = "caddy" 
-      assert_nil @event.user
+      assert_nil     @event.user
       assert_not_nil @event.user_name
-      assert_equal "caddy", @event.user_name
+      assert_equal   "caddy", @event.user_name
     end
+  end
+  
+  context "On Event state change" do
+    context "from active to completed" do
+      setup do
+        @event = Factory.build(:event, :stop => nil)
+      end
+      
+      should "create a punch" do
+        assert_difference "@event.punches.count" do
+          @event.finish!
+        end
+      end
+      
+      should "set punch duration to event's duration" do
+        @event.finish!
+        punch = @event.punches.first
+        assert_equal @event.duration, punch.duration, "Punch duration should be #{@event.duration}, is #{punch.duration}"
+      end
+      
+    end
+    
+    context "from active to sleeping" do
+      setup do
+        @event = Factory.build(:event, :stop => nil)
+      end
+      
+      should "create a punch" do
+        assert_difference "@event.punches.count" do
+          @event.sleep!
+        end
+      end
+      
+      should "set state_changed_at" do
+        @event.sleep!
+        assert_not_nil @event.state_changed_at
+      end
+      
+      should "set last_state_change_at" do
+        @event.sleep!
+        assert_not_nil @event.last_state_change_at
+        assert_equal @event.start, @event.last_state_change_at
+      end
+      
+      should "set punch duration" do
+        @event.sleep!
+        assert_not_nil @event.punches.first
+        assert_not_nil @event.punches.first.duration
+      end
+      
+    end
+
   end
   
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090126040222) do
+ActiveRecord::Schema.define(:version => 20090126161050) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(:version => 20090126040222) do
   end
 
   create_table "events", :force => true do |t|
-    t.integer  "account_id",   :null => false
+    t.integer  "account_id",       :null => false
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "user_id"
@@ -36,6 +36,18 @@ ActiveRecord::Schema.define(:version => 20090126040222) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "user_name"
+    t.datetime "state_changed_at"
+  end
+
+  create_table "punches", :force => true do |t|
+    t.integer  "event_id"
+    t.string   "from_state"
+    t.string   "to_state"
+    t.integer  "duration"
+    t.datetime "start"
+    t.datetime "stop"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "trackables", :force => true do |t|

@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  event_id: 1
+  from_state: MyString
+  to_state: MyString
+  start: 2009-01-26 09:21:11
+  stop: 2009-01-26 09:21:11
+
+two:
+  event_id: 1
+  from_state: MyString
+  to_state: MyString
+  start: 2009-01-26 09:21:11
+  stop: 2009-01-26 09:21:11
