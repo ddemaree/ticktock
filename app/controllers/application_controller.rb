@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :set_current_account
   before_filter :login_required
+  before_filter :set_current_user
   
   rescue_from ActiveRecord::RecordNotFound do |exception|
     respond_to do |format|
@@ -51,6 +52,11 @@ protected
     @current_account = Account.find_by_domain!(current_subdomain)
   rescue ActiveRecord::RecordNotFound => @e
     render "#{RAILS_ROOT}/public/404.html", :status => 404
+  end
+  
+  def set_current_user
+    return unless logged_in?
+    UserAssignmentObserver.current_user = current_user
   end
   
 end

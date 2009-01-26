@@ -2,13 +2,7 @@ require 'test_helper'
 
 class EventTest < ActiveSupport::TestCase
   
-  # context "An Event instance" do
-  #   setup { @this_event = Factory(:event) }
-  #   
-  #   should "respond to #kind? methods" do
-  #     assert @this_event.event?
-  #   end
-  # end
+  should_have_named_scope :active, :completed
   
   context "A new Event instance" do
     should_belong_to :account
@@ -49,10 +43,32 @@ class EventTest < ActiveSupport::TestCase
       assert event.completed?
     end
     
-    should "populate default kind" do
+    should "have #kind set to event" do
       event = Factory(:event)
       assert_equal "event", event.kind
     end
+  end
+  
+  context "An extant Event instance" do
+    
+    context "that is active" do
+      setup do
+        @active_event = Factory(:event, :stop => nil)
+      end
+    
+      should "complete when stop time is set" do
+        @active_event.stop = @active_event.start + 4.hours
+        assert @active_event.save
+        assert @active_event.completed?
+      end
+      
+      should "set stop time on #finish!" do
+        @active_event.finish!
+        assert_not_nil @active_event.stop
+        assert @active_event.completed?
+      end
+    end
+    
   end
   
 end

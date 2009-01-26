@@ -1,6 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
   
-  map.resources :trackables
+  map.with_options :controller => 'events' do |events|
+    events.resources :events
+    events.start     '/start', :action => 'start', 
+                        :conditions => {:method => :post}                        
+    events.stop      '/stop',  :action => 'stop', 
+                        :conditions => {:method => :post}
+    
+    #events.start '/start', :action => 'start', :conditions => {:method => :post}
+  end
+  
+  map.resources :trackables, :events
   map.resource :session, :account
   map.signup '/signup', :controller => 'accounts', :action => 'new'
 
