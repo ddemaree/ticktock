@@ -62,8 +62,13 @@ protected
   end
   
   def set_duration_if_available
-    return if (start.blank? or stop.blank?)
-    self.duration = (start - stop).abs.to_i
+    if self.punches.count > 0
+      logger.debug("Setting event duration from punches")
+      self.duration = self.punches.sum(:duration)
+    else
+      return if (start.blank? or stop.blank?)
+      self.duration = (start - stop).abs.to_i
+    end
   end
   
   def set_kind_if_blank

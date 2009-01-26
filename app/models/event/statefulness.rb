@@ -59,11 +59,17 @@ protected
     old_state, new_state = self.state_change
     logger.debug("State has changed from #{old_state} to #{new_state}")
     
-    punch_duration = (@last_state_change_at - self.state_changed_at).abs
+    if self.state_was == "active"
+      punch_duration = (@last_state_change_at - self.state_changed_at).abs
+    else
+      punch_duration = 0
+    end
     
-    if self.duration.blank?
-      self.duration ||= 0
-      self.duration  += punch_duration if self.state_was == "active"
+    self.duration ||= 0
+    if self.punches.count > 0
+      self.duration += punch_duration
+    else
+      self.duration  = punch_duration
     end
     
     self.punches.build({

@@ -161,12 +161,34 @@ class EventTest < ActiveSupport::TestCase
         assert_not_nil @event.punches.first
         assert_not_nil @event.punches.first.duration
       end
+      
     end
     
     context "from sleeping to active" do
       setup do
         @event = Factory(:event, :stop => nil)
         @event.sleep!
+      
+        @punch = @event.punches.first
+      end
+      
+      should "have a duration already" do
+        assert_not_nil @event.duration
+      end
+      
+      should "have nonzero duration" do
+        assert @event.duration > 0, "Event started at #{@event.start}, paused at #{@event.state_changed_at} (#{(@event.start - @event.state_changed_at).abs.to_i} sec)"
+      end
+      
+      should "have same duration as punches" do
+        @duration_of_punches = @event.punches.sum(:duration)
+        assert_equal @duration_of_punches, @event.duration
+      end
+      
+      should "not update duration on wake" do
+        assert_no_difference "@event.duration" do
+          @event.wake!
+        end
       end
       
       should "create a punch" do
@@ -175,9 +197,7 @@ class EventTest < ActiveSupport::TestCase
         end
       end
       
-      should "have a duration" do
-        assert_not_nil @event.duration
-      end
+      
     end
 
   end
