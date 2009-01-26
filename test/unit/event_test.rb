@@ -47,6 +47,14 @@ class EventTest < ActiveSupport::TestCase
       event = Factory(:event)
       assert_equal "event", event.kind
     end
+    
+    should "not create a punch on wake" do
+      event = Factory.build(:event, :stop => nil)
+      
+      assert_no_difference "event.punches.count" do
+        event.wake!
+      end
+    end
   end
   
   context "An extant Event instance" do
@@ -110,7 +118,7 @@ class EventTest < ActiveSupport::TestCase
   context "On Event state change" do
     context "from active to completed" do
       setup do
-        @event = Factory.build(:event, :stop => nil)
+        @event = Factory(:event, :stop => nil)
       end
       
       should "create a punch" do
@@ -129,7 +137,7 @@ class EventTest < ActiveSupport::TestCase
     
     context "from active to sleeping" do
       setup do
-        @event = Factory.build(:event, :stop => nil)
+        @event = Factory(:event, :stop => nil)
       end
       
       should "create a punch" do
@@ -146,7 +154,6 @@ class EventTest < ActiveSupport::TestCase
       should "set last_state_change_at" do
         @event.sleep!
         assert_not_nil @event.last_state_change_at
-        assert_equal @event.start, @event.last_state_change_at
       end
       
       should "set punch duration" do
@@ -154,7 +161,23 @@ class EventTest < ActiveSupport::TestCase
         assert_not_nil @event.punches.first
         assert_not_nil @event.punches.first.duration
       end
+    end
+    
+    context "from sleeping to active" do
+      setup do
+        @event = Factory(:event, :stop => nil)
+        @event.sleep!
+      end
       
+      should "create a punch" do
+        assert_difference "@event.punches.count" do
+          @event.wake!
+        end
+      end
+      
+      should "have a duration" do
+        assert_not_nil @event.duration
+      end
     end
 
   end
