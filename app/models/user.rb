@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :name, :password, :password_confirmation
 
 
+  before_save :generate_api_key
+
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -52,7 +54,11 @@ class User < ActiveRecord::Base
     !account.nil? && account.new_record?
   end
 
-  protected
+protected
+
+  def generate_api_key
+    self.api_key = Digest::SHA1.hexdigest("#{self.login}#{Time.now}")
+  end
     
 
 

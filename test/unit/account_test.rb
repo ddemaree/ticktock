@@ -16,4 +16,9 @@ class AccountTest < ActiveSupport::TestCase
     assert new_account.valid?, new_account.errors.full_messages
   end
   
+  should "generate API key" do
+    new_account = Factory(:account)
+    assert_not_nil new_account.api_key
+  end
+  
 end

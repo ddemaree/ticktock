@@ -24,6 +24,11 @@ class UserTest < ActiveSupport::TestCase
       assert u.errors.on(:account_id)
     end
   end
+  
+  should "generate API key" do
+    new_user = Factory(:user)
+    assert_not_nil new_user.api_key
+  end
 
   def test_should_require_login
     assert_no_difference 'User.count' do

@@ -20,6 +20,7 @@ class Account < ActiveRecord::Base
 
   # #   C A L L B A C K S   # #
   before_validation_on_create :set_default_values
+  before_save :generate_api_key
   
   #after_save :update_internal_client
 
@@ -28,6 +29,10 @@ class Account < ActiveRecord::Base
   end
   
 protected
+
+  def generate_api_key
+    self.api_key = Digest::SHA1.hexdigest("#{self.domain}#{Time.now}")
+  end
 
   def set_default_values
     timezone ||= "UTC"

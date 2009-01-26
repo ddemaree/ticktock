@@ -71,4 +71,26 @@ class EventTest < ActiveSupport::TestCase
     
   end
   
+  context "Event user" do
+    setup do
+      @account = accounts(:test_account)
+      @user    = users(:quentin)
+      @event   = Factory.build(:event, :user => nil, :account => @account)
+    end
+    
+    should "be settable via username" do
+      @event.user = "quentin"
+      assert_not_nil @event.user
+      assert_equal @user, @event.user
+      assert_equal @user.name, @event.user_name
+    end
+    
+    should "require user to be from same account" do
+      @event.user = "caddy" 
+      assert_nil @event.user
+      assert_not_nil @event.user_name
+      assert_equal "caddy", @event.user_name
+    end
+  end
+  
 end

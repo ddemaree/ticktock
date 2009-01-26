@@ -55,5 +55,17 @@ class TrackablesController < ApplicationController
   def destroy
     @trackable = current_account.trackables.find(params[:id])
   end
+  
+protected
+
+  # Allow global API access for read only
+  def authorized?(action = action_name, resource = nil)
+    case action
+      when "index", "show"
+        logged_in_via_account_api_key? or logged_in?
+      else
+        logged_in?
+    end
+  end
 
 end

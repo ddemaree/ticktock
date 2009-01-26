@@ -22,6 +22,19 @@ class ApplicationController < ActionController::Base
       format.xml  { head 404 }
     end
   end
+  
+  # def self.api_key_allowed_for(*allowed_actions)
+  #   # def authorized
+  #   #       logged_in? or logged_in_via_api_key?
+  #   #     end
+  #   
+  #   class_eval do
+  #     def authorized
+  #       if allowed_actions.include?(action_name)
+  #       super or logged_in_via_api_key?
+  #     end
+  #   end
+  # end
 
 protected
   
@@ -46,6 +59,10 @@ protected
   
   def default_host
     account_host("www")
+  end
+  
+  def logged_in_via_account_api_key?
+    !!(current_account && params[:api_key] && (params[:api_key] == current_account.api_key))
   end
   
   def set_current_account

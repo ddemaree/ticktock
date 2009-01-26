@@ -2,3 +2,4 @@ test_account:
   name:     Test Account
   domain:   testaccount
   timezone: UTC
+  api_key:  TESTMENOW

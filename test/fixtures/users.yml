@@ -9,6 +9,7 @@ quentin:
   created_at:                <%= 5.days.ago.to_s :db  %>
   remember_token_expires_at: <%= 1.days.from_now.to_s %>
   remember_token:            77de68daecd823babbb58edb1c8e14d7106e83bb
+  api_key: QUENTINS_KEY
       
 aaron:
   account: test_account
@@ -18,8 +19,7 @@ aaron:
   salt:                      da4b9237bacccdf19c0760cab7aec4a8359010b0 # SHA1('1')
   crypted_password:          8f5ac8768fccdbd86f239a0282a7146e48e30ad4 # 'monkey'
   created_at:                <%= 1.days.ago.to_s :db %>
-  remember_token_expires_at: 
-  remember_token:            
+  api_key: AARONS_KEY
 
 
 old_password_holder:

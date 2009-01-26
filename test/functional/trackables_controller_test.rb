@@ -22,6 +22,24 @@ class TrackablesControllerTest < ActionController::TestCase
     @request.session = {:user_id => @user.id}
   end
   
+  context "when using account API key" do
+    setup do
+      @request.session = {}
+    end
+    
+    context "on GET to :index" do
+      setup { get :index, {:api_key => @account.api_key} }
+      should_assign_to :trackables
+      should_respond_with 200
+      should_render_template :index
+    end
+    
+    context "on GET to :new" do
+      setup { get :new, {:api_key => @account.api_key} }
+      should_respond_with 302
+    end
+  end
+  
   context "on GET to :index" do
     setup { get :index }
     

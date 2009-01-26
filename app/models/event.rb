@@ -37,6 +37,7 @@ class Event < ActiveRecord::Base
   before_validation :update_state
   before_validation :set_duration_if_available
   before_validation :set_kind_if_blank
+  before_validation :set_user_name_if_blank
   
   # #   V A L I D A T I O N S   # #
   validates_presence_of :body, :account#, :user
@@ -46,6 +47,19 @@ class Event < ActiveRecord::Base
   
   def duration_in_hours
     (duration / 3600.0)
+  end
+  
+  def user=(user_or_username)
+    case user_or_username
+      when User
+        write_attribute :user_id, user_or_username.id
+        self.user_name = (user_or_username.name || user_or_username.login)
+      when String
+        return nil if account.nil?
+        unless self.user = account.users.find_by_login(user_or_username)
+          self.user_name = user_or_username
+        end
+    end
   end
   
   
@@ -62,6 +76,10 @@ protected
   
   def set_kind_if_blank
     self.kind ||= "event"
+  end
+  
+  def set_user_name_if_blank
+    self.user_name ||= self.user.try(:name)
   end
 
   def start_or_date_present
