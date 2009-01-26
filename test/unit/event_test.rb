@@ -71,6 +71,20 @@ class EventTest < ActiveSupport::TestCase
     
   end
   
+  context "Event subject" do
+    setup do
+      @account = accounts(:test_account)
+      @user    = users(:quentin)
+      @event   = Factory.build(:event, :user => nil, :account => @account)
+    end
+    
+    should "be settable via text" do
+      @event.subject = "Yoga"
+      assert_not_nil @event.subject
+      assert @event.subject.is_a?(Trackable)
+    end
+  end
+  
   context "Event user" do
     setup do
       @account = accounts(:test_account)

@@ -1,7 +1,5 @@
 class Event < ActiveRecord::Base
   
-  class AlreadyHasActive < Exception; end
-  
   # #   S C O P E S   # #
   named_scope :active, :conditions => { :state => 'active' }
   
@@ -59,6 +57,21 @@ class Event < ActiveRecord::Base
         unless self.user = account.users.find_by_login(user_or_username)
           self.user_name = user_or_username
         end
+    end
+  end
+  
+  alias_method :subject_from_object=, :subject=
+  def subject=(object_or_name)
+    if object_or_name.is_a?(String)
+      if obj = self.account.trackables.find_by_name(object_or_name) ||
+               self.account.trackables.find_by_nickname(object_or_name)
+        
+        self.subject_from_object = obj
+      else
+        self.subject_from_object = self.account.trackables.build(:nickname => object_or_name)
+      end
+    else
+      self.subject_from_object = object_or_name
     end
   end
   
