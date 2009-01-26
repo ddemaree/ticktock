@@ -1,0 +1,10 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+first_event:
+  account: test_account
+  user: quentin
+  subject: client_trackable (Trackable)
+  body: This is a test event
+  start: 2009-01-25 17:58:14
+  stop:  2009-01-25 20:58:14
+  kind: commit
