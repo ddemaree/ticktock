@@ -59,12 +59,19 @@ protected
     old_state, new_state = self.state_change
     logger.debug("State has changed from #{old_state} to #{new_state}")
     
-    punch_duration = (@last_state_change_at - Time.now).abs
+    punch_duration = (@last_state_change_at - self.state_changed_at).abs
+    
+    if self.duration.blank?
+      self.duration ||= 0
+      self.duration  += punch_duration if self.state_was == "active"
+    end
     
     self.punches.build({
       :from_state => old_state,
       :to_state   => new_state,
-      :duration   => punch_duration
+      :duration   => punch_duration,
+      :start      => @last_state_change_at,
+      :stop       => self.state_changed_at
     })
     
     @last_state_change_at = nil

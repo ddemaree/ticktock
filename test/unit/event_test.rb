@@ -130,7 +130,7 @@ class EventTest < ActiveSupport::TestCase
       should "set punch duration to event's duration" do
         @event.finish!
         punch = @event.punches.first
-        assert_equal @event.duration, punch.duration, "Punch duration should be #{@event.duration}, is #{punch.duration}"
+        assert_equal @event.duration, punch.duration, "Punch duration should be #{@event.duration / 3600.0} hours, is #{punch.duration / 3600.0} hours (from #{punch.start} to #{punch.stop})"
       end
       
     end
