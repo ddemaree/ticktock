@@ -79,7 +79,7 @@ class Event < ActiveRecord::Base
 protected
 
   def set_date_from_start_if_blank
-    self.date ||= self.start.try(:to_date)
+    self.date ||= self.start.try(:to_date) || Date.today
   end
   
   def set_duration_if_available

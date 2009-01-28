@@ -7,6 +7,64 @@ class EventsController < ApplicationController
   rescue_from AlreadyHasActiveEvent,       :with => :respond_on_extant_event
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
+  def index
+    @events = current_account.events.find(:all)
+    
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml  => @events }
+      format.json { render :json => @events }
+    end
+  end
+  
+  def new
+    @event = current_account.events.build(params[:event])
+    
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml  => @event }
+      format.json { render :json => @event }
+    end
+  end
+  
+  def create
+    @event = current_account.events.build(params[:event])
+    @event.save!
+    
+    
+    respond_to do |format|
+      flash[:notice] = 'Article was successfully created.'
+      
+      format.html { redirect_to events_path }
+      format.xml  { render :xml  => @event, :status => :created, :location => @event }
+      format.json { render :json => @event, :status => :created, :location => @event }
+    end
+  
+  rescue ActiveRecord::RecordInvalid
+    respond_on_failed_create @event
+    
+  end
+  
+  def edit
+    @event = current_account.events.find(params[:id])
+  end
+  
+  def update
+    @event = current_account.events.find(params[:id])
+    @event.update_attributes!(params[:event])
+    
+    respond_to do |format|
+      flash[:notice] = 'Article was successfully created.'
+      
+      format.html { redirect_to events_path }
+      format.xml  { head :ok }
+      format.json { head :ok }
+    end
+
+  rescue ActiveRecord::RecordInvalid
+    respond_on_failed_create @event
+  end
+  
   def start
     raise AlreadyHasActiveEvent unless current_event.nil?
     
@@ -69,6 +127,14 @@ protected
   
   def current_event
     @current_event ||= current_account.events.active.first
+  end
+  
+  def respond_on_failed_create(object=@event)
+    respond_to do |format|
+      format.html { render :action => (object.new_record? ? "new" : "edit") }
+      format.xml  { render :xml  =>  object.errors, :status => :unprocessable_entity }
+      format.json { render :json =>  object.errors, :status => :unprocessable_entity }
+    end
   end
 
 end

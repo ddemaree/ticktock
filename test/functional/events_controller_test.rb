@@ -2,6 +2,13 @@ require 'test_helper'
 
 class EventsControllerTest < ActionController::TestCase
   
+  def self.should_render_the_new_form
+    should_assign_to :event
+    should_respond_with 200
+    should_render_template :new
+    should_render_a_form
+  end
+  
   # #   R O U T I N G   # #
   should_route :post,   "/start",         :action => :start
   should_route :post,   "/stop",          :action => :stop
@@ -24,10 +31,102 @@ class EventsControllerTest < ActionController::TestCase
     @request.session = {:user_id => @user.id}
   end
   
-  context "on POST to :start" do
-    
-    context "with no active event" do
+  context "on GET to :index" do
+    setup { get :index }
+    should_assign_to :events
+    should_respond_with 200
+    should_render_template :index
+  end
+  
+  context "on GET to :new" do
+    setup { get :new }
+    should_render_the_new_form
+  end
+  
+  context "on POST to :create" do
+    context "with valid data" do
+      setup { create_new_event }
+      should_assign_to :event
+      should_respond_with 302
+      should_redirect_to 'events_path'
       
+      should "set date to today's date" do
+        assert_equal Date.today, assigns(:event).date
+      end
+    end
+    
+    context "with blank body" do
+      setup { create_new_event(:body => "") }
+      should_render_the_new_form
+    end
+    
+    context "with nonblank date" do
+      setup { create_new_event(:date => "2007-11-03") }
+      should_assign_to :event
+      
+      should "set date to date provided" do
+        assert_equal "2007-11-03", assigns(:event).date.to_s(:db)
+      end
+    end
+    
+    context "with start time" do
+      setup { create_new_event(:start => "2007-11-03 11:00:05") }
+      should_assign_to :event
+      
+      should "set date to date provided" do
+        assert_equal "2007-11-03", assigns(:event).date.to_s(:db)
+      end
+      
+      should "set status to active" do
+        assert_equal "active", assigns(:event).state
+      end
+    end
+    
+  end
+  
+  
+  context "on GET to :edit" do
+    setup do
+      @event = Factory(:event, :account => @account)
+      get :edit, {:id => @event.id}
+    end
+    
+    should_assign_to :event
+    should_respond_with :success
+    should_render_template :edit
+    should_render_a_form
+  end
+  
+  context "on PUT to :update" do
+    setup do
+      @event = Factory(:event, :account => @account)
+    end
+    
+    context "with valid data" do
+      setup do
+        put :update, {:id => @event.id, :event => {:body => "BLAH BLAH BLAH"}}
+      end
+    
+      should_respond_with :redirect
+      should_redirect_to  'events_path'
+    end
+    
+    context "with blank body" do
+      setup do
+        put :update, {:id => @event.id, :event => {:body => ""}}
+      end
+    
+      should_assign_to :event
+      should_respond_with :success
+      should_render_template :edit
+      should_render_a_form
+    end
+    
+  end
+  
+  
+  context "on POST to :start" do
+    context "with no active event" do
       context "and invalid params" do
         setup {
           start_new_event({ :event => {:body => ""}, :format => "json" })
@@ -114,6 +213,12 @@ class EventsControllerTest < ActionController::TestCase
   end
 
 protected
+
+  def create_new_event(params={})
+    post :create, {
+      :event => { :body => Faker::Lorem.paragraph }.merge(params)
+    }
+  end
 
   def start_new_event(params={})
     post :start, {
