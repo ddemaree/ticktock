@@ -1,1 +1,30 @@
 <h1>Events</h1>
+
+<%= link_to_function("Switch view") { |p| p['events_list'].toggle_class_name 'table', 'list' } %>
+
+<div class="eight left">
+	<div id="events_list">
+
+	<%- @events.group_by(&:date).each do |date, events_for_day| -%>
+	<h3 class="date_header"><%= date.to_s(:long) %></h3>
+
+	<%- events_for_day.each do |event| -%>
+	<% content_tag_for :div, event do %>
+		<div class="ev-head">
+			<div class="subject<%= " blank" if event.subject.nil? %>"><%= event.subject || "&nbsp;" %></div>
+		</div>
+
+		<p class="body"><%= event.body %></p>
+		<p class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></p>
+	<% end %>
+	<%- end -%>
+
+	<%- end -%>
+	</div>
+</div>
+
+<div class="four right">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+
+<hr class="clear">

@@ -15,10 +15,10 @@ class EventTest < ActiveSupport::TestCase
       assert event.errors.on(:stop)
     end
 
-    should "require either date or start time" do
+    should "auto populate date to today" do
       event = Factory.build(:event, :start => nil, :stop => nil, :date => nil)
-      assert !event.valid?, event.inspect
-      assert event.errors.full_messages.include?("Date or start time must be provided"), event.errors.full_messages
+      assert event.valid?
+      assert_equal Date.today, event.date
     end
 
     should "auto populate date from start if blank" do
@@ -115,6 +115,28 @@ class EventTest < ActiveSupport::TestCase
     end
   end
   
+  context "Event duration" do
+    setup do
+      @event = Factory.build(:event, :stop => nil, :start => nil, :date => "2009-01-20")
+    end
+    
+    should "be gettable in hours" do
+      @event.duration = 1800
+      assert_equal 0.5, @event.hours
+    end
+    
+    should "be settable in hours" do
+      @event.hours = "3"
+      assert_equal 3.hours, @event.duration
+    end
+    
+    should "be settable to blank value" do
+      @event.hours = ""
+      assert @event.valid?
+      assert_equal 0, @event.duration
+    end
+  end
+  
   context "On Event state change" do
     context "from active to completed" do
       setup do
@@ -132,7 +154,6 @@ class EventTest < ActiveSupport::TestCase
         punch = @event.punches.first
         assert_equal @event.duration, punch.duration, "Punch duration should be #{@event.duration / 3600.0} hours, is #{punch.duration / 3600.0} hours (from #{punch.start} to #{punch.stop})"
       end
-      
     end
     
     context "from active to sleeping" do

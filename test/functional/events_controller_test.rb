@@ -80,10 +80,8 @@ class EventsControllerTest < ActionController::TestCase
       should "set status to active" do
         assert_equal "active", assigns(:event).state
       end
-    end
-    
+    end  
   end
-  
   
   context "on GET to :edit" do
     setup do
@@ -121,9 +119,30 @@ class EventsControllerTest < ActionController::TestCase
       should_render_template :edit
       should_render_a_form
     end
-    
   end
   
+  context "on DELETE to :destroy" do
+    context "via API" do
+      setup do
+        @event = Factory(:event, :account => @account)
+        delete :destroy, {:id => @event.id, :format => 'json'}
+      end
+
+      should_assign_to :event
+      should_respond_with 406
+    end
+    
+    context "via browser" do
+      setup do
+        @event = Factory(:event, :account => @account)
+        delete :destroy, {:id => @event.id}
+      end
+
+      should_assign_to :event
+      should_respond_with :redirect
+      should_redirect_to 'events_path'
+    end
+  end
   
   context "on POST to :start" do
     context "with no active event" do

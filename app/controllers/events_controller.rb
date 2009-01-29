@@ -54,7 +54,7 @@ class EventsController < ApplicationController
     @event.update_attributes!(params[:event])
     
     respond_to do |format|
-      flash[:notice] = 'Article was successfully created.'
+      flash[:notice] = 'Event was successfully created.'
       
       format.html { redirect_to events_path }
       format.xml  { head :ok }
@@ -63,6 +63,17 @@ class EventsController < ApplicationController
 
   rescue ActiveRecord::RecordInvalid
     respond_on_failed_create @event
+  end
+  
+  def destroy
+    @event = current_account.events.find(params[:id])
+    @event.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(events_path) }
+      format.xml  { head :ok }
+      format.atom { head :ok }
+    end
   end
   
   def start

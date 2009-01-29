@@ -2,7 +2,8 @@ class Event < ActiveRecord::Base
   include Event::Statefulness
   
   # #   S C O P E S   # #
-  named_scope :active, :conditions => { :state => 'active' }
+  default_scope :order => "date DESC, start DESC"
+  named_scope   :active, :conditions => { :state => 'active' }
   
   # #   A S S O C I A T I O N S   # #
   belongs_to :account
@@ -23,8 +24,14 @@ class Event < ActiveRecord::Base
   
   
   def duration_in_hours
-    (duration / 3600.0)
+    (duration.to_f / 3600.0)
   end
+  alias_method :hours, :duration_in_hours
+  
+  def duration_in_hours=(hours)
+    self.duration = hours.to_f.hours.to_i
+  end
+  alias_method :hours=, :duration_in_hours=
   
   def user=(user_or_username)
     case user_or_username

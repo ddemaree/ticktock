@@ -1,4 +1,24 @@
+<h1>New event</h1>
 
 <% form_for @event do |f| %>
+
+<p class="field">
+	<%= f.label :body %>
+	<%= f.text_area :body, :cols => 60, :rows => 4 %>
+</p>
+
+<p class="field">
+	<%= f.label :date %>
+	<%= f.date_select :date %>
+</p>
+
+<p class="field">
+	<%= f.label :hours %>
+	<%= f.text_field :hours %>
+</p>
+
+<p class="actions">
+	<button type="submit">Create</button>
+</p>
 	
 <% end %>
