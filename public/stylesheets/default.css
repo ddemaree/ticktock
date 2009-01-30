@@ -39,6 +39,8 @@ body {
 .right  { float: right; }
 .clear  { clear: both;  }
 
+
+
 /* @group Events List View */
 
 #events_list .date_header {
@@ -47,7 +49,8 @@ body {
 	border-bottom: 2px solid #ccc;
 }
 
-#events_list .event + .date_header {
+#events_list .event + .date_header,
+#events_list .events_for_day + .date_header {
 	padding-top: 32px;
 }
 
@@ -94,3 +97,8 @@ body {
 }
 
 /* @end */
+
+
+#new_event.on_index textarea {
+	width: 200px;
+}

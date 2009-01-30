@@ -1,0 +1,11 @@
+<% content_tag_for :div, event do %>
+	<div class="ev-head">
+		<div class="subject<%= " blank" if event.subject.nil? %>"><%= event.subject || "&nbsp;" %></div>
+	</div>
+
+	<p class="body"><%= event.body %></p>
+	<p class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></p>
+	<p class="actions">
+		<%= link_to "Delete", event, :method => :delete %>
+	</p>
+<% end %>

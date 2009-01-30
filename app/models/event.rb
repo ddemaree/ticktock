@@ -2,7 +2,7 @@ class Event < ActiveRecord::Base
   include Event::Statefulness
   
   # #   S C O P E S   # #
-  default_scope :order => "date DESC, start DESC"
+  default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }
   
   # #   A S S O C I A T I O N S   # #
