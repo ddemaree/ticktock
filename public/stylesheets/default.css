@@ -1,5 +1,6 @@
 /* @override 
 	http://practical.ticktock.local:3000/stylesheets/default.css
+	http://www.ticktock.local:3000/stylesheets/default.css
 */
 
 @import url(lib/reset.css);
@@ -21,6 +22,7 @@ body {
 	margin: 0 auto;
 }
 
+/* @group Grid Layout */
 
 .one    { width: 60px;  }
 .two    { width: 140px; }
@@ -38,6 +40,8 @@ body {
 .left   { float: left;  }
 .right  { float: right; }
 .clear  { clear: both;  }
+
+/* @end */
 
 
 
@@ -101,4 +105,43 @@ body {
 
 #new_event.on_index textarea {
 	width: 200px;
+}
+
+.field {
+	padding: 10px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.field label {
+	width: 110px;
+	float: left;
+	color: #666;
+	text-transform: uppercase;
+	font-size: 11px;
+	padding-top: 3px;
+}
+
+.field > p {
+	margin-left: 110px;
+	padding-top: 2px;
+}
+
+fieldset {
+	padding: 10px;
+	border: 1px solid #d4d4d4;
+	margin: 1em 0;
+	background: #fff;
+}
+
+fieldset legend {
+	background: #fff;
+	padding: 2px 8px;
+	position: relative;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+p.checkbox {
+	background: #d4d4d4;
+	padding: 10px;
 }

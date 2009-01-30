@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   
-  map.resources :events, :trackables
+  map.resources :events, :trackables, :users
   
   map.with_options :controller => 'events' do |events|
     events.start '/start', :action => 'start', 
@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.resource :session, :account
-  #map.signup '/signup', :controller => 'accounts', :action => 'new'
+  map.signup '/signup', :controller => 'accounts', :action => 'new'
 
   # map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   # map.login '/login', :controller => 'sessions', :action => 'new'

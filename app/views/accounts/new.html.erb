@@ -5,6 +5,8 @@
 <% form_for @account, :url => account_path, :method => :post do |f| %>
 
 <fieldset>
+	<legend>Set up your account</legend>
+	
 	<p class="field">
 		<%= f.label :name, "Company name" %>
 		<%= f.text_field :name %>
@@ -19,6 +21,7 @@
 	</p>
 </fieldset>
 <fieldset>
+	<legend>Set up your login information</legend>
 	<% fields_for :user do |uf| %>
 	<p class="field">
 		<%= uf.label :email %>
@@ -40,8 +43,9 @@
 	</p>
 	<% end %>
 </fieldset>
-<fieldset>
-	<p>
+<fieldset class="terms_of_service">
+	<legend>Accept our Terms of Service</legend>
+	<p class="checkbox">
 		<%= f.check_box :terms_of_service %>
 		If TickTock had <a href="#">Terms of Service</a>, you bet I would accept them
 	</p>

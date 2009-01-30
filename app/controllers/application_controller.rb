@@ -68,6 +68,10 @@ protected
   end
   
   def set_current_account
+    if current_subdomain.nil?
+      redirect_to :host => default_host and return false
+    end
+    
     @current_account = Account.find_by_domain!(current_subdomain)
   rescue ActiveRecord::RecordNotFound => @e
     render "#{RAILS_ROOT}/public/404.html", :status => 404
