@@ -14,7 +14,8 @@ var CalendarDateSelect = Class.create({
   
   createElement: function() {
     this.element = new Element("div", { className: "calendar_date_select" });
-    
+    this.element.setAttribute('id', 'calendar_for_' + this.field.id)
+
     this.footer = new Element("div", { className: "footer" });
 		this.title = new Element("span").update(this.options.title);
     this.description = new Element("span");
