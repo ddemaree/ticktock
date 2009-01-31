@@ -46,13 +46,25 @@ $('new_event').observe('submit', function(e){
 		asynchronous: true,
 		method: 'post',
 		parameters: Form.serialize('new_event'),
-		requestHeaders: {'Accept':'application/json'},
-		evalJSON: true,
 		
-		onSuccess: function(response){
-			//alert(response.responseText)
-			event_obj = response.responseJSON.event
-			alert(event_obj.id  + " created")
+		onSuccess: function(response, jsonObj){
+			eventDate = CalendarDate.parse(jsonObj.event.date)
+			
+			dateContainerId = 'events_for_' + eventDate.toString().gsub(/-/,"_")
+			
+			console.log("Received a thingy")
+			console.log("Date was " + dateContainerId)
+			console.log("Still working")
+			
+			if($(dateContainerId)){
+				console.log("Container is on page, should insert")
+				console.log(response.responseText)
+				
+				$(dateContainerId).insert({top:response.responseText})
+			}
+			else {
+				console.log("No container, should create or somehow indicate that response succeeded")
+			}
 			
 			$('new_event').reset()
 		},
