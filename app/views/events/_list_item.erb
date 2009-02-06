@@ -1,4 +1,4 @@
-<% content_tag_for :div, event do %>
+<% content_tag_for :div, event, :class => cycle("nil","alt") do %>
 	<div class="ev-head">
 		<div class="subject<%= " blank" if event.subject.nil? %>"><%= event.subject || "&nbsp;" %></div>
 	</div>

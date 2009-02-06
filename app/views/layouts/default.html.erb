@@ -29,7 +29,6 @@
 	<fieldset id="options">
 		<p class="field datepicker">
 			<%= f.label :date %>
-			<%# f.date_select :date %>
 			<%= f.text_field :date, :size => 12 %>
 		</p>
 
@@ -65,6 +64,7 @@
 					console.log(response.responseText)
 
 					$(dateContainerId).insert({top:response.responseText})
+					$(dateContainerId).removeClassName('empty')
 				}
 				else {
 					console.log("No container, should create or somehow indicate that response succeeded")

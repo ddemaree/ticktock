@@ -1,20 +1,35 @@
-<h1>Events</h1>
 
-<div class="eight left">
+<div class="nine left">
+	
+	
 	<div id="events_list">
 
-	<%- @events.group_by(&:date).each do |date, events_for_day| -%>
-	<h3 class="date_header"><%= date.to_s(:long) %></h3>
-
-	<div id="events_for_<%= date.strftime("%Y_%m_%d") %>" class="events_for_day">
-	<%= render :partial => 'list_item', :collection => events_for_day, :as => :event %>
+		<% current_range.to_a.each do |date| %>
+		<%- events_for_day = (@events_by_day[date] || []) -%>
+		
+		
+		<div class="two left">
+			<h3 class="date_header <%= date.strftime("%a").downcase %>">
+				<span class="weekday"><%= date.strftime("%a") %></span>
+				<span class="day"><%= date.to_s(:short) %></span>
+			</h3>
+		</div>
+		
+		<div id="events_for_<%= date.strftime("%Y_%m_%d") %>" class="events_for_day <%= events_for_day.empty? ? "empty" : "nonempty" %> seven right">
+		<%= render :partial => 'list_item', :collection => events_for_day, :as => :event %>
+		
+		<div class="no-events">
+		Nothing happened today
+		</div>
+		</div>
+		<hr class="date-separator" style="clear:both">
+		<% end %>
 	</div>
-
-	<%- end -%>
-	</div>
+	
+	
 </div>
 
-<div class="four right">
+<div class="three right">
 <%= "Date range here" %>
 </div>
 

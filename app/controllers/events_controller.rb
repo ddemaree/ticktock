@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  include Ticktock::DateNavigation
   
   class AlreadyHasActiveEvent < Exception; end
   class NoActiveEvent < Exception; end
@@ -8,7 +9,8 @@ class EventsController < ApplicationController
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
   def index
-    @events = current_account.events.find(:all)
+    @events = current_account.events.for_date_range(current_range).all
+    @events_by_day = @events.group_by(&:date)
     
     respond_to do |format|
       format.html
@@ -150,27 +152,6 @@ protected
   
   def current_event
     @current_event ||= current_account.events.active.first
-  end
-  
-  def date_range
-    @date_range ||= (start_date..start_date.end_of_week)
-  end
-  
-  def start_date
-    @start_date ||= Date.today.beginning_of_week
-  end
-  
-  # def time_frame
-  #   if params[:time_frame]
-  #     params[:time_frame]
-  #   elsif params[:date] || params[:day]
-  #     "day"
-  #   elsif params[:month]
-  #     "month"
-  #   else
-  #     "week"
-  #   end
-  # end
-  # helper_method :time_frame
+  end  
 
 end

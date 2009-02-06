@@ -5,6 +5,11 @@ class Event < ActiveRecord::Base
   default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }
   
+  named_scope :for_date_range, lambda { |range|
+    raise ArgumentError, "Argument passed to Event.for_date_range must be range" unless range.is_a?(Range)
+    {:conditions => {:date => range}}
+  }
+  
   # #   A S S O C I A T I O N S   # #
   belongs_to :account
   belongs_to :subject, :polymorphic => true

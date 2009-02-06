@@ -15,7 +15,7 @@ body {
 #container {
 	width: 960px;
 	margin: 20px auto;
-	background: #e5e5e5;
+	/*background: #e5e5e5;*/
 }
 
 #main {
@@ -52,22 +52,86 @@ body {
 	padding-bottom: 50px;
 }
 
-#events_list .date_header {
-	padding: 0px 10px 10px;
-	font-size: 17px;
-	border-bottom: 2px solid #ccc;
+#events_list .date-separator {
+	background: #fff;
+	border: 0;
+	border-bottom: 2px solid #d4d4d4;
+	height: 10px;
+	margin: 0 0 10px;
+	clear: both;
 }
 
-#events_list .event + .date_header,
-#events_list .events_for_day + .date_header {
-	padding-top: 32px;
+#events_list .date_header {
+	font-size: 17px;
+	padding: 10px 4px 6px;
+	text-align: center;
+	background: #e5e5e5;
+	line-height: 21px;
+	color: #fff;
+	-webkit-border-radius: 12px;
+	-webkit-border-top-left-radius: 0
+}
+
+#events_list .date_header.mon {
+	background: #d00;
+}
+
+#events_list .date_header.tue {
+	background: #dc8c2a;
+}
+
+#events_list .date_header.wed {
+	background: #dec533;
+}
+
+#events_list .date_header.thu {
+	background: #93d32d;
+}
+
+#events_list .date_header.fri {
+	background: #45aeda;
+}
+
+#events_list .date_header.sat {
+	background: #4934dc;
+}
+
+#events_list .date_header.sun {
+	background: #953adc;
+}
+
+#events_list .date_header .weekday {
+	/*display: block;*/
+	padding-bottom: 4px;
+	padding-right: 3px;
+	font-size: 27px;
+	font-family: 'American Typewriter';
+}
+
+#events_list .date_header .day {
+	word-spacing: -2px;
 }
 
 #events_list .event {
-	border-bottom: 1px solid #d4d4d4;
 	padding: 1em 0 1em 10px;
 	position: relative;
-	background: #f5f5f5;
+	background: #fff;
+}
+
+#events_list .event + .event {
+	border-top: 1px solid #e5e5e5;
+}
+
+#events_list .no-events {
+	
+	padding: 10px;
+	color: #d4d4d4;
+	display: none;
+	font-size: 17px;
+}
+
+#events_list .empty .no-events {
+	display: block;
 }
 
 #events_list .event .blank {
@@ -173,3 +237,17 @@ p.checkbox {
 	padding-top: 1px;
 }
 
+#quick_entry {
+	/*background: rgba(0,0,0,0.8);
+	border: 6px solid rgba(0,0,0,0.4);
+	position: absolute;
+	padding: 10px;
+	-webkit-border-radius: 16px*/
+}
+
+#quick_entry fieldset {
+	background: transparent;
+	/*color: #fff;*/
+	padding: 0;
+	border: none;
+}
