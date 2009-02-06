@@ -140,10 +140,6 @@ protected
     end
   end
   
-  def current_event
-    @current_event ||= current_account.events.active.first
-  end
-  
   def respond_on_failed_create(object=@event)
     respond_to do |format|
       format.html { render :action => (object.new_record? ? "new" : "edit") }
@@ -151,5 +147,30 @@ protected
       format.json { render :json =>  object.errors, :status => :unprocessable_entity }
     end
   end
+  
+  def current_event
+    @current_event ||= current_account.events.active.first
+  end
+  
+  def date_range
+    @date_range ||= (start_date..start_date.end_of_week)
+  end
+  
+  def start_date
+    @start_date ||= Date.today.beginning_of_week
+  end
+  
+  # def time_frame
+  #   if params[:time_frame]
+  #     params[:time_frame]
+  #   elsif params[:date] || params[:day]
+  #     "day"
+  #   elsif params[:month]
+  #     "month"
+  #   else
+  #     "week"
+  #   end
+  # end
+  # helper_method :time_frame
 
 end
