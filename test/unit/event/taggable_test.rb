@@ -2,6 +2,36 @@ require 'test_helper'
 
 class Event::TaggableTest < ActiveSupport::TestCase
   
+  context "Event tag filter" do
+    setup do
+      Factory(:event, :tags => "hello,world")
+      Factory(:event, :tags => "hello,there", :body => "ladies and gentlemen")
+      Factory(:event, :tags => "ahoy,there")
+    end
+    
+    should "include all events filtered by one tag" do
+      assert_equal 2, Event.tagged_with("hello").count
+    end
+    
+    should "include all events filtered by two tags" do
+      assert_equal 1, Event.tagged_with("hello,there").count
+    end
+    
+    should "return no events on nonexistent tag" do
+      assert_equal 0, Event.tagged_with("apple").count
+    end
+    
+    should "return events matching one tag and other valid conditions" do
+      scope = Event.tagged_with("hello").scoped(:conditions => {:body_keywords => "ladies"})
+      assert_equal 1, scope.count
+    end
+    
+    should "return no events matching one tag and invalid conditions" do
+      scope = Event.tagged_with("hello").scoped(:conditions => {:body_keywords => "girlie girls"})
+      assert_equal 0, scope.count
+    end
+  end
+  
   context "A new Event instance" do
     setup { @event = Factory.build(:event) }
     
