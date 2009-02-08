@@ -1,9 +1,17 @@
 class Event < ActiveRecord::Base
   include Event::Statefulness
+  include Event::Taggable
   
   # #   S C O P E S   # #
   default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }
+  named_scope :tagged_with, lambda { |tags|
+    tags = Label.parse(tags)
+    conditions = tags.inject([]) do |coll, tag_name|
+      coll << "tag LIKE '%[#{tag_name}]%'"; coll
+    end
+    {:conditions => conditions.join(" AND ")}
+  }
   
   named_scope :for_date_range, lambda { |range|
     raise ArgumentError, "Argument passed to Event.for_date_range must be range" unless range.is_a?(Range)

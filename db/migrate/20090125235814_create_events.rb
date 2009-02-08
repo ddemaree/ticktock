@@ -13,7 +13,7 @@ class CreateEvents < ActiveRecord::Migration
       t.datetime :stop
       t.date     :date
       t.integer  :duration
-      
+      t.text     :tag
       t.timestamps
     end
   end

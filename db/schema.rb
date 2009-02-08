@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090126161050) do
+ActiveRecord::Schema.define(:version => 20090207192945) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(:version => 20090126161050) do
     t.datetime "updated_at"
     t.string   "user_name"
     t.datetime "state_changed_at"
+    t.text     "tag"
+  end
+
+  create_table "labels", :force => true do |t|
+    t.integer  "account_id"
+    t.string   "name"
+    t.integer  "taggings_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "punches", :force => true do |t|
@@ -46,6 +55,13 @@ ActiveRecord::Schema.define(:version => 20090126161050) do
     t.integer  "duration"
     t.datetime "start"
     t.datetime "stop"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "label_id"
+    t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -37,3 +37,13 @@ Factory.define :event do |e|
   e.stop  { |e| e.start + 3.hours }
   e.date  { |e| e.start.to_date }
 end
+
+Factory.define :label do |l|
+  l.association :account
+  l.name { Faker::Lorem.word }
+end
+
+Factory.define :tagging do |l|
+  l.association :event
+  l.account { |l| l.event.account }
+end

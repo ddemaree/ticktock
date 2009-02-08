@@ -7,6 +7,7 @@ class Account < ActiveRecord::Base
   has_many :users,      :dependent => :destroy
   has_many :trackables, :dependent => :destroy
   has_many :events,     :dependent => :destroy
+  has_many :labels,     :dependent => :destroy
 
   # #   V A L I D A T I O N S   # #
   validates_presence_of   :name, :domain, :timezone
