@@ -48,6 +48,51 @@ body {
 
 /* @group Events List View */
 
+#calendar_nav {
+	border-bottom: 2px solid #000;
+	margin-bottom: 16px;
+	text-align: center;
+	position: relative;
+	padding: 0 0 20px;
+}
+
+#calendar_nav .center {
+	display: inline;
+	padding: 0 30px;
+	position: relative;
+}
+
+#calendar_nav strong {
+	font-weight: bold;
+	text-align: center;
+	font-size: 19px;
+	padding-bottom: 12px;
+	display: inline;
+}
+
+#calendar_nav .next,
+#calendar_nav .previous {
+	position: absolute;
+	top: -4px;
+	background: #990;
+	text-indent: -9999px;
+	width: 20px;
+	height: 20px;
+}
+
+#calendar_nav .previous {
+	left: 0;
+}
+
+#calendar_nav .next {
+	right: 0;
+}
+
+#calendar_nav .current {
+	position: absolute;
+	left: 0;
+}
+
 #events_list {
 	padding-bottom: 50px;
 }

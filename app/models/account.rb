@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 class Account < ActiveRecord::Base
   ReservedDomains = %w(admin www signup)
   

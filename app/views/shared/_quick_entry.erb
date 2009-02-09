@@ -1,0 +1,80 @@
+<div id="quick_entry">
+	<% form_for :event, :html => {:id => "new_event", :class => "on_index"} do |f| %>
+
+	<fieldset id="basics">
+		<p class="body">
+			<%= f.label :body, "What are you doing?" %>
+			<%= f.text_area :body, :cols => 60, :rows => 4 %>
+		</p>
+	</fieldset>
+	
+	<fieldset id="options">
+		<p class="field datepicker">
+			<%= f.label :date %>
+			<%= f.text_field :date, :size => 12 %>
+		</p>
+
+		<p class="field">
+			<%= f.label :hours %>
+			<%= f.text_field :hours, :size => 5 %>
+		</p>
+	</fieldset>
+	
+	<p class="actions">
+		<button type="submit">Create</button>
+	</p>
+
+	<% end %>
+
+	<script type="text/javascript" charset="utf-8">
+	
+	options_toggler = new Element('a', {href: '#'})
+	options_toggler.update('Show options&hellip;')
+	options_toggler.observe('click', function(){
+		$('options').toggle()
+		this.hide()
+	}.bind(options_toggler))
+	$('options').insert({before:options_toggler})
+	$('options').hide()
+	
+
+	new TicktockDateSelect('event_date')
+
+	$('new_event').observe('submit', function(e){
+		new Ajax.Request('/events', {
+			asynchronous: true,
+			method: 'post',
+			parameters: Form.serialize('new_event'),
+
+			onSuccess: function(response, jsonObj){
+				eventDate = CalendarDate.parse(jsonObj.event.date)
+
+				dateContainerId = 'events_for_' + eventDate.toString().gsub(/-/,"_")
+
+				console.log("Received a thingy")
+				console.log("Date was " + dateContainerId)
+				console.log("Still working")
+
+				if($(dateContainerId)){
+					console.log("Container is on page, should insert")
+					console.log(response.responseText)
+
+					$(dateContainerId).insert({top:response.responseText})
+					$(dateContainerId).removeClassName('empty')
+				}
+				else {
+					console.log("No container, should create or somehow indicate that response succeeded")
+				}
+
+				$('new_event').reset()
+			},
+
+			onFailure: function(response){
+				alert("FAILED!")
+			}
+
+		})
+		e.stop()
+	})
+	</script>
+</div>

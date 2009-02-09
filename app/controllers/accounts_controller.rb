@@ -2,6 +2,7 @@ class AccountsController < ApplicationController
   
   skip_before_filter :login_required, :only => [:new, :create]
   skip_before_filter :set_current_account, :only => [:new, :create]
+  layout :choose_layout
   
   def new
     initialize_user_and_account
@@ -36,6 +37,10 @@ protected
     @account = Account.new(params[:account])
     @user    = @account.users.build(params[:user])
     @user.account = @account
+  end
+  
+  def choose_layout
+    'signup'
   end
 
 end

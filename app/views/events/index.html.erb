@@ -1,36 +1,24 @@
 
 <div class="nine left">
 	
+	<div id="calendar_nav">
+		<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
+		<div class="center">
+			<%= link_to "&lsaquo; Previous #{time_frame}", params_for_previous, :class => "nav previous" %>
+			<%= link_to "Next #{time_frame} &rsaquo;", params_for_next, :class => "nav next" %>
+			<strong><%= start_date.to_s(:long) %></strong>
+		</div>
+	</div>
 	
-	<div id="events_list">
-
-		<% current_range.to_a.each do |date| %>
-		<%- events_for_day = (@events_by_day[date] || []) -%>
-		
-		
-		<div class="two left">
-			<h3 class="date_header <%= date.strftime("%a").downcase %>">
-				<span class="weekday"><%= date.strftime("%a") %></span>
-				<span class="day"><%= date.to_s(:short) %></span>
-			</h3>
-		</div>
-		
-		<div id="events_for_<%= date.strftime("%Y_%m_%d") %>" class="events_for_day <%= events_for_day.empty? ? "empty" : "nonempty" %> seven right">
-		<%= render :partial => 'list_item', :collection => events_for_day, :as => :event %>
-		
-		<div class="no-events">
-		Nothing happened today
-		</div>
-		</div>
-		<hr class="date-separator" style="clear:both">
-		<% end %>
+	<div id="events_list" class="<%= current_view %>">
+	<%= render :partial => "view_by_date" %>
 	</div>
 	
 	
 </div>
 
 <div class="three right">
-<%= "Date range here" %>
+<%= render :partial => "/shared/quick_entry" %>
 </div>
 
 <hr class="clear">
