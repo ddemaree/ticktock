@@ -1,0 +1,3 @@
+[submodule "vendor/plugins/practical_form_helpers"]
+	path = vendor/plugins/practical_form_helpers
+	url = git://github.com/ddemaree/practical_form_helpers.git
