@@ -1,5 +1,4 @@
 class EventsController < ApplicationController
-  include Ticktock::DateNavigation
   
   class AlreadyHasActiveEvent < Exception; end
   class NoActiveEvent < Exception; end
@@ -9,21 +8,7 @@ class EventsController < ApplicationController
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
   def index
-    # event_scope = current_account.events.for_date_range(current_range)
-    #     @events = event_scope.paginate(:all, :per_page => 20)
-    
-    @events = current_account.events.for_date_range(current_range)
-    
-    # @events =
-    #   case current_view
-    #     when 'date'
-    #       returning([]) do |events|
-    #         events = current_account.events.for_date_range(current_range)
-    #         @events_by_day = events.group_by(&:date)
-    #       end
-    #     else
-    #       current_account.events.paginate(:all, :per_page => 20, :page => params[:page])
-    #   end
+    @events = current_account.events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
     
     respond_to do |format|
       format.html
@@ -166,15 +151,5 @@ protected
   def current_event
     @current_event ||= current_account.events.active.first
   end  
-  
-  def current_view
-    @current_view ||=
-      if %w(date recent).include?(params[:view_by])
-        params[:view_by]
-      else
-        'recent'
-      end
-  end
-  helper_method :current_view
 
 end
