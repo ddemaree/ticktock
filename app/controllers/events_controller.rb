@@ -13,7 +13,6 @@ class EventsController < ApplicationController
     #     @events = event_scope.paginate(:all, :per_page => 20)
     
     @events = current_account.events.for_date_range(current_range)
-    @events_by_day = @events.group_by(&:date)
     
     # @events =
     #   case current_view

@@ -5,7 +5,11 @@
 
 	<p class="body"><%= event.body %></p>
 	<p class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></p>
-	<p class="actions">
+	<div class="actions">
+		Posted
+		<%= "#{time_ago_in_words(event.created_at)} ago" %>
+		<%= "by #{event.user}" if event.user %>
+		
 		<%= link_to "Delete", event, :method => :delete %>
-	</p>
+	</div>
 <% end %>

@@ -2,7 +2,12 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :events, :trackables, :users
   
+  
+  
   map.with_options :controller => 'events' do |events|
+    events.connect '/:year/w/:week/events', :action => 'index'
+    events.connect '/:year/w/:week/events.:format', :action => 'index'
+    
     events.start '/start', :action => 'start', 
                     :conditions => {:method => :post}                        
     events.stop  '/stop',  :action => 'stop', 

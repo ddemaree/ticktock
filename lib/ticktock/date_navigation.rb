@@ -24,7 +24,7 @@ module Ticktock::DateNavigation
   
   def params_for_date(new_start_date,tf=time_frame)
     {
-      :year   =>  new_start_date.year,
+      :year   => (tf == "week" ? new_start_date.cwyear : new_start_date.year),
       :month  => (new_start_date.month if %w(day month).include?(tf)),
       :week   => (new_start_date.cweek if tf == "week"),
       :day    => (new_start_date.day if tf == "day"),

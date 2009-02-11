@@ -11,11 +11,8 @@
 			<%= f.text_field :date, :size => 12 %>
 		</p>
 		
-		<%# f.labeled_text_field :hours, :size => 5 %>
+		<%= f.labeled_text_field :hours, :size => 5 %>
 		
-		<% f.labeled_text_field :hours, :size => 5 do %>
-		<p class="info">This is a field I like</p>
-		<% end %>
 	</fieldset>
 	
 	<p class="actions">

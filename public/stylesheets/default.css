@@ -53,7 +53,7 @@ body {
 	margin-bottom: 16px;
 	text-align: center;
 	position: relative;
-	padding: 0 0 20px;
+	padding: 0 0 12px;
 }
 
 #calendar_nav .center {
@@ -63,28 +63,33 @@ body {
 }
 
 #calendar_nav strong {
-	font-weight: bold;
+	font-weight: normal;
 	text-align: center;
 	font-size: 19px;
 	padding-bottom: 12px;
 	display: inline;
+	font-family: 'American Typewriter';
 }
 
-#calendar_nav .next,
-#calendar_nav .previous {
+#calendar_nav .center .nav {
 	position: absolute;
-	top: -4px;
-	background: #990;
+	top: -2px;
+	background: #d4d4d4 url(../images/arrows.png);
 	text-indent: -9999px;
-	width: 20px;
-	height: 20px;
+	width: 14px;
+	height: 14px;
 }
 
-#calendar_nav .previous {
+#calendar_nav .center .nav:hover {
+	background-color: #dc7902;
+}
+
+#calendar_nav .center .previous {
 	left: 0;
+	background-position: 0 -16px;
 }
 
-#calendar_nav .next {
+#calendar_nav .center .next {
 	right: 0;
 }
 
@@ -100,57 +105,109 @@ body {
 #events_list .date-separator {
 	background: #fff;
 	border: 0;
-	border-bottom: 2px solid #d4d4d4;
+	border-bottom: 2px solid #e5e5e5;
 	height: 10px;
 	margin: 0 0 10px;
 	clear: both;
 }
 
 #events_list .date_header {
-	font-size: 17px;
+	font-size: 13px;
+	font-weight: bold;
 	padding: 10px 4px 6px;
 	text-align: center;
 	background: #e5e5e5;
 	line-height: 21px;
 	color: #fff;
+	border: 2px solid;
 	-webkit-border-radius: 12px;
 	-webkit-border-top-left-radius: 0
 }
 
 #events_list .date_header.mon {
 	background: #d00;
+	border-color: #d00;
+}
+
+#events_list .empty .date_header.mon {
+	border: 2px solid #f2dada;
+	background: #fff;
+	color: #f2dada;
 }
 
 #events_list .date_header.tue {
 	background: #dc8c2a;
+	border-color: #dc8c2a;
+}
+
+#events_list .empty .date_header.tue {
+	background: #fff;
+	color: #f2e7da;
+	border-color: #f2e7da;
 }
 
 #events_list .date_header.wed {
 	background: #dec533;
+	border-color: #dec533;
+}
+
+#events_list .empty .date_header.wed {
+	background: #fff;
+	border-color: #f2eeda;
+	color: #f2eeda;
 }
 
 #events_list .date_header.thu {
 	background: #93d32d;
+	border-color: #93d32d;
+}
+
+#events_list .empty .date_header.thu {
+	background: #fff;
+	border-color: #e1ead3;
+	color: #e1ead3;
 }
 
 #events_list .date_header.fri {
 	background: #45aeda;
+	border-color: #45aeda;
+}
+
+#events_list .empty .date_header.fri {
+	background: #fff;
+	border-color: #d3e3ea;
+	color: #d3e3ea;
 }
 
 #events_list .date_header.sat {
 	background: #4934dc;
+	border-color: #4934dc;
+}
+
+#events_list .empty .date_header.sat {
+	background: #fff;
+	border-color: #d3d0e8;
+	color: #d3d0e8;
 }
 
 #events_list .date_header.sun {
 	background: #953adc;
+	border-color: #953adc;
+}
+
+#events_list .empty .date_header.sun {
+	background: #fff;
+	border-color: #e0d3ea;
+	color: #e0d3ea;
 }
 
 #events_list .date_header .weekday {
-	/*display: block;*/
-	padding-bottom: 4px;
+	padding-bottom: 0px;
 	padding-right: 3px;
-	font-size: 27px;
+	font-size: 21px;
 	font-family: 'American Typewriter';
+	font-weight: normal;
+	display: block;
 }
 
 #events_list .date_header .day {
@@ -158,7 +215,7 @@ body {
 }
 
 #events_list .event {
-	padding: 1em 0 1em 10px;
+	padding: 8px 0;
 	position: relative;
 	background: #fff;
 }
@@ -168,8 +225,7 @@ body {
 }
 
 #events_list .no-events {
-	
-	padding: 10px;
+	padding: 10px 0;
 	color: #d4d4d4;
 	display: none;
 	font-size: 17px;
@@ -201,11 +257,6 @@ body {
 	-webkit-border-radius: 4px;
 }
 
-/*#events_list .event .hours.blank {
-	display: block;
-	background: #fff;
-}*/
-
 #events_list .event .body {
 	position: relative;
 	top: -2px;
@@ -215,25 +266,41 @@ body {
 }
 
 #events_list .event .actions {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	padding: 14px 16px;
-	background: #f5f5f5;
-	text-align: right;
-	width: 100px;
-	display: none;
+	font-size: 11px;
+	color: #888;
 }
 
-#events_list .event:hover .actions {
-	display: block;
+#events_list .event .subject {
+	font-weight: bold;
+	color: #4c4c4c;
+	padding-bottom: 3px;
+	font-size: 11px;
 }
 
 /* @end */
 
 
+#new_event {
+	padding: 10px;
+	background: #f5f5f5;
+}
+
 #new_event.on_index textarea {
-	width: 200px;
+	width: 100%;
+}
+
+#new_event label {
+	width: auto;
+	display: block;
+	float: none;
+	padding-bottom: 2px;
+	padding-top: 0;
+}
+
+#new_event .field {
+	padding: 0;
+	margin: 0;
+	border: 0;
 }
 
 .field {
