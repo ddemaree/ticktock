@@ -1,9 +1,12 @@
 
 <div class="nine left">
-	
-	
-	
-	
+<% @events.each do |event| %>
+<div>
+	<%= event.body %>
+</div>
+<% end %>
+
+<%= will_paginate @events %>
 </div>
 
 <div class="three right">

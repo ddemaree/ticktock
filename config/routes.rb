@@ -2,7 +2,15 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :events, :trackables, :users
   
-  map.calendar '/calendar', :controller => 'calendar', :action => 'index'
+  map.with_options :controller => 'calendar', :action => 'index' do |calendar|
+    
+    calendar.calendar       '/calendar'
+    calendar.calendar_year  '/calendar/:year', :year => /\d{4}/
+    calendar.calendar_week  '/calendar/:year/w/:week', :year => /\d{4}/, :week => /\d+/
+    calendar.calendar_month '/calendar/:year/:month', :year => /\d{4}/, :month => /\d+/
+    calendar.calendar_day   '/calendar/:year/:month/:day', :year => /\d{4}/, :month => /\d+/, :day => /\d+/
+  end
+  
   
   map.with_options :controller => 'events' do |events|
     events.connect '/:year/w/:week/events', :action => 'index'
