@@ -8,6 +8,11 @@
 
 	<p class="body"><%= event.body %></p>
 	<p class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></p>
+	<% content_tag :div, :class => "tags" do %>
+	<%- event.tags.each do |tag| -%>
+	<%= link_to tag, "javascript:void%200", :class => 'tag' %>
+	<%- end -%>
+	<% end unless event.tags.empty? %>
 	<div class="actions">
 		Posted
 		<%= "#{time_ago_in_words(event.created_at)} ago" %>

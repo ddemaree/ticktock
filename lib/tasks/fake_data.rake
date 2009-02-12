@@ -26,9 +26,22 @@ namespace :ticktock do
       })
     end
     
+    tags = %w(admin billable bugfix design testing)
+    
+    account.events.destroy_all
+    
     60.times do
       #Factory(:event, :account => account)
       ev = Factory.build(:dummy_event, :account => account, :user => user)
+      
+      num_tags = rand(3)
+      tags_for_this_event = []
+      num_tags.times do |x|
+        tags_for_this_event << tags.rand
+      end
+      
+      ev.tags = tags_for_this_event
+      
       #puts ev, ev.valid?
       ev.save!
     end

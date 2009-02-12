@@ -363,3 +363,87 @@ p.checkbox {
 	padding: 0;
 	border: none;
 }
+
+
+table.month_grid {
+	margin: 20px 0;
+}
+
+.month_grid td {
+	background: #f4f0eb;
+	border: 2px solid #fff;
+	width: 28px;
+	height: 28px;
+	-webkit-border-radius: 8px;
+}
+
+.month_grid td.currentmonth {
+	background: #f4f0eb;
+}
+
+.month_grid td.in_range {
+	background: #def;
+}
+
+.month_grid td.today {
+	background: #f2f2b5;
+}
+
+.month_grid .header_row th {
+	padding: 2px 0;
+	text-align: center;
+	font-weight: bold;
+	color: #ccc;
+}
+
+.month_grid .day_of_month {
+	display: block;
+	text-align: right;
+	font-size: 9px;
+	font-weight: bold;
+	display: none;
+}
+
+.month_grid .event_count {
+	background: url(../images/dots-trans.png);
+	display: block;
+	height: 28px;
+	width: 28px;
+	text-indent: -9999px;
+}
+
+.month_grid .events-1 .event_count {
+	background-position: -84px 0;
+}
+
+.month_grid .events-2 .event_count {
+	background-position: -56px 0;
+}
+
+.month_grid .events-3 .event_count {
+	background-position: -28px 0;
+}
+
+.month_grid .events-more .event_count {
+	background-position: 0 0;
+}
+
+.month_grid .events-1.notcurrent .event_count {
+	background-position: -112px -28px;
+}
+
+.month_grid .events-2.notcurrent .event_count {
+	background-position: -84px -28px;
+}
+
+.month_grid .events-3.notcurrent .event_count {
+	background-position: -56px -28px;
+}
+
+.month_grid .events-4.notcurrent .event_count {
+	background-position: -28px -28px;
+}
+
+.month_grid .events-more.notcurrent .event_count {
+	background-position: 0 -28px;
+}
