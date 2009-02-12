@@ -1,4 +1,4 @@
-<div class="nine left">
+<% render :layout => "/layouts/events" do %>
 	
 	<div id="calendar_nav">
 		<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
@@ -9,14 +9,6 @@
 		</div>
 	</div>
 
-	<div id="events_list" class="<%= current_view %>">
 	<%= render :partial => "view_by_date" %>
-	</div>
 	
-</div>
-
-<div class="three right">
-<%= render :partial => "/shared/quick_entry" %>
-</div>
-
-<hr class="clear">
+<% end %>

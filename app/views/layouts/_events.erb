@@ -1,0 +1,15 @@
+<div id="events_list" class="nine left">
+<%= yield :layout %>
+</div>
+
+<div class="three right">	
+	<div>
+		<%= link_to_unless(controller_name == "calendar", "Calendar view", calendar_path) %>
+		&nbsp;|&nbsp;
+		<%= link_to_unless(controller_name == "events", "List view", events_path) %>
+	</div>
+
+<%= render :partial => "/shared/quick_entry" %>
+</div>
+
+<hr class="clear">

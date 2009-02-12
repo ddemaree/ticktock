@@ -1,16 +1,6 @@
-
-<div class="nine left">
-<% @events.each do |event| %>
-<div>
-	<%= event.body %>
-</div>
+<% render :layout => "/layouts/events" do %>
+	<%= page_entries_info @events %>
+	<% paginated_section @events do %>
+	<%= render :partial => "list_item", :collection => @events, :as => :event %>
+	<% end %>
 <% end %>
-
-<%= will_paginate @events %>
-</div>
-
-<div class="three right">
-<%= render :partial => "/shared/quick_entry" %>
-</div>
-
-<hr class="clear">

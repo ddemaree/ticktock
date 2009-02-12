@@ -53,6 +53,10 @@ class User < ActiveRecord::Base
   def account_is_new_record?
     !account.nil? && account.new_record?
   end
+  
+  def to_s
+    name || login
+  end
 
 protected
 
