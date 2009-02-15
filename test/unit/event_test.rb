@@ -2,15 +2,32 @@ require 'test_helper'
 
 class EventTest < ActiveSupport::TestCase
   
-  should_have_named_scope :active, :completed
+  def setup
+    Date.stubs(:today).returns Date.new(2008,2,15)
+    Time.stubs(:now).returns Time.utc(2008,2,15,12,0,0)
+  end
+  
+  should_have_named_scope :active
+  
+  context "Event import token generator" do
+    should "generate signature from date and body" do
+      today = Date.new(2009,2,15)
+      expected_signature = "Hello world:2009-02-15:::"
+      assert_equal expected_signature, Event.signature("Hello world", today)
+    end
+    
+    should "generate token from date and body" do
+      expected_digest = "b03a7a3ddd2d4529995f6cf5ff8ea4d6a3a24b4e"
+    end
+  end
   
   context "A new Event instance" do
     should_belong_to :account
     should_belong_to :user
-    should_require_attributes :body, :account
+    should_validate_presence_of :body, :account
     
     should "require stop to be later than start" do
-      event = Factory.build(:event, :stop => "2009-01-01 00:02:33")
+      event = Factory.build(:event, :stop => "1997-08-24 00:02:33")
       assert !event.valid?
       assert event.errors.on(:stop)
     end
@@ -55,6 +72,22 @@ class EventTest < ActiveSupport::TestCase
         event.wake!
       end
     end
+    
+    should "provide import signature" do
+      event = Event.new({
+        :body => "Hello world",
+        :date => Date.today
+      })
+      
+      assert_not_nil event.signature
+      assert_equal "Hello world:2008-02-15:::", event.signature
+    end
+    
+    should "set import token" do
+      event = Factory(:event, :body => "Hello world")
+      assert_equal "aad1dd8d9f1839eed7b8822efc751e9f0ba6644b", event.import_token
+    end
+    
   end
   
   context "An extant Event instance" do

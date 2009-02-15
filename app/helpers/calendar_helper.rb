@@ -1,13 +1,47 @@
 module CalendarHelper
   
-  def month_grid
-    start_date_for_grid = start_date.beginning_of_month.beginning_of_week
-    end_date_for_grid   = start_date.end_of_month.end_of_week
+  def range_description
+    if respond_to?("range_description_for_#{time_frame}")
+      return send("range_description_for_#{time_frame}")
+    end
+    
+    start_date.to_s(:long)
+  end
+  
+  def range_description_for_week
+    returning("") do |output|
+      if start_date.year != end_date.year
+        output =
+          start_date.strftime("%b %e, %Y") +
+          "&mdash;" +
+          end_date.strftime("%b %e, %Y")
+      
+        return output
+      end
+      
+      output <<
+        if start_date.month != end_date.month
+          start_date.strftime("%b %e") +
+          "&mdash;" +
+          end_date.strftime("%b %e")
+        else
+          "#{start_date.strftime("%B")} #{start_date.day}&mdash;#{end_date.day}"
+        end
+      
+      output << ", #{end_date.year}"
+    end
+  end
+  
+  def month_grid(grid_date=start_date)
+    start_date_for_grid = grid_date.beginning_of_month.beginning_of_week
+    end_date_for_grid   = grid_date.end_of_month.end_of_week
     
     grid_range = (start_date_for_grid..end_date_for_grid)
     
     returning("") do |output|
       output << tag(:table, {:class => "month_grid"}, true)
+      
+      output << %{<tr class="month_name"><th colspan="7">#{grid_date.strftime('%B %Y')}</th></tr>}
       
       day_ths = %w(M T W T F S S).collect {|d| content_tag(:th, d) }.join("")
       output << content_tag(:tr, day_ths, :class => "header_row")

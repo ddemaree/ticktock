@@ -1,6 +1,9 @@
+require 'digest/sha1'
+
 class Event < ActiveRecord::Base
   include Event::Statefulness
   include Event::Taggable
+  include Event::Importing
   
   # #   S C O P E S   # #
   default_scope :order => "date DESC, start DESC, created_at DESC"

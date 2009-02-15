@@ -370,30 +370,30 @@ table.month_grid {
 }
 
 .month_grid td {
-	background: #f4f0eb;
+	background: #f5f5f5;
 	border: 2px solid #fff;
-	width: 28px;
-	height: 28px;
-	-webkit-border-radius: 8px;
+	width:  14px;
+	height: 14px;
 }
 
 .month_grid td.currentmonth {
-	background: #f4f0eb;
+	background: #ccc;
 }
 
-.month_grid td.in_range {
+/*.month_grid td.in_range {
 	background: #def;
 }
 
 .month_grid td.today {
-	background: #f2f2b5;
-}
+	background: #f2f2b6;
+}*/
 
 .month_grid .header_row th {
 	padding: 2px 0;
 	text-align: center;
 	font-weight: bold;
 	color: #ccc;
+	font-size: 10px;
 }
 
 .month_grid .day_of_month {
@@ -405,45 +405,42 @@ table.month_grid {
 }
 
 .month_grid .event_count {
-	background: url(../images/dots-trans.png);
+	display: none;
+}
+
+.month_grid .currentmonth .event_count {
+	background: #8b97af;
 	display: block;
-	height: 28px;
-	width: 28px;
+	height: 14px;
+	width: 14px;
 	text-indent: -9999px;
 }
 
-.month_grid .events-1 .event_count {
-	background-position: -84px 0;
-}
-
-.month_grid .events-2 .event_count {
-	background-position: -56px 0;
-}
-
 .month_grid .events-3 .event_count {
-	background-position: -28px 0;
+	background-color: #59657b;
 }
 
 .month_grid .events-more .event_count {
-	background-position: 0 0;
+	background-color: #001132;
 }
 
-.month_grid .events-1.notcurrent .event_count {
-	background-position: -112px -28px;
+/*.month_grid .events-1 .event_count {
+	background-color: #8e9ab2;
 }
 
-.month_grid .events-2.notcurrent .event_count {
-	background-position: -84px -28px;
+
+
+.month_grid .events-2 .event_count {
+	background-color: #4c5d7f;
 }
 
-.month_grid .events-3.notcurrent .event_count {
-	background-position: -56px -28px;
+.month_grid .events-3 .event_count {
+	background-color: #071e4c;
 }
 
-.month_grid .events-4.notcurrent .event_count {
-	background-position: -28px -28px;
-}
+.month_grid .events-more .event_count {
+	background-color: #001132;
+}*/
 
-.month_grid .events-more.notcurrent .event_count {
-	background-position: 0 -28px;
-}
+
+

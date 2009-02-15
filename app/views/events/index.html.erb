@@ -1,6 +1,4 @@
 <% render :layout => "/layouts/events" do %>
-	<%= page_entries_info @events %>
-	<% paginated_section @events do %>
 	<%= render :partial => "list_item", :collection => @events, :as => :event %>
-	<% end %>
+	
 <% end %>
