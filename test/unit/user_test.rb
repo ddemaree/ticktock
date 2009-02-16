@@ -16,7 +16,7 @@ class UserTest < ActiveSupport::TestCase
   # end
   
   should_belong_to :account
-  should_require_unique_attributes :login, :email, :scoped_to => :account_id
+  should_validate_uniqueness_of :login, :email, :scoped_to => :account_id
   
   should "require account" do
     assert_no_difference 'User.count' do

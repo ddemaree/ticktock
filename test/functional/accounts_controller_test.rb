@@ -4,7 +4,7 @@ class AccountsControllerTest < ActionController::TestCase
   
   # #   R O U T I N G   # #
   should_route :get,    "/account",      :action => :show
-  should_route :get,    "/signup",       :action => :new
+  should_route :get,    "/account/new",  :action => :new
   should_route :post,   "/account",      :action => :create
   should_route :get,    "/account/edit", :action => :edit
   should_route :put,    "/account",      :action => :update

@@ -44,29 +44,16 @@ class EventsControllerTest < ActionController::TestCase
   end
   
   context "on GET to :index" do
+    
     setup do
       %w(2009-02-02 2009-02-04 2009-02-14 2009-02-28 2009-03-28).each do |day|
         Factory(:event, :account => @account, :user => @user, :date => day.to_date, :start => nil, :stop => nil)
       end
+      
+      get :index
     end
     
-    context "for given day" do
-      setup { get :index, {:day => "2", :year => "2009", :month => "2"}}
-      should_show_events_index
-      should_have_event_count 1
-    end
-    
-    context "for given week" do
-      setup { get :index, {:week => "6", :year => "2009" }}
-      should_show_events_index
-      should_have_event_count 2
-    end
-    
-    context "for given month" do
-      setup { get :index, {:month => "2", :year => "2009" }}
-      should_show_events_index
-      should_have_event_count 4
-    end
+    should_show_events_index
     
   end
   

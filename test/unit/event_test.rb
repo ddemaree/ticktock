@@ -85,7 +85,7 @@ class EventTest < ActiveSupport::TestCase
     
     should "set import token" do
       event = Factory(:event, :body => "Hello world")
-      assert_equal "aad1dd8d9f1839eed7b8822efc751e9f0ba6644b", event.import_token
+      assert_equal "1bcaf55e80d0c3cd58a3c8c02571ecea78a9d9ea", event.import_token
     end
     
   end
