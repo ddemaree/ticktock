@@ -1,23 +1,21 @@
-<% content_tag_for :div, event, :class => cycle("nil","alt") do %>
-	<p class="date_and_time">
-		<strong class="date"><%= event.date %></strong>
-	</p>
-	
-	
-	<%= content_tag :div, event.subject if event.subject %>
-
-	<p class="body"><%= event.body %></p>
-	<p class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></p>
-	<% content_tag :div, :class => "tags" do %>
-	<%- event.tags.each do |tag| -%>
-	<%= link_to tag, "javascript:void%200", :class => 'tag' %>
-	<%- end -%>
-	<% end unless event.tags.empty? %>
-	<div class="actions">
-		Posted
-		<%= "#{time_ago_in_words(event.created_at)} ago" %>
-		<%= "by #{event.user}" if event.user %>
+<% content_tag_for :div, event, :class => "hover_container hover_target" do %>
+	<div class="event-hd">
 		
-		<%= link_to "Delete", event, :method => :delete %>
+		<%# span_for_user(event.user) if event.user %>
+		<%= span_for_date(event.date) %>
+		
+		<span class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></span>
+		
+		<span class="actions">
+			<%= link_to "Edit", [:edit, event], :class => "edit" %>
+			<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
+		</span>
 	</div>
+	
+	<div class="body">
+		<%= event_subject(event.subject) unless event.subject.nil? %>
+		<%= event.body %>
+		<%= event_tags(event.tags) %>
+	</div>
+	
 <% end %>
