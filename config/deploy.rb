@@ -14,6 +14,7 @@ set :repository, "git@github.com:ddemaree/ticktock.git"
 set :scm_passphrase, "tt_red5BULL"
 set :branch, "master"
 set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
 
 role :app, "practical.cc"
 role :web, "practical.cc"
@@ -31,5 +32,13 @@ namespace :deploy do
     end
   end
   after "deploy:setup", "deploy:setup_environment"
+  
+  task :restart do
+    run "cd #{current_path} && touch tmp/restart.txt"
+  end
+  
+  task :restart_apache do
+    sudo "/usr/local/apache2/bin/apachectl restart"
+  end
   
 end
