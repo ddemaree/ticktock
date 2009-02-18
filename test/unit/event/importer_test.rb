@@ -43,11 +43,17 @@ class Event::ImporterTest < ActiveSupport::TestCase
       end
     end
     
+    should "gracefully handle missing dates" do
+      assert_nothing_raised do
+        import_from_file_fixture("dateless.csv")
+      end
+    end
+    
   end
   
-  def import_from_file_fixture
+  def import_from_file_fixture(filename="csv_data.txt")
     @importer  = Event::Importer.new(@account)
-    file_data = File.read(RAILS_ROOT + "/test/fixtures/csv_data.txt")
+    file_data = File.read(RAILS_ROOT + "/test/fixtures/imports/#{filename}")
     @last_import = @importer.import(file_data)
   end
   

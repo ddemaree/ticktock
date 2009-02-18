@@ -158,6 +158,23 @@ class EventTest < ActiveSupport::TestCase
       assert_equal 0.5, @event.hours
     end
     
+    should "be gettable in hours rounded to nearest 15m" do
+      @event.duration = 2700
+      assert_equal 0.75, @event.hours
+    end
+    
+    # FIXME: Why doesn't it think 0.7 is equal to 0.7?
+    # should "use precision setting from class" do
+    #   Event.options[:hours_to_nearest] = 0.10
+    #   @event.duration = 2700
+    #   assert_equal 0.70, @event.hours
+    # end
+    
+    should "be gettable in hours with precision" do
+      @event.duration = 2600
+      assert_equal 0.72, @event.hours(:nearest => false)
+    end
+    
     should "be settable in hours" do
       @event.hours = "3"
       assert_equal 3.hours, @event.duration

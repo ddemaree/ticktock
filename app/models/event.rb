@@ -1,6 +1,11 @@
 require 'digest/sha1'
 
 class Event < ActiveRecord::Base
+  cattr_accessor :options
+  @@options = {
+    :hours_to_nearest => 0.25
+  }
+  
   include Event::Statefulness
   include Event::Taggable
   include Event::Importing
@@ -40,8 +45,28 @@ class Event < ActiveRecord::Base
   validate                :start_or_date_present
   
   
-  def duration_in_hours
-    (duration.to_f / 3600.0)
+  def class_options
+    self.class.options
+  end
+  
+  def duration_in_hours(options={})
+    options.reverse_merge!({
+      :precision => 2,
+      :raw => nil,
+      :nearest => (class_options[:hours_to_nearest])
+    })
+    
+    hours = (duration.to_f / 3600.0)
+    return hours if options[:raw]
+    
+    if nearest = options[:nearest]
+      base_hours = (hours - (hours % nearest))
+      base_hours += nearest if ((hours % nearest) > (nearest / 2))
+      return base_hours
+    end
+    
+    precision = options[:precision]
+    (Float(hours) * (10 ** precision)).round.to_f / 10 ** precision
   end
   alias_method :hours, :duration_in_hours
   

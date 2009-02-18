@@ -8,10 +8,10 @@ class EventsController < ApplicationController
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
   def index
-    #@events = current_account.events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
+    @events = current_account.events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
     
-    @search = current_account.events.new_search(params[:search])
-    @events = @search.all
+    #@search = current_account.events.new_search(params[:search])
+    #@events = @search.all
     
     respond_to do |format|
       format.html

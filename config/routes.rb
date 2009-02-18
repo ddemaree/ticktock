@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   
+  map.import_events '/events/import', :controller => "event_imports", :action => "new"
   map.resources :event_imports, :only => [:new, :create]
   map.resources :events, :trackables, :users
   
@@ -32,6 +33,6 @@ ActionController::Routing::Routes.draw do |map|
   # map.signup '/signup', :controller => 'users', :action => 'new'
   # map.resources :users
   
-  map.root :controller => 'website'
+  map.root :controller => 'events'
 
 end

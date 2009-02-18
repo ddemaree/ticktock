@@ -41,7 +41,7 @@ class EventImportsControllerTest < ActionController::TestCase
 protected
 
   def uploaded_file
-    @uploaded_file ||= ActionController::TestUploadedFile.new("#{RAILS_ROOT}/test/fixtures/csv_data.txt", "text/plain", false)
+    @uploaded_file ||= ActionController::TestUploadedFile.new("#{RAILS_ROOT}/test/fixtures/imports/csv_data.txt", "text/plain", false)
   end
 
 end

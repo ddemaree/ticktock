@@ -1,10 +1,13 @@
 class Event::Importer
-  attr_reader :account, :last_import
+  attr_reader :account, :last_import, :failed_records
+  
+  class MissingData < Exception; end
   
   def initialize(account)
     raise ArgumentError, "Object passed to Event::Importer must be an Account" unless account.is_a?(Account)
     @account = account
     @last_import = []
+    @failed_records = []
   end
   
   def import(file_or_string,options={})
@@ -30,10 +33,11 @@ class Event::Importer
         
         if event.valid? && options[:save]
           event.save
-        end
-        
-        @last_import << event
-        
+          @last_import << event
+        elsif !event.valid?
+          #raise "Invalid record: #{event.errors.full_messages} #{params.inspect}"
+          @failed_records << event
+        end        
       end
     end
     
@@ -41,27 +45,39 @@ class Event::Importer
   end
   
   def self.parse(file_or_string,&block)
-    #return self.parse(file_or_string.read) unless file_or_string.is_a?(String)
-    
     file_or_string = file_or_string.read unless file_or_string.is_a?(String)
+
     
-    unless file_or_string =~ /date,body,start,stop,hours,trackable/
-      file_or_string = "date,body,start,stop,hours,trackable\n#{file_or_string}"
-    end
+    # unless file_or_string =~ /date,body,start,stop,hours,trackable/
+    #   file_or_string = "date,body,start,stop,hours,trackable\n#{file_or_string}"
+    # end
     
     events = []
     FasterCSV.parse(file_or_string, :headers => true, :header_converters => :symbol) do |row|
-      params = {
-        :body    => row[:body],
-        :date    => row[:date].to_date,
-        :start   => row[:start].to_time,
-        :stop    => row[:stop].to_time,
-        :subject => row[:trackable]
-      }
-      
-      yield params
-    
+      yield params_for(row)
     end
+  end
+  
+  def self.params_for(row)
+    date = 
+      if row[:date] && !row[:date].blank?
+        row[:date].try(:to_date)
+      elsif row[:start]
+        row[:start].to_time.to_date
+      else
+        raise MissingData, "No date provided for row"
+      end
+    
+    logger = Logger.new("#{RAILS_ROOT}/log/importing.log")
+    logger.debug("\n\nAttempting to import #{row.inspect}\n\n")
+    
+    {
+      :body    => (row[:body] || row[:task]),
+      :date    => date,
+      :start   => (row[:start].try(:to_time) unless row[:start].blank?),
+      :stop    => (row[:stop].try(:to_time) unless row[:stop].blank?),
+      :subject => row[:trackable]
+    }
   end
   
 end

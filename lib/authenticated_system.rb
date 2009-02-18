@@ -116,7 +116,9 @@ module AuthenticatedSystem
     end
     
     def login_from_api_key
-      self.current_user = current_account.users.find_by_api_key(params[:api_key]) if params[:api_key]
+      if key = request.headers["X-API-KEY"]
+        self.current_user = current_account.users.find_by_api_key(key)
+      end
     end
     
     #
