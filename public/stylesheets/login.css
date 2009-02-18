@@ -1,0 +1,55 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/login.css */
+
+@import url(lib/reset.css);
+
+body {
+	background: #444;
+	font: 13px/1.5 Helvetica;
+}
+
+#container {
+	background: #fff;
+	width: 400px;
+	margin: 20px auto;
+}
+
+h1 {
+	background: #f5f5f5;
+	color: #a00;
+	padding: 6px 10px;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+fieldset {
+	border: 0;
+	padding: 0;
+}
+
+.field {
+	/*background: #f0f;*/
+	margin: 0;
+	padding: 10px;
+}
+
+.field + .field {
+	padding-top: 0;
+}
+
+.field label {
+	float: left;
+	width: 90px;
+	text-transform: uppercase;
+	padding-top: 4px;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.field input {
+	font-size: 19px;
+	width: 270px;
+}
+
+.actions {
+	padding: 0px 10px 20px 110px;
+}

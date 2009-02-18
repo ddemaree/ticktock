@@ -150,9 +150,5 @@ protected
       format.json { render :json =>  object.errors, :status => :unprocessable_entity }
     end
   end
-  
-  def current_event
-    @current_event ||= current_account.events.active.first
-  end  
 
 end

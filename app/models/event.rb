@@ -68,6 +68,13 @@ class Event < ActiveRecord::Base
   end
   alias_method :hours=, :duration_in_hours=
   
+  def duration
+    if active? && !read_attribute(:duration)
+      Time.now - self.start
+    else
+      read_attribute(:duration)
+    end
+  end
   
   def body=(message)
     params = MessageParser.parse(:body => message)

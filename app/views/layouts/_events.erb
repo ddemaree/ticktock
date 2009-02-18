@@ -1,16 +1,43 @@
+<div id="timer">
+<%- if current_event -%>
+<h4>Currently:</h4>
+<p class="body"><%= truncate current_event.body, 60 %></p>
+<p id="seconds"><%= current_event.duration.floor %></p>
+
+<div class="actions">
+	
+</div>
+<%- end -%>
+</div>
+<script type="text/javascript" charset="utf-8">
+	
+	seconds = Number($('seconds').innerHTML)
+	updateTimer = function(){
+		seconds += 1
+		hours   = Math.floor(seconds / 3600).toPaddedString(2)
+		minutes = Math.floor((seconds % 3600) / 60).toPaddedString(2)
+		secsec  = Math.floor(seconds % 60).toPaddedString(2)
+		
+		$('seconds').update(hours + ":" + minutes + ":" + secsec)
+	}
+	
+	setInterval(updateTimer, 1000);
+	updateTimer()
+</script>
+
+<%# render :partial => "/shared/quick_entry" %>
+
+<div>
+	<%= link_to_unless(controller_name == "events", "Log", events_path) %>
+	&nbsp;|&nbsp;
+	<%= link_to_unless(controller_name == "calendar", "Calendar", calendar_path) %>
+</div>
+
 <div id="events_list" class="nine left">
 <%= yield :layout %>
 </div>
 
 <div class="three right">	
-	<div>
-		<%= link_to_unless(controller_name == "calendar", "Calendar view", calendar_path) %>
-		&nbsp;|&nbsp;
-		<%= link_to_unless(controller_name == "events", "List view", events_path) %>
-	</div>
-
-<%= render :partial => "/shared/quick_entry" %>
-
 <%= @content_for_sidebar %>
 </div>
 

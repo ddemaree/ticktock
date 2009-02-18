@@ -442,5 +442,33 @@ table.month_grid {
 	background-color: #001132;
 }*/
 
+#timer {
+	position: relative;
+	background: #8eb100;
+	color: #fff;
+	/*width: 300px;*/
+	overflow: auto;
+	margin-bottom: 20px;
+}
 
+#timer h4 {
+	background: #45551f;
+	padding: 7px 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+	float: left;
+}
+
+#timer .body {
+	padding: 6px 100px 4px 10px;
+	font-size: 15px;
+	float: left;
+}
+
+#timer #seconds {
+	float: right;
+	margin: 0;
+	font-size: 19px;
+	padding: 3px 8px 4px;
+}
 

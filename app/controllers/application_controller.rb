@@ -82,4 +82,9 @@ protected
     UserAssignmentObserver.current_user = current_user
   end
   
+  def current_event
+    @current_event ||= current_account.events.active.first
+  end 
+  helper_method :current_event
+  
 end
