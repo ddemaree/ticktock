@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   
+  map.resources :event_imports, :only => [:new, :create]
   map.resources :events, :trackables, :users
   
   map.with_options :controller => 'calendar', :action => 'index' do |calendar|

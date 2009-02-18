@@ -25,6 +25,7 @@ class Event < ActiveRecord::Base
   belongs_to :account
   belongs_to :subject, :polymorphic => true
   belongs_to :user
+  belongs_to :created_by, :class_name => "User"
   has_many   :punches, :dependent => :destroy
   
   # #   C A L L B A C K S   # #

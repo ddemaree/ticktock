@@ -6,8 +6,22 @@ set :application, "ticktock"
 # set :scm, :subversion
 
 set :user, "deploy"
-set :deploy_to, "/var/www/#{application}"
+set :deploy_to, "/var/www/apps/#{application}"
 
-role :app, "katsushiro.practical.cc"
-role :web, "katsushiro.practical.cc"
-role :db,  "katsushiro.practical.cc", :primary => true
+role :app, "practical.cc"
+role :web, "practical.cc"
+role :db,  "practical.cc", :primary => true
+
+namespace :deploy do
+  
+  task :setup_environment do
+    transaction do
+      update_code
+      symlink
+      
+      sudo "cd #{current_path} && rake gems:install RAILS_ENV=#{environment}"
+    end
+  end
+  after "deploy:setup", "deploy:setup_environment"
+  
+end

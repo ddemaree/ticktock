@@ -1,0 +1,11 @@
+<h1>EventImports#new</h1>
+<p>Find me in app/views/event_imports/new.html.erb</p>
+
+<% form_tag event_imports_path, :multipart => true do %>
+	
+<p class="label">
+	<%= label_tag :uploaded_file %>
+	<%= file_field_tag :uploaded_file %>
+</p>
+
+<% end %>

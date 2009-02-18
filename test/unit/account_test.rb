@@ -21,4 +21,11 @@ class AccountTest < ActiveSupport::TestCase
     assert_not_nil new_account.api_key
   end
   
+  context "Account#events association" do
+    should "respond to #import" do
+      new_account = Factory(:account)
+      assert new_account.events.respond_to?(:import)
+    end
+  end
+  
 end

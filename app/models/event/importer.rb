@@ -41,7 +41,9 @@ class Event::Importer
   end
   
   def self.parse(file_or_string,&block)
-    return self.import(file_or_string.read) unless file_or_string.is_a?(String)
+    #return self.parse(file_or_string.read) unless file_or_string.is_a?(String)
+    
+    file_or_string = file_or_string.read unless file_or_string.is_a?(String)
     
     unless file_or_string =~ /date,body,start,stop,hours,trackable/
       file_or_string = "date,body,start,stop,hours,trackable\n#{file_or_string}"

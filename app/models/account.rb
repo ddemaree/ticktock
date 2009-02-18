@@ -8,7 +8,7 @@ class Account < ActiveRecord::Base
   # #   A S S O C I A T I O N S   # #
   has_many :users,      :dependent => :destroy
   has_many :trackables, :dependent => :destroy
-  has_many :events,     :dependent => :destroy
+  has_many :events,     :dependent => :destroy, :extend => Account::EventsExtension
   has_many :labels,     :dependent => :destroy
 
   # #   V A L I D A T I O N S   # #

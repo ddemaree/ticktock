@@ -23,7 +23,7 @@ class EventTest < ActiveSupport::TestCase
   
   context "A new Event instance" do
     should_belong_to :account
-    should_belong_to :user
+    should_belong_to :user, :created_by
     should_validate_presence_of :body, :account
     
     should "require stop to be later than start" do

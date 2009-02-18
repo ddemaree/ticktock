@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090215221729) do
+ActiveRecord::Schema.define(:version => 20090218150102) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20090215221729) do
     t.text     "tag"
     t.string   "import_token"
     t.datetime "imported_id"
+    t.integer  "created_by_id"
   end
 
   add_index "events", ["import_token"], :name => "index_events_on_import_token"

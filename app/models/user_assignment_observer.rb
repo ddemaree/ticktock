@@ -8,8 +8,15 @@ class UserAssignmentObserver < ActiveRecord::Observer
   #   model.user =  current_user
   # end
   
+  def before_create(model)
+    return unless current_user
+    return unless model.respond_to?(:created_by=)
+    model.created_by ||= current_user
+  end
+  
   def before_save(model)
     return unless current_user
+    return unless model.respond_to?(:user=)
     model.user ||= current_user
   end
   
