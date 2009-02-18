@@ -5,8 +5,15 @@ set :application, "ticktock"
 # your SCM below:
 # set :scm, :subversion
 
-set :user, "deploy"
+set :user, "practical"
 set :deploy_to, "/var/www/apps/#{application}"
+
+default_run_options[:pty] = true
+set :scm, "git"
+set :repository, "git@github.com:ddemaree/ticktock.git"
+set :scm_passphrase, "tt_red5BULL"
+set :branch, "master"
+set :deploy_via, :remote_cache
 
 role :app, "practical.cc"
 role :web, "practical.cc"
@@ -19,7 +26,8 @@ namespace :deploy do
       update_code
       symlink
       
-      sudo "cd #{current_path} && rake gems:install RAILS_ENV=#{environment}"
+      rails_env = fetch(:rails_env, "production")
+      run "cd #{current_path} && #{try_sudo} rake gems:install RAILS_ENV=#{rails_env}"
     end
   end
   after "deploy:setup", "deploy:setup_environment"

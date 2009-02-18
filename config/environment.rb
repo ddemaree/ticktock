@@ -8,13 +8,18 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   
- config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.2.3'
- 
- config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com', :version => '~> 2.0.2'
- 
- config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com', :version => "~>1.2.0"
- 
- config.gem 'faker', :version => "~>0.3.1"
+  config.action_controller.session = {
+    :session_key => '_com_ticktockapp_session',
+    :secret      => 'bc25e97d55eb997a950f8fa780870044'
+  }
+
+  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.2.3'
+
+  config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com', :version => '~> 2.0.2'
+
+  config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com', :version => "~>1.2.0"
+
+  config.gem 'faker', :version => "~>0.3.1"
  
  
   # Settings in config/environments/* take precedence over those specified here.
