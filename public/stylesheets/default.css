@@ -9,22 +9,46 @@
 body {
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 13px;
-	padding: 0 10px;
+	padding: 0;
+	margin: 0;
 }
 
 body, html {
-	background: #fafafa;
+	background: #fff;
 }
 
 #container {
 	width: 960px;
 	margin: 20px auto;
-	background: #fff;
+}
+
+#header {
+	background: #f5f5f5;
+	padding: 1px;
+}
+
+#header .wrap {
+	width: 920px;
+	padding: 10px 10px 0;
+	margin: 0 auto;
 }
 
 #main {
 	width: 940px;
 	margin: 0 auto;
+}
+
+a:link, a:visited {
+	color: #c00;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+}
+
+a:hover {
+	text-decoration: underline !important;
 }
 
 /* @group Grid Layout */
@@ -72,7 +96,7 @@ body, html {
 	font-size: 19px;
 	padding-bottom: 12px;
 	display: inline;
-	font-family: 'American Typewriter';
+	font-family: 'Georgia';
 }
 
 #calendar_nav .center .nav {
@@ -149,11 +173,15 @@ body, html {
 	max-width: 400px;
 }
 
+#events_list .event .body .body {
+	font-family: Georgia;
+}
+
 #events_list .event .actions {
 	font-size: 11px;
 	position: absolute;
 	top: 0;
-	right: 696px;
+	right: 10px;
 	background: #fff;
 	padding: 8px 0 6px 10px;
 	display: none;
@@ -187,17 +215,13 @@ body, html {
 }
 
 #events_list .event .event-hd {
-	padding-bottom: 4px;
+	padding-bottom: 5px;
 }
 
 #events_list .event .event_subject {
-	/*font-weight: bold;
-	color: #4c4c4c;
-	padding-bottom: 3px;
-	*/
 	font-size: 12px;
 	position: relative;
-	top: -1px;
+	top: -2px;
 	padding: 2px 4px 1px;
 	background: #97bccb;
 	margin-right: 4px;
@@ -216,19 +240,23 @@ body, html {
 }
 
 #events_list .event .tags a {
-	color: #666;
+	color: #aaa;
 	text-decoration: none;
-	margin-right: 3px;
+	margin-right: 2px;
 	padding: 1px 2px;
-	background: #ffa;
-	-webkit-box-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+	position: relative;
+	top: -2px;
+}
+
+#events_list .event.hover .tags a {
+	color: #c00;
 }
 
 /* @end */
 
 
 #events_list {
-	padding-bottom: 50px;
+	padding-bottom: 2em;
 }
 
 #events_list .date-separator {
@@ -240,114 +268,23 @@ body, html {
 	clear: both;
 }
 
-/* @group Date Headers */
-
-#events_list .date_header {
-	font-size: 13px;
-	font-weight: bold;
-	padding: 10px 4px 6px;
-	text-align: center;
-	background: #e5e5e5;
-	line-height: 21px;
-	color: #fff;
-	border: 2px solid;
-	-webkit-border-radius: 12px;
-	-webkit-border-top-left-radius: 0
+.pagination {
+	padding: 16px 10px 8px;
+	margin: 0 0;
+	border-top: 1px dashed #d4d4d4;
 }
 
-#events_list .date_header.mon {
-	background: #d00;
-	border-color: #d00;
+.pagination span.disabled {
+	color: #999;
 }
 
-#events_list .empty .date_header.mon {
-	border: 2px solid #f2dada;
-	background: #fff;
-	color: #f2dada;
+.pagination .sep {
+	color: #999;
 }
 
-#events_list .date_header.tue {
-	background: #dc8c2a;
-	border-color: #dc8c2a;
+.pagination a {
+	color: #c00;
 }
-
-#events_list .empty .date_header.tue {
-	background: #fff;
-	color: #f2e7da;
-	border-color: #f2e7da;
-}
-
-#events_list .date_header.wed {
-	background: #dec533;
-	border-color: #dec533;
-}
-
-#events_list .empty .date_header.wed {
-	background: #fff;
-	border-color: #f2eeda;
-	color: #f2eeda;
-}
-
-#events_list .date_header.thu {
-	background: #93d32d;
-	border-color: #93d32d;
-}
-
-#events_list .empty .date_header.thu {
-	background: #fff;
-	border-color: #e1ead3;
-	color: #e1ead3;
-}
-
-#events_list .date_header.fri {
-	background: #45aeda;
-	border-color: #45aeda;
-}
-
-#events_list .empty .date_header.fri {
-	background: #fff;
-	border-color: #d3e3ea;
-	color: #d3e3ea;
-}
-
-#events_list .date_header.sat {
-	background: #4934dc;
-	border-color: #4934dc;
-}
-
-#events_list .empty .date_header.sat {
-	background: #fff;
-	border-color: #d3d0e8;
-	color: #d3d0e8;
-}
-
-#events_list .date_header.sun {
-	background: #953adc;
-	border-color: #953adc;
-}
-
-#events_list .empty .date_header.sun {
-	background: #fff;
-	border-color: #e0d3ea;
-	color: #e0d3ea;
-}
-
-#events_list .date_header .weekday {
-	padding-bottom: 0px;
-	padding-right: 3px;
-	font-size: 21px;
-	font-family: 'American Typewriter';
-	font-weight: normal;
-	display: block;
-}
-
-#events_list .date_header .day {
-	word-spacing: -2px;
-}
-
-/* @end */
-
-
 
 /* @end */
 

@@ -5,7 +5,9 @@
 <p id="seconds"><%= current_event.duration.floor %></p>
 
 <div class="actions">
-	
+	<% form_tag stop_path do %>
+	<%= submit_tag "STOP" %>
+	<% end %>
 </div>
 <%- end -%>
 </div>
@@ -26,12 +28,6 @@
 </script>
 
 <%# render :partial => "/shared/quick_entry" %>
-
-<div>
-	<%= link_to_unless(controller_name == "events", "Log", events_path) %>
-	&nbsp;|&nbsp;
-	<%= link_to_unless(controller_name == "calendar", "Calendar", calendar_path) %>
-</div>
 
 <div id="events_list" class="nine left">
 <%= yield :layout %>

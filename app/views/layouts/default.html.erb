@@ -10,11 +10,27 @@
 </head>
 <body>
 	
+	<div id="header"><div class="wrap">
+
+		<h1><%= current_account.name %></h1>
+
+		<ul id="main_navigation">
+			<li><%= link_to_unless(controller_name == "events", "<span>Log</span>", events_path) %></li>
+			<li><%= link_to_unless(controller_name == "calendar", "<span>Calendar</span>", calendar_path) %></li>
+		</ul>
+
+		<p class="current_user">
+			<%= current_user %>
+			(<%= link_to "Sign out", logout_path %>)
+		</p>
+	</div></div>
+
 <div id="container">
-	
+
 <div id="main">
 	<%= yield :layout %>
 </div>
+
 </div>
 
 </body>

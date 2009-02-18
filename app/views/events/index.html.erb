@@ -2,6 +2,6 @@
 	
 	<%= render :partial => "list_item", :collection => @events, :as => :event %>
 	
-	<%= will_paginate @events %>
+	<%= will_paginate @events, :page_links => false, :prev_label => ((params[:page] || 1).to_i == 1 ? "First page" : "Previous page"), :next_label => "Next page", :separator => " <span class=\"sep\">|</span> " %>
 	
 <% end %>
