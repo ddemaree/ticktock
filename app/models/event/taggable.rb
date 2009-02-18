@@ -6,6 +6,14 @@ module Event::Taggable
       has_many :labels, :through => :taggings
       
       after_save :update_tags
+      
+      named_scope :tagged_with, lambda { |tags|
+        tags = Label.parse(tags)
+        conditions = tags.inject([]) do |coll, tag_name|
+          coll << "tag LIKE '%[#{tag_name}]%'"; coll
+        end
+        {:conditions => conditions.join(" AND ")}
+      }
     end
   end
   

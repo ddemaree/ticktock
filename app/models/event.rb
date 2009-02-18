@@ -13,13 +13,6 @@ class Event < ActiveRecord::Base
   # #   S C O P E S   # #
   default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }
-  named_scope :tagged_with, lambda { |tags|
-    tags = Label.parse(tags)
-    conditions = tags.inject([]) do |coll, tag_name|
-      coll << "tag LIKE '%[#{tag_name}]%'"; coll
-    end
-    {:conditions => conditions.join(" AND ")}
-  }
   
   named_scope :for_date_range, lambda { |range|
     raise ArgumentError, "Argument passed to Event.for_date_range must be range" unless range.is_a?(Range)
@@ -75,6 +68,19 @@ class Event < ActiveRecord::Base
   end
   alias_method :hours=, :duration_in_hours=
   
+  
+  def body=(message)
+    params = MessageParser.parse(:body => message)
+    logger.debug("\n\n#{params.inspect}\n\n")
+    
+    self.tags = params[:tags]
+    self.subject = params[:subject]
+    write_attribute :body, params[:body]
+    
+    params[:body]
+  end
+  
+  
   def user=(user_or_username)
     case user_or_username
       when User
@@ -102,7 +108,6 @@ class Event < ActiveRecord::Base
       self.subject_from_object = object_or_name
     end
   end
-  
   
 protected
 

@@ -112,6 +112,24 @@ class EventTest < ActiveSupport::TestCase
     
   end
   
+  
+  context "Event message parser" do
+    setup do
+      @account = Factory(:account)
+      @user    = Factory(:user, :account => @account)
+    end
+    
+    should "allow setting of tags" do
+      message = "Hello world #tag1 #tag2"
+      event   = @account.events.create(:body => message)
+      assert_not_nil event.tags
+      
+      assert_equal "Hello world", event.body
+      assert_equal 2, event.tags.length
+    end
+  end
+  
+  
   context "Event subject" do
     setup do
       @account = accounts(:test_account)
