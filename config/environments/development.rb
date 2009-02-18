@@ -16,4 +16,8 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
+config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com', :version => "~>1.2.0"
+
+config.gem 'faker', :version => "~>0.3.1"
+
 ENV["RAILS_ASSET_ID"] = ""
