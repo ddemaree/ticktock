@@ -1,3 +1,6 @@
+<div id="quick_entry_container">
+	<a href="#" class="add">Add entry</a>
+	
 <div id="quick_entry">
 	<% form_for :event, :html => {:id => "new_event", :class => "on_index"} do |f| %>
 
@@ -6,15 +9,26 @@
 		<%= f.text_area :body, :cols => 60, :rows => 4, :label => "What are you doing?" %>
 	</fieldset>
 	
-	<fieldset id="options">
-		<p class="field datepicker">
-			<%= f.label :date %>
+	<div id="options">
+		<p class="datepicker">
 			<%= f.text_field :date, :size => 12 %>
 		</p>
 		
-		<%= f.labeled_text_field :hours, :size => 5 %>
+		<p>
+			<span class="overlay-label">
+				<%= f.label :subject, "Project" %>
+				<%= f.text_field :subject, :size => 16 %>
+			</span>
+		</p>
 		
-	</fieldset>
+		<p>
+			<span class="overlay-label">
+				<%= f.label :hours %>
+				<%= f.text_field :hours, :size => 10 %>
+			</span>
+		</p>
+		<hr class="clear">
+	</div>
 	
 	<p class="actions">
 		<button type="submit">Create</button>
@@ -24,25 +38,24 @@
 
 	<script type="text/javascript" charset="utf-8">	
 
+	$$('.overlay-label').each(function(elem){
+		new TicktockGhostLabel(elem)
+	})
+
+	//$('quick_entry').hide()
+	
+	
+	$('quick_entry').setStyle("width:1px;height:1px;opacity:0")
+	$('quick_entry_container').down(".add").observe('click', function(){		
+		$('quick_entry').morph("width:500px;height:150px;opacity:1", {
+			duration:0.3
+		})
+	})
+
+	
+
 	new TicktockDateSelect('event_date')
-	$('options').hide()
-
-	options_toggle = new Element('a', {href:"javascript:void%200"})
-	options_toggle.update('More options&hellip;')
-	options_toggle.observe('click', function(){
-		if(this.hasClassName('open')) {
-			this.removeClassName('open')
-			$('options').hide()
-			this.update('More options&hellip;')
-		}
-		else {
-			this.addClassName('open')
-			$('options').show()
-			this.update('Fewer options&hellip;')
-		}
-	}.bind(options_toggle))
-
-	$('new_event').down('.actions').insert({top:options_toggle})
+	//$('options').hide()
 
 	$('new_event').observe('submit', function(e){
 		new Ajax.Request('/events.js', {
@@ -53,7 +66,7 @@
 			onSuccess: function(response, jsonObj){
 				eventDate = CalendarDate.parse(jsonObj.event.date)
 
-				dateContainerId = 'events_for_' + eventDate.toString().gsub(/-/,"_")
+				dateContainerId = 'events_list'
 
 				console.log("Received a thingy")
 				console.log("Date was " + dateContainerId)
@@ -65,6 +78,9 @@
 
 					$(dateContainerId).insert({top:response.responseText})
 					$(dateContainerId).removeClassName('empty')
+					$('quick_entry').morph("width:1px;height:1px;opacity:0", {
+						duration:0.3
+					})
 				}
 				else {
 					console.log("No container, should create or somehow indicate that response succeeded")
@@ -81,4 +97,5 @@
 		e.stop()
 	})
 	</script>
+</div>
 </div>

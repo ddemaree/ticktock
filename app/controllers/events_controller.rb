@@ -21,7 +21,7 @@ class EventsController < ApplicationController
   end
   
   def new
-    @event = current_account.events.build(params[:event])
+    @event = current_account.events.build
     
     respond_to do |format|
       format.html
@@ -31,9 +31,8 @@ class EventsController < ApplicationController
   end
   
   def create
-    @event = current_account.events.build(params[:event])
-    @event.save!
-    
+    @event = current_account.events.build
+    @event.update_attributes! params[:event]
     
     respond_to do |format|
       flash[:notice] = 'Article was successfully created.'

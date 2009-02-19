@@ -1,6 +1,40 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+var TicktockGhostLabel = Class.create({
+	initialize: function(id){
+		this.wrapper = $(id)
+		this.wrapper.makePositioned()
+		
+		this.field = this.wrapper.down('input')
+		this.label = this.wrapper.down('label')
+		
+		this.label.addClassName('ghost')
+		this.label.setStyle("position:absolute;top:0;left:0;z-index:22;")
+		
+		this.label.setStyle({
+			width:this.field.getWidth() + "px",
+			height:this.field.getHeight() + "px"
+		})
+		
+		this.label.observe('click', this.handleLabelClick.bind(this))
+		this.field.observe('blur', this.handleFieldBlur.bind(this))
+	},
+	handleLabelClick: function(event){
+		console.log("Clicky click")
+		this.field.focus()
+		this.label.hide()
+		event.stop()
+	},
+	handleFieldBlur: function(event){
+		if($F(this.field).blank()){
+			console.log("BLURRY")
+			this.label.show()
+		}
+	}
+})
+
+
 var TicktockDateSelect = Class.create({
 	initialize: function(id){
 		calendarId = 'calendar_for_' + id
