@@ -2,7 +2,8 @@
 	<% form_for :event, :html => {:id => "new_event", :class => "on_index"} do |f| %>
 
 	<fieldset id="basics">
-		<%= f.labeled_text_area :body, :cols => 60, :rows => 4, :label => "What are you doing?" %>
+		
+		<%= f.text_area :body, :cols => 60, :rows => 4, :label => "What are you doing?" %>
 	</fieldset>
 	
 	<fieldset id="options">
@@ -24,9 +25,27 @@
 	<script type="text/javascript" charset="utf-8">	
 
 	new TicktockDateSelect('event_date')
+	$('options').hide()
+
+	options_toggle = new Element('a', {href:"javascript:void%200"})
+	options_toggle.update('More options&hellip;')
+	options_toggle.observe('click', function(){
+		if(this.hasClassName('open')) {
+			this.removeClassName('open')
+			$('options').hide()
+			this.update('More options&hellip;')
+		}
+		else {
+			this.addClassName('open')
+			$('options').show()
+			this.update('Fewer options&hellip;')
+		}
+	}.bind(options_toggle))
+
+	$('new_event').down('.actions').insert({top:options_toggle})
 
 	$('new_event').observe('submit', function(e){
-		new Ajax.Request('/events', {
+		new Ajax.Request('/events.js', {
 			asynchronous: true,
 			method: 'post',
 			parameters: Form.serialize('new_event'),

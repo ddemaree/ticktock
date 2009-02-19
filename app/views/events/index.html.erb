@@ -1,4 +1,15 @@
+<%- @workspace_title_content = capture do -%>
+<form class="workspace-title" id="events-search">
+	<input type="text">
+	<button>Search</button>
+</form>
+
+<%= render :partial => "/shared/quick_entry" %>
+
+<% end %>
+
 <% render :layout => "/layouts/events" do %>
+	
 	
 	<%= render :partial => "list_item", :collection => @events, :as => :event %>
 	

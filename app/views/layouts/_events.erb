@@ -1,43 +1,16 @@
-<div id="timer">
-<%- if current_event -%>
-<h4>Currently:</h4>
-<p class="body"><%= truncate current_event.body, 60 %></p>
-<p id="seconds"><%= current_event.duration.floor %></p>
-
-<div class="actions">
-	<% form_tag stop_path do %>
-	<%= submit_tag "STOP" %>
-	<% end %>
-</div>
-<%- end -%>
-</div>
-<script type="text/javascript" charset="utf-8">
-	
-	seconds = Number($('seconds').innerHTML)
-	updateTimer = function(){
-		seconds += 1
-		hours   = Math.floor(seconds / 3600).toPaddedString(2)
-		minutes = Math.floor((seconds % 3600) / 60).toPaddedString(2)
-		secsec  = Math.floor(seconds % 60).toPaddedString(2)
-		
-		$('seconds').update(hours + ":" + minutes + ":" + secsec)
-	}
-	
-	setInterval(updateTimer, 1000);
-	updateTimer()
-</script>
-
-<%# render :partial => "/shared/quick_entry" %>
-
-<div id="events_list" class="nine left">
+<%= @workspace_title_content %>
+<div id="events_list" class="ten left">
 <%= yield :layout %>
 </div>
-
-<div class="three right">	
-<%= @content_for_sidebar %>
-</div>
-
-<hr class="clear">
 <script type="text/javascript" charset="utf-8">
 	new HoverObserver('events_list')
 </script>
+
+<div id="sidebar" class="two right">
+	<ul id="main_navigation">
+		<li><%= link_to_unless(controller_name == "events", "<span>Log</span>", events_path) %></li>
+		<li><%= link_to_unless(controller_name == "calendar", "<span>Calendar</span>", calendar_path) %></li>
+	</ul>
+</div>
+
+<hr class="clear">

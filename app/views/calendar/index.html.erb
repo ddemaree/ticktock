@@ -1,19 +1,26 @@
-<%- content_for :sidebar do -%>
-
-<%= month_grid %>
-
+<%- pagination_links = capture do -%>
+	<%= link_to "Previous #{time_frame}", params_for_previous, :class => "nav previous" %>
+	<span class="sep">|</span>
+	<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
+	<span class="sep">|</span>
+	<%= link_to "Next #{time_frame}", params_for_next, :class => "nav next" %>
 <%- end -%>
 <% render :layout => "/layouts/events" do %>
 	
-	<div id="calendar_nav">
-		<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
-		<div class="center">
-			<%= link_to "&lsaquo; Previous #{time_frame}", params_for_previous, :class => "nav previous" %>
-			<%= link_to "Next #{time_frame} &rsaquo;", params_for_next, :class => "nav next" %>
-			<strong><%= range_description %></strong>
-		</div>
+	<div id="calendar_nav" class="workspace-title">
+		<h2><%= range_description %></h2>
+		
+		
+		<p class="nav">
+			<%= pagination_links %>
+		</p>
 	</div>
 
-	<%= render :partial => "view_by_date" %>
+	<%# render :partial => "view_by_date" %>
 	
+	<div style="height:400px;background:#f0f;margin:20px 0"></div>
+	
+	<div class="pagination">
+		<%= pagination_links %>
+	</div>
 <% end %>

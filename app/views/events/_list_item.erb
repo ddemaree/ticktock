@@ -1,10 +1,10 @@
 <% content_tag_for :div, event, :class => "hover_container hover_target" do %>
+	<span class="hours<%= " blank" if event.hours == 0 %>"><%= event.hours %></span>
+	
 	<div class="event-hd">
 		
 		<%# span_for_user(event.user) if event.user %>
 		<%= span_for_date(event.date) %>
-		
-		<span class="hours<%= " blank" if event.hours == 0 %>"><%= pluralize(event.hours, "hour") %></span>
 		
 		<span class="actions">
 			<%= link_to "Edit", [:edit, event], :class => "edit" %>
@@ -12,7 +12,7 @@
 		</span>
 	</div>
 	
-	<div class="body">
+	<div class="event-body">
 		<%= event_subject(event.subject) unless event.subject.nil? %>
 		<span class="body"><%= event.body %></span>
 		<%= event_tags(event.tags) %>

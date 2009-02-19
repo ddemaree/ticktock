@@ -14,28 +14,85 @@ body {
 }
 
 body, html {
-	background: #fff;
+	background: #e5e5dc;
 }
 
 #container {
 	width: 960px;
-	margin: 20px auto;
+	margin: 10px auto;
 }
 
 #header {
-	background: #f5f5f5;
+	background: #f4f4eb;
 	padding: 1px;
 }
 
 #header .wrap {
 	width: 920px;
-	padding: 10px 10px 0;
+	padding: 10px 10px 6px;
 	margin: 0 auto;
+	position: relative;
+}
+
+#header .current_user {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 11px;
 }
 
 #main {
 	width: 940px;
 	margin: 0 auto;
+}
+
+#workspace {
+	background: #fff;
+	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+	border-bottom: 8px solid #deebdb;
+}
+
+.workspace-title {
+	background: #f1ffe9;
+	padding: 8px 10px;
+	position: relative;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+
+.workspace-title h2 {
+	font: 19px Georgia;
+	margin: 0;
+}
+
+#footer {
+	background: #d1d1c9;
+	margin: 16px 0 40px;
+	padding: 10px 20px;
+	-webkit-border-radius: 12px;
+	color: #777;
+}
+
+#main_navigation li {
+	margin: 6px 10px 0 0;
+	background: #000;
+	color: #fff;
+}
+
+#main_navigation span {
+	display: block;
+	padding: 6px 20px;
+}
+
+#main_navigation a {
+	background: #e5e5e5;
+	color: #666;
+	display: block;
+	text-decoration: none;
+}
+
+#main_navigation a:hover {
+	background: #ccc;
 }
 
 a:link, a:visited {
@@ -76,63 +133,27 @@ a:hover {
 
 /* @group Events List View */
 
-#calendar_nav {
-	border-bottom: 2px solid #000;
-	margin-bottom: 16px;
-	text-align: center;
-	position: relative;
-	padding: 0 0 12px;
-}
 
-#calendar_nav .center {
-	display: inline;
-	padding: 0 30px;
-	position: relative;
-}
 
-#calendar_nav strong {
-	font-weight: normal;
-	text-align: center;
-	font-size: 19px;
-	padding-bottom: 12px;
-	display: inline;
-	font-family: 'Georgia';
-}
-
-#calendar_nav .center .nav {
+#calendar_nav p.nav {
 	position: absolute;
-	top: -2px;
-	background: #d4d4d4 url(../images/arrows.png);
-	text-indent: -9999px;
-	width: 14px;
-	height: 14px;
+	right: 10px;
+	top: 12px;
 }
 
-#calendar_nav .center .nav:hover {
-	background-color: #dc7902;
-}
-
-#calendar_nav .center .previous {
-	left: 0;
-	background-position: 0 -16px;
-}
-
-#calendar_nav .center .next {
-	right: 0;
-}
-
-#calendar_nav .current {
-	position: absolute;
-	left: 0;
+#calendar_nav p.nav .sep {
+	color: #ccc;
 }
 
 /* @group Event List Item */
 
 #events_list .event {
 	padding: 8px 10px;
+	margin: 0 10px;
 	position: relative;
 	background: #fff;
 	border-top: 1px dashed #d4d4d4;
+	overflow: auto;
 }
 
 #events_list .event.hover {
@@ -162,10 +183,26 @@ a:hover {
 }
 
 #events_list .event .hours {
-	display: none;
+	float: left;
+	background: #fffff5;
+	color: #666;
+	width: 50px;
+	padding: 8px 8px 8px 0;
+	text-align: right;
+	font-size: 17px;
+	position: relative;
+	top: 0px;
+	border: 1px solid #f5f5f5;
+	margin: 0;
 }
 
-#events_list .event .body {
+#events_list .event .event-body,
+#events_list .event .event-hd {
+	margin-left: 70px;
+}
+
+#events_list .event > .body,
+#events_list .event .event-body {
 	position: relative;
 	top: -2px;
 	font-size: 15px;
@@ -173,7 +210,7 @@ a:hover {
 	max-width: 400px;
 }
 
-#events_list .event .body .body {
+#events_list .event .event-body .body {
 	font-family: Georgia;
 }
 
@@ -252,12 +289,20 @@ a:hover {
 	color: #c00;
 }
 
+#events_list .events-date-header {
+	clear: both;
+	border-top: 1px dashed #ccc;
+	background: #f5f5f5;
+	margin-left: 10px;
+	padding: 4px 10px;
+	
+	font-weight: bold;
+}
+
+
+
 /* @end */
 
-
-#events_list {
-	padding-bottom: 2em;
-}
 
 #events_list .date-separator {
 	background: #fff;
@@ -269,9 +314,9 @@ a:hover {
 }
 
 .pagination {
-	padding: 16px 10px 8px;
-	margin: 0 0;
-	border-top: 1px dashed #d4d4d4;
+	padding: 10px 10px 20px;
+	margin: 10px 10px 0;
+	border-top: 2px solid #d4d4d4;
 }
 
 .pagination span.disabled {
@@ -290,8 +335,21 @@ a:hover {
 
 
 #new_event {
+}
+
+#quick_entry {
+	padding: 0px 20px;
+}
+
+#quick_entry #options {
+	border-bottom: 1px solid #d4d4d4;
+	border-left: 1px solid #d4d4d4;
 	padding: 10px;
-	background: #f5f5f5;
+}
+
+#quick_entry .actions {
+	text-align: right;
+	padding: 0 0 10px;
 }
 
 #new_event.on_index textarea {
@@ -359,11 +417,6 @@ p.checkbox {
 }
 
 #quick_entry {
-	/*background: rgba(0,0,0,0.8);
-	border: 6px solid rgba(0,0,0,0.4);
-	position: absolute;
-	padding: 10px;
-	-webkit-border-radius: 16px*/
 }
 
 #quick_entry fieldset {
