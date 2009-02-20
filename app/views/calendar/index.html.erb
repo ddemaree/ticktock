@@ -20,25 +20,29 @@
 		<td class="body" colspan="2">
 			<div class="overlay-label">
 				<%= f.label :body, "What did you do?" %>
-				<%= f.text_area :body %>
+				<%= f.text_field :body %>
+			</div>
+		</td>
+		<td class="duration">
+			<div class="overlay-label">
+				<%= f.label :duration, "For how long?" %>
+				<%= f.text_field :duration, :size => 20 %>
 			</div>
 		</td>
 		</tr>
-		<tr>
-			<td>
-				<div class="overlay-label">
-					<%= f.label :duration, "For how long?" %>
-					<%= f.text_field :duration, :size => 20 %>
-				</div>
-			</td>
-			<td>
-				<%= f.label :date, "On what day?" %>
-				<%= f.date_select :date %>
-			</td>
-		</tr>
 		
 	</table>
-	
+	<div id="options">
+		<p class="field">
+			<%= f.label :date, "On what day?" %>
+			<%= f.date_select :date %>
+		</p>
+		<p class="field">
+			<%= f.label :subject %>
+			<%= f.text_field :subject %>
+			<%# TODO: Dropdown menu for trackables %>
+		</p>
+	</div>
 	<p class="actions">
 		<button type="submit">Add to journal</button>
 	</p>
@@ -49,6 +53,24 @@
 		$$('.overlay-label').each(function(elem){
 			new TicktockGhostLabel(elem)
 		})
+		
+		// Set up options disclosure thingy
+		expand_link = new Element('p', {id:'expand_options'})
+		expand_link.update('<a href="#">More options&hellip;</a>')
+		expand_link.down('a').observe('click',function(){
+			$('expand_options').hide()
+			$('options').show()
+		})
+		$('options').insert({before:expand_link})
+		
+		collapse_link = new Element('p', {id:'collapse'})
+		collapse_link.update('<a href="#">Fewer options&hellip;</a>')
+		collapse_link.down('a').observe('click',function(){
+			$('expand_options').show()
+			$('options').hide()
+		})
+		$('options').insert({bottom:collapse_link})
+		$('options').hide()
 	</script>
 	
 	<% current_range.to_a.each do |date| %>

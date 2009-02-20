@@ -285,6 +285,7 @@ a:hover {
 	padding: 10px;
 	margin: 20px 10px;
 	width: 620px;
+	position: relative;
 }
 
 #quick_entry_form table {
@@ -318,6 +319,10 @@ a:hover {
 	width: 140px;
 }
 
+#quick_entry_form .body input {
+	width: 460px;
+}
+
 /*#quick_entry_form .body label {
 	display: block;
 	font-size: 15px;
@@ -330,6 +335,26 @@ a:hover {
 
 #quick_entry_form td {
 	padding-bottom: 4px;
+}
+
+#quick_entry_form .actions {
+	text-align: right;
+	padding-right: 2px;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+#quick_entry_form #expand_options,
+#quick_entry_form #collapse {
+	font-size: 11px;
+	padding: 5px 0;
+}
+
+#quick_entry_form #options {
+	border: 1px solid #d4d4d4;
+	border-width: 0 0 1px 1px;
+	padding: 0 0 10px 10px;
 }
 
 
