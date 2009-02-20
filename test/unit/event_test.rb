@@ -124,7 +124,7 @@ class EventTest < ActiveSupport::TestCase
       event   = @account.events.create(:body => message)
       assert_not_nil event.tags
       
-      assert_equal "Hello world", event.body
+      assert_equal message, event.body
       assert_equal 2, event.tags.length
     end
   end
@@ -169,6 +169,11 @@ class EventTest < ActiveSupport::TestCase
   context "Event duration" do
     setup do
       @event = Factory.build(:event, :stop => nil, :start => nil, :date => "2009-01-20")
+    end
+    
+    should "be settable via string" do
+      @event.duration = "2 hours"
+      assert_equal (3600 * 2), @event.duration
     end
     
     should "be gettable in hours" do

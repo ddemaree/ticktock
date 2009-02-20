@@ -1,5 +1,13 @@
 module EventsHelper
   
+  def event_message(message)
+    message.gsub!(/\#(?:(\w+))\s*/) do |match|
+      link_to("##{$1}", "javascript:void%200", :title => "Events tagged with #{$1}", :class => 'tag') + " "
+    end
+    
+    message
+  end
+  
   def event_tags(tags)
     return "" if tags.empty?
     

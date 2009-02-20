@@ -4,7 +4,7 @@ class Label < ActiveRecord::Base
   validates_format_of :name, :with => /[\w ]+/
   
   belongs_to :account
-  has_many :taggings
+  has_many :taggings, :dependent => :destroy
   
   def self.serialize(tags_as_array)
     tags_as_array.map { |t| "[#{t}]" }.join(" ")

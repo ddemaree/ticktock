@@ -16,12 +16,12 @@ class Event::MessageParser
       return params if params[:body].nil?
       
       # Unquoted tags without white space
-      params[:body].gsub!(/\#(?:(\w+))\s*/) do |match|
+      params[:body].scan(/\#(?:(\w+))\s*/) do |match|
         output[:tags] << $1; ""
       end
 
       # Quoted tags, which can contain spaces
-      params[:body].sub!(/\#(?:\"(.*?)\"\s*)/) do |match|
+      params[:body].scan(/\#(?:\"(.*?)\"\s*)/) do |match|
         output[:tags] << $1; ""
       end
       
@@ -35,15 +35,15 @@ class Event::MessageParser
         output[:subject] = $1; ""
       end
       
-      # Date using machine-readable format
-      params[:body].sub!(/\b(?:d|date)\:(?:([\d-]+)\s*)/) do |match|
-        output[:date] = $1.to_date; ""
-      end
-      
-      # Date using natural language
-      params[:body].sub!(/\b(?:d|date)\:(?:\"(.*?)\"\s*)/) do |match|
-        output[:date] = Chronic.parse($1).to_date; ""
-      end
+      # # Date using machine-readable format
+      # params[:body].sub!(/\b(?:d|date)\:(?:([\d-]+)\s*)/) do |match|
+      #   output[:date] = $1.to_date; ""
+      # end
+      # 
+      # # Date using natural language
+      # params[:body].sub!(/\b(?:d|date)\:(?:\"(.*?)\"\s*)/) do |match|
+      #   output[:date] = Chronic.parse($1).to_date; ""
+      # end
 
       params[:body].strip!
     end

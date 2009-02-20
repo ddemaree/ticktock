@@ -14,7 +14,7 @@
 	
 	<div class="event-body">
 		<%= event_subject(event.subject) unless event.subject.nil? %>
-		<span class="body"><%= event.body %></span>
+		<span class="body"><%= event_message event.body %></span>
 		<%= event_tags(event.tags) %>
 	</div>
 	

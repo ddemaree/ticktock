@@ -37,7 +37,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       flash[:notice] = 'Article was successfully created.'
       
-      format.html { redirect_to events_path }
+      format.html { redirect_to(params[:return] == "yes" ? request.referrer : events_path) }
       format.js   {
         headers["X-JSON"] = @event.to_json
         render :partial => 'list_item', :locals => {:event => @event }, :status => :created

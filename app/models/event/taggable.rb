@@ -2,7 +2,7 @@ module Event::Taggable
   
   def self.included(base)
     base.class_eval do
-      has_many :taggings
+      has_many :taggings, :dependent => :destroy
       has_many :labels, :through => :taggings
       
       after_save :update_tags

@@ -6,7 +6,9 @@ class Event::MessageParserTest < ActiveSupport::TestCase
     should "preserve message content" do
       assert_equal "Hello world", @params[:body]
     end
-    
+  end
+  
+  def self.should_preserve_message_source
     should "retain original message source" do
       assert_equal @message, @params[:source]
     end
@@ -18,7 +20,11 @@ class Event::MessageParserTest < ActiveSupport::TestCase
       @params  = Event::MessageParser.parse(:body => @message)
     end
     
-    should_preserve_message
+    should "preserve message content with tags" do
+      assert_equal @message, @params[:body]
+    end
+    
+    should_preserve_message_source
     
     should "extract tags" do
       assert_not_nil @params[:tags]
@@ -35,6 +41,7 @@ class Event::MessageParserTest < ActiveSupport::TestCase
       end
       
       should_preserve_message
+      should_preserve_message_source
 
       should "extract trackable" do
         assert_equal "Practical", @params[:subject]

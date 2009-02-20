@@ -6,7 +6,7 @@ var TicktockGhostLabel = Class.create({
 		this.wrapper = $(id)
 		this.wrapper.makePositioned()
 		
-		this.field = this.wrapper.down('input')
+		this.field = this.wrapper.down('input, textarea')
 		this.label = this.wrapper.down('label')
 		
 		this.label.addClassName('ghost')
@@ -19,6 +19,10 @@ var TicktockGhostLabel = Class.create({
 		
 		this.label.observe('click', this.handleLabelClick.bind(this))
 		this.field.observe('blur', this.handleFieldBlur.bind(this))
+		this.field.observe('focus', this.handleFieldFocus.bind(this))
+	},
+	handleFieldFocus: function(event){
+		this.label.hide()
 	},
 	handleLabelClick: function(event){
 		console.log("Clicky click")

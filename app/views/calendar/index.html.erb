@@ -9,16 +9,81 @@
 	
 	<div id="calendar_nav" class="workspace-title">
 		<h2><%= range_description %></h2>
-		
-		
 		<p class="nav">
 			<%= pagination_links %>
 		</p>
 	</div>
-
-	<%# render :partial => "view_by_date" %>
 	
-	<div style="height:400px;background:#f0f;margin:20px 0"></div>
+	<% form_for :event, :url => events_path, :html => {:id => "quick_entry_form"} do |f| %>
+	<table>
+		<tr>
+		<td class="body" colspan="2">
+			<div class="overlay-label">
+				<%= f.label :body, "What did you do?" %>
+				<%= f.text_area :body %>
+			</div>
+		</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="overlay-label">
+					<%= f.label :duration, "For how long?" %>
+					<%= f.text_field :duration, :size => 20 %>
+				</div>
+			</td>
+			<td>
+				<%= f.label :date, "On what day?" %>
+				<%= f.date_select :date %>
+			</td>
+		</tr>
+		
+	</table>
+	
+	<p class="actions">
+		<button type="submit">Add to journal</button>
+	</p>
+	
+	<input type="hidden" name="return" value="yes" />
+	<% end %>
+	<script type="text/javascript" charset="utf-8">
+		$$('.overlay-label').each(function(elem){
+			new TicktockGhostLabel(elem)
+		})
+	</script>
+	
+	<% current_range.to_a.each do |date| %>
+
+	<% events_for_day(date) do |events| %>
+	
+	<h3 class="date_header">
+		<span><%= date.strftime("%A, %b %e") %></span>
+	</h3>
+
+	<ul>
+	<%- events.each do |event| -%>
+		<li class="hover_container">
+			<p class="event_body"><span class="hover_target">
+				<%= event_subject(event.subject) unless event.subject.nil? %>
+				<%= event_message(event.body) %>
+				<%- if event.duration > 0 -%>
+				<strong>for <%= distance_of_time_in_words 0, event.duration %></strong>
+				<%- end -%>
+			</span></p>
+			<p class="event_actions hover_target">
+				<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
+				<%= link_to "Edit", [:edit, event], :class => "edit" %>
+			</p>
+		</li>
+	<%- end -%>
+		<li class="no-events">Nothing happened today</li>
+	</ul>	
+	
+	
+	<hr class="date-separator" style="clear:both">
+
+	<% end %>
+
+	<% end %>
 	
 	<div class="pagination">
 		<%= pagination_links %>

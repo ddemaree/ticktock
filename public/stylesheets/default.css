@@ -145,94 +145,20 @@ a:hover {
 	color: #ccc;
 }
 
-/* @group Event List Item */
+/* @group Event list actions */
 
-#events_list .event {
-	padding: 8px 10px;
-	margin: 0 10px;
-	position: relative;
-	background: #fff;
-	border-top: 1px dashed #d4d4d4;
-	overflow: auto;
-}
-
-#events_list .event.hover {
-	background: #fbffeb;
-}
-
-#events_list .event + .event {
-}
-
-#events_list .no-events {
-	padding: 10px 0;
-	color: #d4d4d4;
-	display: none;
-	font-size: 17px;
-}
-
-#events_list .empty .no-events {
-	display: block;
-}
-
-#events_list .event .blank {
-	display: none;
-}
-
-#events_list .event .date {
-	font-weight: bold;
-}
-
-#events_list .event .hours {
-	float: left;
-	background: #fffff5;
-	color: #666;
-	width: 50px;
-	padding: 8px 8px 8px 0;
-	text-align: right;
-	font-size: 17px;
-	position: relative;
-	top: 0px;
-	border: 1px solid #f5f5f5;
-	margin: 0;
-}
-
-#events_list .event .event-body,
-#events_list .event .event-hd {
-	margin-left: 70px;
-}
-
-#events_list .event > .body,
-#events_list .event .event-body {
-	position: relative;
-	top: -2px;
-	font-size: 15px;
-	line-height: 19px;
-	max-width: 400px;
-}
-
-#events_list .event .event-body .body {
-	font-family: Georgia;
-}
-
-#events_list .event .actions {
-	font-size: 11px;
-	position: absolute;
-	top: 0;
-	right: 10px;
-	background: #fff;
-	padding: 8px 0 6px 10px;
-	display: none;
+.event_actions {
 	white-space: nowrap;
 }
 
-#events_list .event .actions a {
+.event_actions a {
 	color: #c00;
 	float: left;
 	position: relative;
 	padding: 6px 2px;
 }
 
-#events_list .event .actions a.delete {
+.event_actions a.delete {
 	background: url(../images/trash.gif) no-repeat center center;
 	width: 16px;
 	height: 16px;
@@ -240,78 +166,98 @@ a:hover {
 	top: -2px;
 }
 
-#events_list .event .actions a.edit {
-	background: url(../images/edit.gif) no-repeat left center;
-	padding-left: 13px;
+.event_actions a.edit {
+	padding-left: 2px;
 	padding-right: 2px;
 }
 
-#events_list .event.hover .actions {
-	display: block;
-	background: #fbffeb;
-}
-
-#events_list .event .event-hd {
-	padding-bottom: 5px;
-}
-
-#events_list .event .event_subject {
-	font-size: 12px;
-	position: relative;
-	top: -2px;
-	padding: 2px 4px 1px;
-	background: #97bccb;
-	margin-right: 4px;
-}
-
-#events_list .event .event_subject a {
-	font-weight: normal;
-	color: #fff;
-	text-decoration: none;
-}
-
-#events_list .event .tags {
-	font-size: 12px;
-	margin-left: 10px;
-	white-space: nowrap;
-}
-
-#events_list .event .tags a {
-	color: #aaa;
-	text-decoration: none;
-	margin-right: 2px;
-	padding: 1px 2px;
-	position: relative;
-	top: -2px;
-}
-
-#events_list .event.hover .tags a {
-	color: #c00;
-}
-
-#events_list .events-date-header {
-	clear: both;
-	border-top: 1px dashed #ccc;
-	background: #f5f5f5;
-	margin-left: 10px;
-	padding: 4px 10px;
-	
-	font-weight: bold;
-}
-
-
-
 /* @end */
 
+/* @group Events for calendar view */
 
-#events_list .date-separator {
-	background: #fff;
-	border: 0;
-	border-bottom: 2px solid #e5e5e5;
-	height: 10px;
-	margin: 0 0 10px;
-	clear: both;
+.events_for_day {
+	padding: 10px 20px 0;
 }
+
+.events_for_day .date_header {
+	margin: 0 0 20px;
+}
+
+.events_for_day .date_header span {
+	padding: 4px 4px 2px 20px;
+	border-bottom: 1px solid #888;
+	font-size: 13px;
+	font-weight: bold;
+	color: #444;
+	margin-left: -20px;
+}
+
+.events_for_day ul {
+	margin: 0 0 0 18px;
+	padding: 0 0 6px;
+}
+
+.events_for_day li {
+	list-style-type: square;
+	position: relative;
+	margin: 0 0 6px 0;
+	font-size: 18px;
+	color: #ccc;
+}
+
+.events_for_day li p.event_body {
+	color: #555;
+}
+
+.events_for_day li a.tag {
+	text-decoration: none;
+}
+
+.events_for_day li .event_subject {
+	font-weight: bold;
+	font-size: 15px;
+	margin-right: 2px;
+	position: relative;
+	top: -1px;
+}
+
+.events_for_day li .event_subject a {
+	color: #000;
+	text-decoration: none;
+}
+
+.events_for_day li .event_actions {
+	position: absolute;
+	left: -70px;
+	top: -2px;
+	font-size: 11px;
+	background: #fff;
+	padding-left: 4px;
+	display: none;
+}
+
+.events_for_day li.hover .event_actions {
+	display: block;
+}
+
+.events_for_day li span.hover_target {
+	padding-left: 24px;
+	margin-left: -24px;
+}
+
+.events_for_day .no-events {
+	color: #b9b9b9;
+	display: none;
+	font-size: 17px;
+	list-style-type: square;
+	margin-left: -18px;
+}
+
+.events_for_day.empty .no-events {
+	display: block;
+}
+
+/* @end */
 
 .pagination {
 	padding: 10px 10px 20px;
@@ -332,6 +278,59 @@ a:hover {
 }
 
 /* @end */
+
+
+#quick_entry_form {
+	background: #f5f5f5;
+	padding: 10px;
+	margin: 20px 10px;
+	width: 620px;
+}
+
+#quick_entry_form table {
+	width: 100%;
+}
+
+#quick_entry_form table td {
+	position: relative;
+}
+
+#quick_entry_form textarea {
+	height: 60px;
+	width: 380px;
+}
+
+#quick_entry_form label {
+	font-size: 11px;
+	color: #666;
+	padding-right: 10px;
+}
+
+#quick_entry_form .ghost {
+	color: #ccc;
+	display: block;
+	padding: 4px;
+	font-size: 15px;
+}
+
+#quick_entry_form input {
+	font-size: 17px;
+	width: 140px;
+}
+
+/*#quick_entry_form .body label {
+	display: block;
+	font-size: 15px;
+	position: absolute;
+	padding: 5px;
+	color: #ccc;
+}
+
+*/
+
+#quick_entry_form td {
+	padding-bottom: 4px;
+}
 
 
 #new_event {

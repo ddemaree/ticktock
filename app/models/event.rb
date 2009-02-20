@@ -43,6 +43,8 @@ class Event < ActiveRecord::Base
   end
   
   def duration_in_hours(options={})
+    return nil if duration.nil?
+    
     options.reverse_merge!({
       :precision => 2,
       :raw => nil,
@@ -73,6 +75,15 @@ class Event < ActiveRecord::Base
       Time.now - self.start
     else
       read_attribute(:duration)
+    end
+  end
+  
+  def duration=(int_or_string)
+    case int_or_string
+    when String
+      write_attribute(:duration, Event::TimeParser.from_string(int_or_string))
+    else
+      write_attribute(:duration, int_or_string)
     end
   end
   
