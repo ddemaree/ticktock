@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
   
   # #   A S S O C I A T I O N S   # #
   belongs_to :account
-  belongs_to :subject, :polymorphic => true
+  belongs_to :subject, :class_name => "Trackable"
   belongs_to :user
   belongs_to :created_by, :class_name => "User"
   has_many   :punches, :dependent => :destroy
@@ -72,7 +72,7 @@ class Event < ActiveRecord::Base
   
   def duration
     if active? && !read_attribute(:duration)
-      Time.now - self.start
+      Time.now - (self.start|| 0)
     else
       read_attribute(:duration)
     end
@@ -91,8 +91,8 @@ class Event < ActiveRecord::Base
     params = MessageParser.parse(:body => message)
     logger.debug("\n\n#{params.inspect}\n\n")
     
-    self.tags = params[:tags]
-    self.subject = params[:subject]
+    self.tags      = params[:tags] if self.tags.empty?
+    self.subject ||= params[:subject]
     write_attribute :body, params[:body]
     
     params[:body]

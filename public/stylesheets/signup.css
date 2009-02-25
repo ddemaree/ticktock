@@ -1,0 +1,82 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/signup.css */
+
+@import url(shared.css);
+
+html, body {
+	background-color: #fff;
+}
+
+hr.clear {
+	border: 0;
+	height: 1px;
+}
+
+form#new_account fieldset {
+	background: #f5f5f5;
+	margin: 0 0 20px;
+	border-top: 1px solid #000;
+}
+
+form#new_account legend {
+	background: #fff;
+	padding: 0 4px;
+	position: relative;
+	font-weight: bold;
+	left: -4px;
+	font-size: 15px;
+}
+
+form#new_account input {
+	font-size: 17px;
+}
+
+form#new_account select {
+	font-size: 16px;
+}
+
+form#new_account label {
+	font-size: 12px;
+	text-align: right;
+	padding-right: 10px;
+	width: 100px;
+	padding-top: 0;
+	top: 6px;
+	position: relative;
+}
+
+form#new_account button {
+	background: #f0f;
+}
+
+form#new_account .field {
+	border: 0;
+}
+
+form#new_account .example {
+	font-size: 16px;
+	padding: 5px 4px;
+	color: #b4b4b4;
+}
+
+form#new_account fieldset .more {
+	max-width: 540px;
+	line-height: 18px;
+	padding: 0 0 6px;
+}
+
+em.highlight {
+	background: #ffa;
+}
+
+/* @group Domain Field */
+
+form#new_account .field.domain p {
+	font-size: 19px;
+	color: #888;
+}
+
+form#new_account .field.domain input {
+	margin: 0 4px;
+}
+
+/* @end */

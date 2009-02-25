@@ -1,57 +1,109 @@
-<h1>Create my TickTock account now</h1>
+<div class="page-header">
+	<h1>Create my TickTock account now</h1>
+</div>
 
-<%= error_messages_for :account, :user %>
+<div class="eight left">
+	<%= error_messages_for :account, :user %>
 
-<% form_for @account, :url => account_path, :method => :post do |f| %>
+	<% form_for @account, :url => account_path, :method => :post do |f| %>
 
-<fieldset>
-	<legend>Set up your account</legend>
-	
-	<p class="field">
-		<%= f.label :name, "Company name" %>
-		<%= f.text_field :name %>
+	<fieldset>
+		<legend>Create your user account</legend>
+		<p class="more"><em class="highlight">This is the master log-in for your account.</em> All fields are required. Once your TickTock account is created, you can create accounts for other people as well.</p>
+
+		<% fields_for :user do |uf| %>
+		<div class="field">
+			<%= uf.label :name, "Your name" %>
+			<p>
+				<%= uf.text_field :name %>
+				<span class="example">John Q. Smith</span>
+			</p>
+		</div>
+		<div class="field">
+			<%= uf.label :email, "E-mail address" %>
+			<p>
+				<%= uf.text_field :email %>
+				<span class="example">john.smith@mailserver.com</span>
+			</p>
+		</div>
+		<hr>
+		<p class="field">
+			<%= uf.label :login, "Username" %>
+			<%= uf.text_field :login %>
+		</p>
+		<div class="field">
+			<%= uf.label :password %>
+			<p><%= uf.password_field :password %></p>
+			<p class="info">Please re-type your password to confirm</p>
+			<p><%= uf.password_field :password_confirmation %></p>
+		</div>
+		<% end %>
+		<hr>
+		<p class="field">
+			<%= f.label :timezone %>
+			<%= f.time_zone_select :timezone %>
+		</p>
+	</fieldset>
+
+	<fieldset>
+		<legend>Set up your account</legend>
+
+		<!-- <p class="field">
+			<%= f.label :name, "Company name" %>
+			<%= f.text_field :name %>
+		</p> -->
+		<div class="domain">
+			<%= f.label :domain %>
+			<p>http://<%= f.text_field :domain, :size => 16 %>.ticktockapp.com/</p>
+		</div>
+		
+	</fieldset>
+
+	<fieldset class="terms_of_service">
+		<legend>Accept our Terms of Service</legend>
+		<p class="checkbox">
+			<%= f.check_box :terms_of_service %>
+			If TickTock had <a href="#">Terms of Service</a>, you bet I would accept them
+		</p>
+	</fieldset>
+	<p class="form-action">
+		<button type="submit">Create my account now</button>
 	</p>
-	<div class="field">
-		<%= f.label :domain %>
-		<p>http://<%= f.text_field :domain, :size => 16 %>.ticktockapp.com/</p>
-	</div>
-	<p class="field">
-		<%= f.label :timezone %>
-		<%= f.time_zone_select :timezone %>
-	</p>
-</fieldset>
-<fieldset>
-	<legend>Set up your login information</legend>
-	<% fields_for :user do |uf| %>
-	<p class="field">
-		<%= uf.label :email %>
-		<%= uf.text_field :email %>
-	</p>
-	<p class="field">
-		<%= uf.label :login, "Username" %>
-		<%= uf.text_field :login %>
-	</p>
-	<div class="field">
-		<%= uf.label :password %>
-		<p><%= uf.password_field :password %></p>
-		<p class="info">Please re-type your password to confirm</p>
-		<p><%= uf.password_field :password_confirmation %></p>
-	</div>
-	<p class="field">
-		<%= uf.label :name, "Your name" %>
-		<%= uf.text_field :name %>
-	</p>
+
 	<% end %>
-</fieldset>
-<fieldset class="terms_of_service">
-	<legend>Accept our Terms of Service</legend>
-	<p class="checkbox">
-		<%= f.check_box :terms_of_service %>
-		If TickTock had <a href="#">Terms of Service</a>, you bet I would accept them
-	</p>
-</fieldset>
-<p class="form-action">
-	<button type="submit">Create my account now</button>
-</p>
+</div>
+<hr class="clear">
+
+<script type="text/javascript" charset="utf-8">
+	FormExemplar = Class.create({
+		initialize: function(elem){
+			this.example   = elem
+			this.container = this.example.up('p')
+			this.field     = this.container.down('input')
+		
+			this.container.makePositioned()
+			this.example.setStyle('position:absolute;left:0;top:0')
+			
+			this.example.observe('click', this.handleLabelClick.bind(this))
+			this.field.observe('blur', this.handleFieldBlur.bind(this))
+			this.field.observe('focus', this.handleFieldFocus.bind(this))
+		},
+		handleFieldFocus: function(event){
+			this.example.hide()
+		},
+		handleLabelClick: function(event){
+			this.field.focus()
+			this.example.hide()
+			event.stop()
+		},
+		handleFieldBlur: function(event){
+			if($F(this.field).blank()){
+				this.example.show()
+			}
+		}
+	})
 	
-<% end %>
+	$$('span.example').each(function(elem){
+		new FormExemplar(elem)
+	})
+</script>

@@ -1,0 +1,35 @@
+.field {
+	padding: 10px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.field label {
+	width: 110px;
+	float: left;
+	color: #666;
+	padding-top: 3px;
+}
+
+.field > p {
+	margin-left: 110px;
+	padding-top: 2px;
+}
+
+.field .info {
+	font-size: 11px;
+	color: #666;
+	padding-top: 0.75em;
+	padding-bottom: 0.25em;
+}
+
+fieldset {
+	padding: 10px;
+	border: 1px solid #d4d4d4;
+	margin: 1em 0;
+	background: #fff;
+}
+
+p.checkbox {
+	background: #d4d4d4;
+	padding: 10px;
+}

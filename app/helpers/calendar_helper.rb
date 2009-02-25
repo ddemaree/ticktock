@@ -1,5 +1,40 @@
 module CalendarHelper
   
+  def span_for_date(date)
+    content_tag(:span, relative_date(date), :class => "date")
+  end
+  
+  def relative_date(date)
+    return "" if date.nil?
+    
+    format =
+      case date
+        when Date.today then "Today"
+        when Date.yesterday then "Yesterday"
+        when (Date.today.beginning_of_week..Date.today) then "%A"
+        #when ((2.weeks.ago.to_date)..1.week.ago.to_date) then date.strftime("Last %A")
+        when (Date.today.beginning_of_year..Date.today) then "%B %e"
+        else "%b %e, %Y"
+      end
+      
+    date.strftime(format)
+  end
+  
+  
+  def events_for_day(date,events=nil,&block)
+    @events_by_day ||= @events.group_by(&:date) if @events
+    events ||= (@events_by_day[date] || [])
+    
+    wrapper_options = {
+      :class => "events_for_day #{'empty' if events.empty?}".strip,
+      :id => "events_for_#{date.strftime("%Y_%m_%d")}"
+    }
+    
+    concat(tag(:div, wrapper_options, true))
+    yield events
+    concat('</div>')
+  end
+  
   def range_description
     if respond_to?("range_description_for_#{time_frame}")
       return send("range_description_for_#{time_frame}")

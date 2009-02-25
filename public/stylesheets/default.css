@@ -3,24 +3,8 @@
 	http://www.ticktock.local:3000/stylesheets/default.css
 */
 
-@import url(lib/reset.css);
+@import url(shared.css);
 @import url(lib/datepicker.css);
-
-body {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 13px;
-	padding: 0;
-	margin: 0;
-}
-
-body, html {
-	background: #e5e5dc;
-}
-
-#container {
-	width: 960px;
-	margin: 10px auto;
-}
 
 #header {
 	background: #f4f4eb;
@@ -39,11 +23,6 @@ body, html {
 	top: 10px;
 	right: 10px;
 	font-size: 11px;
-}
-
-#main {
-	width: 940px;
-	margin: 0 auto;
 }
 
 #workspace {
@@ -107,27 +86,6 @@ hr {
 a:hover {
 	text-decoration: underline !important;
 }
-
-/* @group Grid Layout */
-
-.one    { width: 60px;  }
-.two    { width: 140px; }
-.three  { width: 220px; }
-.four   { width: 300px; }
-.five   { width: 380px; }
-.six    { width: 460px; }
-.seven  { width: 540px; }
-.eight  { width: 620px; }
-.nine   { width: 700px; }
-.ten    { width: 780px; }
-.eleven { width: 860px; }
-.twelve { width: 940px; }
-
-.left   { float: left;  }
-.right  { float: right; }
-.clear  { clear: both;  }
-
-/* @end */
 
 
 
@@ -224,6 +182,12 @@ a:hover {
 .events_for_day li .event_subject a {
 	color: #000;
 	text-decoration: none;
+}
+
+.events_for_day li .duration {
+	font-size: 15px;
+	color: #a5b3b7;
+	margin-left: 1px;
 }
 
 .events_for_day li .event_actions {
@@ -441,44 +405,7 @@ a:hover {
 	border: 0;
 }
 
-.field {
-	padding: 10px 0;
-	border-bottom: 1px solid #ccc;
-}
 
-.field label {
-	width: 110px;
-	float: left;
-	color: #666;
-	text-transform: uppercase;
-	font-size: 11px;
-	padding-top: 3px;
-}
-
-.field > p {
-	margin-left: 110px;
-	padding-top: 2px;
-}
-
-fieldset {
-	padding: 10px;
-	border: 1px solid #d4d4d4;
-	margin: 1em 0;
-	background: #fff;
-}
-
-fieldset legend {
-	background: #fff;
-	padding: 2px 8px;
-	position: relative;
-	border: 1px solid #ccc;
-	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-}
-
-p.checkbox {
-	background: #d4d4d4;
-	padding: 10px;
-}
 
 .field.datepicker label {
 	display: inline;

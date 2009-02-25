@@ -1,0 +1,32 @@
+@import url(lib/reset.css);
+@import url(lib/forms.css);
+@import url(lib/grids.css);
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	padding: 0;
+	margin: 0;
+}
+
+body, html {
+	background: #e5e5dc;
+}
+
+#container {
+	width: 960px;
+	margin: 10px auto;
+}
+
+#main {
+	width: 940px;
+	margin: 0 auto;
+}
+
+#footer {
+	background: #d1d1c9;
+	margin: 16px 0 40px;
+	padding: 10px 20px;
+	-webkit-border-radius: 12px;
+	color: #777;
+}

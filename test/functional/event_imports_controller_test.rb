@@ -2,8 +2,8 @@ require 'test_helper'
 
 class EventImportsControllerTest < ActionController::TestCase
 
-  should_route :get,  "/event_imports/new", :action => :new
-  should_route :post, "/event_imports",     :action => :create
+  should_route :get,  "/events/import", :action => :new
+  should_route :post, "/event_imports", :action => :create
 
   def setup
     @account   = Factory(:account)

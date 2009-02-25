@@ -37,11 +37,11 @@
 			<%= f.label :date, "On what day?" %>
 			<%= f.date_select :date %>
 		</p>
-		<p class="field">
+		<!-- <p class="field">
 			<%= f.label :subject %>
 			<%= f.text_field :subject %>
 			<%# TODO: Dropdown menu for trackables %>
-		</p>
+		</p> -->
 	</div>
 	<p class="actions">
 		<button type="submit">Add to journal</button>
@@ -87,8 +87,8 @@
 			<p class="event_body"><span class="hover_target">
 				<%= event_subject(event.subject) unless event.subject.nil? %>
 				<%= event_message(event.body) %>
-				<%- if event.duration > 0 -%>
-				<strong>for <%= distance_of_time_in_words 0, event.duration %></strong>
+				<%- if event.duration && (event.duration > 0) -%>
+				<span class="duration">for <%= distance_of_time_in_words 0, event.duration %></span>
 				<%- end -%>
 			</span></p>
 			<p class="event_actions hover_target">
