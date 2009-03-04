@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   
+  #map.connect '/emails.:format', :controller => 'emails', :action => 'create', :conditions => {:method => :post} 
+  map.resources :emails, :only => [:create]
+  
   map.import_events '/events/import', :controller => "event_imports", :action => "new"
   map.resources :event_imports, :only => [:new, :create]
   map.resources :events, :trackables, :users

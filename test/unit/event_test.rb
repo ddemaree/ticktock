@@ -27,7 +27,7 @@ class EventTest < ActiveSupport::TestCase
     should_validate_presence_of :body, :account
     
     should "require stop to be later than start" do
-      event = Factory.build(:event, :stop => "1997-08-24 00:02:33")
+      event = Factory.build(:timed_event, :stop => "1997-08-24 00:02:33")
       assert !event.valid?
       assert event.errors.on(:stop)
     end
@@ -39,24 +39,24 @@ class EventTest < ActiveSupport::TestCase
     end
 
     should "auto populate date from start if blank" do
-      event = Factory.build(:event, :date => nil)
+      event = Factory.build(:timed_event, :date => nil)
       assert event.valid?
       assert_equal event.start.to_date, event.date
     end
 
     should "populate duration from start and stop" do
-      event = Factory(:event)
+      event = Factory(:timed_event)
       assert_not_nil event.duration
       assert_equal 3.hours, event.duration
     end
     
     should "be active if start is blank but stop is not" do
-      event = Factory(:event, :stop => nil)
+      event = Factory(:timed_event, :stop => nil)
       assert event.active?
     end
     
     should "be completed if both timestamps are not blank" do
-      event = Factory(:event)
+      event = Factory(:timed_event)
       assert event.completed?
     end
     
@@ -84,7 +84,7 @@ class EventTest < ActiveSupport::TestCase
     end
     
     should "set import token" do
-      event = Factory(:event, :body => "Hello world")
+      event = Factory(:timed_event, :body => "Hello world")
       assert_equal "1bcaf55e80d0c3cd58a3c8c02571ecea78a9d9ea", event.import_token
     end
     
@@ -94,7 +94,7 @@ class EventTest < ActiveSupport::TestCase
     
     context "that is active" do
       setup do
-        @active_event = Factory(:event, :stop => nil)
+        @active_event = Factory(:timed_event, :stop => nil)
       end
     
       should "complete when stop time is set" do
@@ -168,7 +168,7 @@ class EventTest < ActiveSupport::TestCase
   
   context "Event duration" do
     setup do
-      @event = Factory.build(:event, :stop => nil, :start => nil, :date => "2009-01-20")
+      @event = Factory.build(:event, :date => "2009-01-20")
     end
     
     should "be settable via string" do
@@ -213,7 +213,7 @@ class EventTest < ActiveSupport::TestCase
   context "On Event state change" do
     context "from active to completed" do
       setup do
-        @event = Factory(:event, :stop => nil)
+        @event = Factory(:timed_event, :stop => nil)
       end
       
       should "create a punch" do
@@ -260,7 +260,7 @@ class EventTest < ActiveSupport::TestCase
     
     context "from sleeping to active" do
       setup do
-        @event = Factory(:event, :stop => nil)
+        @event = Factory(:timed_event, :stop => nil)
         @event.sleep!
       
         @punch = @event.punches.first
@@ -294,6 +294,47 @@ class EventTest < ActiveSupport::TestCase
       
     end
 
+  end
+  
+  context "Event.find_and_extend" do
+    setup do
+      @account = Factory(:account)
+      @events  = []
+      @tags    = %w(alpha beta gamma beta alpha)
+      
+      4.times do |x|
+        @events << Factory(:event, :account => @account, :duration => 5.hours, :body => "Blah blah ##{@tags[x]}")
+      end
+      
+      @events << Factory(:event, :account => @account, :duration => 5.hours, :date => (Date.today - 2.weeks))
+    end
+    
+    should "return 5 events" do
+      assert_equal 5, @account.events.count
+    end
+    
+    should "return EventSet#total_duration" do
+      assert_not_nil @seconds = @account.events.find_and_extend.total_duration
+      assert_equal   25.hours, @seconds
+    end
+    
+    should "return EventSet#count" do
+      assert_equal 5, @account.events.find_and_extend.count
+    end
+    
+    should "return EventSet#tags" do
+      assert_not_nil tags = @account.events.find_and_extend.tags
+      assert_equal   3, tags.length, tags.inspect
+    end
+    
+    should "work in combination with scopes" do
+      range = (Date.today.beginning_of_week..Date.today.end_of_week)
+      assert_nothing_raised do
+        @ranged_events = @account.events.for_date_range(range).find_and_extend
+      end
+      
+      assert_equal 4, @ranged_events.count
+    end
   end
   
 end

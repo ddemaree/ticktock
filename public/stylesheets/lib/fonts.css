@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "MuseoSans";
+  src: url(../../fonts/MuseoSans_500.otf) format("opentype");
+	font-weight: 500;
+}
+
+@font-face {
+  font-family: "MuseoSans";
+  src: url(../../fonts/MuseoSans_100.otf) format("opentype");
+	font-weight: 100;
+}
+
+@font-face {
+  font-family: "MuseoSerif";
+  src: url(../../fonts/Museo/Museo300-Regular.otf) format("opentype");
+	font-weight: 300;
+}
+
+@font-face {
+  font-family: "MuseoSerif";
+  src: url(../../fonts/Museo/Museo900-Regular.otf) format("opentype");
+	font-weight: bold;
+}

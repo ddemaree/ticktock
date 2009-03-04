@@ -1,3 +1,4 @@
+@import url(lib/fonts.css);
 @import url(lib/reset.css);
 @import url(lib/forms.css);
 @import url(lib/grids.css);
@@ -14,19 +15,32 @@ body, html {
 }
 
 #container {
-	width: 960px;
+	width: 100%;
+	min-width: 800px;
 	margin: 10px auto;
 }
 
 #main {
-	width: 940px;
+	width: 97.92%;
 	margin: 0 auto;
 }
 
 #footer {
 	background: #d1d1c9;
 	margin: 16px 0 40px;
-	padding: 10px 20px;
+	padding: 10px 2.08%;
 	-webkit-border-radius: 12px;
 	color: #777;
 }
+
+.clearfix:after {
+  content:".";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+.clearfix {display:inline-block;}
+/* Hide from IE Mac \*/
+.clearfix {display:block;}
+/* End hide from IE Mac */

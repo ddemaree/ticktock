@@ -16,6 +16,8 @@ Rails::Initializer.run do |config|
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.2.3'
 
   config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com', :version => '~> 2.0.2'
+  
+  config.gem 'gchart', :version => '~>0.5.0'
  
  
   # Settings in config/environments/* take precedence over those specified here.

@@ -37,6 +37,25 @@ class Event < ActiveRecord::Base
   validate                :stop_must_be_after_start
   validate                :start_or_date_present
   
+  class << self
+  
+    def find_and_extend(*args,&block)
+      options = (args.pop || {})
+      finder = (options[:finder] || 'find').to_s
+      
+      if finder == 'find'
+        # an array of IDs may have been given:
+        total_entries ||= (Array === args.first and args.first.size)
+        # :all is implicit
+        args.unshift(:all) if args.empty?
+      end
+      
+      args << options
+      
+      EventSet.new(send(finder, *args, &block))      
+    end
+  
+  end
   
   def class_options
     self.class.options

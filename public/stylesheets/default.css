@@ -12,8 +12,8 @@
 }
 
 #header .wrap {
-	width: 920px;
-	padding: 10px 10px 6px;
+	width: 95.83%;
+	padding: 10px 1.04% 6px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -21,7 +21,7 @@
 #header .current_user {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	right: 1.04%;
 	font-size: 11px;
 }
 
@@ -33,21 +33,22 @@
 
 .workspace-title {
 	background: #f1ffe9;
-	padding: 8px 10px;
+	padding: 8px 1.04%;
 	position: relative;
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
 }
 
 .workspace-title h2 {
-	font: 19px Georgia;
+	font: 19px 'MuseoSerif', Georgia;
 	margin: 0;
+	font-weight: 300;
+	text-shadow: 1px 1px 0 #fff;
 }
 
 #footer {
 	background: #d1d1c9;
 	margin: 16px 0 40px;
-	padding: 10px 20px;
+	padding: 10px 2.08%;
 	-webkit-border-radius: 12px;
 	color: #777;
 }
@@ -134,7 +135,7 @@ a:hover {
 /* @group Events for calendar view */
 
 .events_for_day {
-	padding: 10px 20px 0;
+	padding: 10px 2.08% 0;
 }
 
 .events_for_day .date_header {
@@ -142,12 +143,12 @@ a:hover {
 }
 
 .events_for_day .date_header span {
-	padding: 4px 4px 2px 20px;
+	padding: 4px 4px 2px 2.08%;
 	border-bottom: 1px solid #888;
 	font-size: 13px;
 	font-weight: bold;
 	color: #444;
-	margin-left: -20px;
+	margin-left: -2.08%;
 }
 
 .events_for_day ul {
@@ -245,18 +246,65 @@ a:hover {
 
 
 #quick_entry_form {
-	background: #f5f5f5;
-	padding: 10px;
-	margin: 20px 10px;
-	width: 620px;
+	padding: 8px;
+	margin: 0;
 	position: relative;
-}
-
-#quick_entry_form table {
 	width: 100%;
 }
 
-#quick_entry_form table td {
+#quick_entry_form .bd {
+	padding: 10px;
+	background: #666;width: 100%;
+}
+
+.qe-datepager {
+	padding: 0 6px;
+}
+
+.qe-datepager .tab {
+	float: left;
+	margin-right: 4px;
+	background-color: #ccc;
+	position: relative;
+	z-index: 99;
+	font-size: 12px;
+}
+
+.qe-datepager a.tab,
+.qe-datepager .tab > a {
+	display: block;
+	padding: 4px 8px;
+	text-decoration: none;
+	color: #666;
+}
+
+.qe-datepager .tab.other > a,
+.qe-datepager .tab.selected.other a {
+	padding-left: 25px;
+	padding-right: 10px;
+	background: url(../images/calendar-silver.gif) no-repeat 10px center;
+}
+
+.qe-datepager a.tab.selected,
+.qe-datepager .tab.selected a {
+	color: #fff;
+	background: url(../images/check.gif) no-repeat 10px center;
+	background-color: #000;
+	padding-left: 22px;
+	padding-right: 10px;
+}
+
+.qe-datepager .tab.selected.other a {
+	background-color: #000;
+	background-image: url(../images/calendar-orange.gif);
+}
+
+#quick_entry_form table.bnd {
+	width: auto;
+	margin-right: 80px;
+}
+
+#quick_entry_form table.bnd td {
 	position: relative;
 }
 
@@ -272,41 +320,41 @@ a:hover {
 }
 
 #quick_entry_form .ghost {
-	color: #ccc;
+	color: #becacf;
 	display: block;
-	padding: 4px;
-	font-size: 15px;
+	padding: 5px 4px;
+	font-size: 13px;
 }
 
 #quick_entry_form input {
 	font-size: 17px;
-	width: 140px;
+	width: 100%;
 }
 
-#quick_entry_form .body input {
-	width: 460px;
+#quick_entry_form .bnd .body {
+	width: 70%;
+	padding-right: 2.08%;
 }
 
-/*#quick_entry_form .body label {
-	display: block;
-	font-size: 15px;
+#quick_entry_form .duration {
+	width: 20%;
+}
+
+#quick_entry_form .calendar_date_select {
 	position: absolute;
-	padding: 5px;
-	color: #ccc;
+	z-index: 90;
 }
-
-*/
 
 #quick_entry_form td {
 	padding-bottom: 4px;
 }
 
 #quick_entry_form .actions {
-	text-align: right;
-	padding-right: 2px;
 	position: absolute;
-	right: 10px;
-	bottom: 10px;
+	right: -4px;
+	top: 40px;
+	width: 73px;
+	height: 30px;
 }
 
 #quick_entry_form #expand_options,
@@ -320,100 +368,6 @@ a:hover {
 	border-width: 0 0 1px 1px;
 	padding: 0 0 10px 10px;
 }
-
-
-#new_event {
-}
-
-#quick_entry_container {
-	position: relative;
-}
-
-#quick_entry {
-	padding: 0px 20px;
-	position: absolute;
-	left: 0;
-	top: 0;
-	background-color: #000;
-	background-color: rgba(255,255,204,0.9);
-	z-index: 200;
-	color: #000;
-	border: 1px solid #ccc;
-	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.2)
-}
-
-#quick_entry #basics {
-	padding-top: 20px;
-}
-
-#quick_entry #options {
-	border-bottom: 1px solid #d4d4d4;
-	border-left: 1px solid #d4d4d4;
-	width: 100%;
-}
-
-#quick_entry #options > p {
-	float: left;
-	margin: 5px 0 0px 10px;
-	display: block;
-}
-
-#quick_entry #options > p.datepicker {
-	padding: 5px 0;
-}
-
-#quick_entry #options input {
-	font-size: 17px;
-}
-
-#quick_entry #options .ghost {
-	color: #ccc;
-	font-size: 17px;
-	line-height: 12px;
-	padding-left: 5px;
-	padding-top: 0px;
-}
-
-#quick_entry fieldset {
-	background: transparent;
-	/*color: #fff;*/
-	padding: 0;
-	margin: 0;
-	border: none;
-}
-
-#quick_entry .actions {
-	text-align: right;
-	padding: 0 0 10px;
-}
-
-#new_event.on_index textarea {
-	width: 100%;
-}
-
-#new_event label {
-	width: auto;
-	display: block;
-	float: none;
-	padding-bottom: 2px;
-	padding-top: 0;
-}
-
-#new_event .field {
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
-
-
-
-.field.datepicker label {
-	display: inline;
-	width: auto;
-	padding-right: 10px;
-	padding-top: 1px;
-}
-
 
 
 
@@ -524,3 +478,80 @@ table.month_grid {
 	padding: 3px 8px 4px;
 }
 
+.calendar-sidebar {
+	background: #fafafa;
+	border-left: 1px solid #e5e5e5;
+}
+
+
+.total_logged {
+	margin: 10px;
+	text-align: center;
+	font-size: 13px;
+	color: #888;
+}
+
+.total_logged strong {
+	display: block;
+	font-size: 18px;
+	line-height: 24px;
+	position: relative;
+	top: 0px;
+	color: #000;
+	text-shadow: 0px 0px 2px #fff;
+}
+
+.sidebar-module h4 {
+	font-family: 'MuseoSans';
+	text-transform: uppercase;
+	padding: 20px 4px 4px;
+	margin: 0 6px;
+	font-weight: 500;
+	border-bottom: 1px solid #ccc;
+}
+
+.sidebar-module ul {
+	padding: 0 10px;
+	font-size: 17px;
+}
+
+.sidebar-module ul li {
+	margin: 3px 0;
+}
+
+.sidebar-module ul .tag1 {
+	font-size: 75%;
+}
+
+.sidebar-module ul .tag2 {
+	font-size: 95%;
+}
+
+.sidebar-module ul .tag3 {
+	font-size: 116%;
+}
+
+.sidebar-module ul .tag4 {
+	font-size: 150%;
+}
+
+.sidebar-module ul .tag5 {
+	font-size: 175%;
+}
+
+.sidebar-module ul .tag6 {
+	font-size: 200%;
+}
+
+.sidebar-module ul .total {
+	font-size: 11px;
+	color: #666;
+}
+
+.colordot {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	position: relative;
+	top: 1px;
+}

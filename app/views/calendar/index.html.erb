@@ -5,109 +5,291 @@
 	<span class="sep">|</span>
 	<%= link_to "Next #{time_frame}", params_for_next, :class => "nav next" %>
 <%- end -%>
-<% render :layout => "/layouts/events" do %>
-	
-	<div id="calendar_nav" class="workspace-title">
-		<h2><%= range_description %></h2>
-		<p class="nav">
-			<%= pagination_links %>
-		</p>
-	</div>
-	
-	<% form_for :event, :url => events_path, :html => {:id => "quick_entry_form"} do |f| %>
-	<table>
-		<tr>
-		<td class="body" colspan="2">
-			<div class="overlay-label">
-				<%= f.label :body, "What did you do?" %>
-				<%= f.text_field :body %>
-			</div>
-		</td>
-		<td class="duration">
-			<div class="overlay-label">
-				<%= f.label :duration, "For how long?" %>
-				<%= f.text_field :duration, :size => 20 %>
-			</div>
-		</td>
-		</tr>
-		
-	</table>
-	<div id="options">
-		<p class="field">
-			<%= f.label :date, "On what day?" %>
-			<%= f.date_select :date %>
-		</p>
-		<!-- <p class="field">
-			<%= f.label :subject %>
-			<%= f.text_field :subject %>
-			<%# TODO: Dropdown menu for trackables %>
-		</p> -->
-	</div>
-	<p class="actions">
-		<button type="submit">Add to journal</button>
-	</p>
-	
-	<input type="hidden" name="return" value="yes" />
-	<% end %>
-	<script type="text/javascript" charset="utf-8">
-		$$('.overlay-label').each(function(elem){
-			new TicktockGhostLabel(elem)
-		})
-		
-		// Set up options disclosure thingy
-		expand_link = new Element('p', {id:'expand_options'})
-		expand_link.update('<a href="#">More options&hellip;</a>')
-		expand_link.down('a').observe('click',function(){
-			$('expand_options').hide()
-			$('options').show()
-		})
-		$('options').insert({before:expand_link})
-		
-		collapse_link = new Element('p', {id:'collapse'})
-		collapse_link.update('<a href="#">Fewer options&hellip;</a>')
-		collapse_link.down('a').observe('click',function(){
-			$('expand_options').show()
-			$('options').hide()
-		})
-		$('options').insert({bottom:collapse_link})
-		$('options').hide()
-	</script>
-	
-	<% current_range.to_a.each do |date| %>
 
-	<% events_for_day(date) do |events| %>
-	
-	<h3 class="date_header">
-		<span><%= date.strftime("%A, %b %e") %></span>
-	</h3>
-
-	<ul>
-	<%- events.each do |event| -%>
-		<li class="hover_container">
-			<p class="event_body"><span class="hover_target">
-				<%= event_subject(event.subject) unless event.subject.nil? %>
-				<%= event_message(event.body) %>
-				<%- if event.duration && (event.duration > 0) -%>
-				<span class="duration">for <%= distance_of_time_in_words 0, event.duration %></span>
-				<%- end -%>
-			</span></p>
-			<p class="event_actions hover_target">
-				<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
-				<%= link_to "Edit", [:edit, event], :class => "edit" %>
-			</p>
-		</li>
-	<%- end -%>
-		<li class="no-events">Nothing happened today</li>
-	</ul>	
-	
-	
-	<hr class="date-separator" style="clear:both">
-
-	<% end %>
-
-	<% end %>
-	
-	<div class="pagination">
+<div id="calendar_nav" class="workspace-title">
+	<h2><%= range_description %></h2>
+	<p class="nav">
 		<%= pagination_links %>
+	</p>
+</div>
+
+<table width="100%" cellspacing="0" border="0"><tr valign="top">
+	<td class="eight calendar-main">
+		<% form_for :event, :url => events_path, :html => {:id => "quick_entry_form"} do |f| %>
+		<div class="bd">
+			<table class="bnd">
+				<tr>
+				<td class="body" colspan="2">
+					<div class="overlay-label">
+						<%= f.label :body, "What did you do?" %>
+						<%= f.text_field :body %>
+					</div>
+				</td>
+				<td class="duration">
+					<div class="overlay-label">
+						<%= f.label :duration, "For how long?" %>
+						<%= f.text_field :duration, :size => 20 %>
+					</div>
+				</td>
+				</tr>
+
+			</table>
+		</div>		
+		
+		<p class="field" id="event_date_field">
+			<%= f.label :date, "On what day?" %>
+			<%= f.text_field :date %>
+		</p>
+		
+		<p class="actions">
+			<button type="submit">Add to journal</button>
+		</p>
+
+		<input type="hidden" name="return" value="yes" />
+		<% end %>
+		<script type="text/javascript" charset="utf-8">
+			$$('.overlay-label').each(function(elem){
+				new Ticktock.GhostLabel(elem)
+			})
+			
+			Object.extend(Ticktock, {
+				DatePager: Class.create({
+					initialize: function(field, container){
+						this.field     = $(field)
+						this.container = $(container)
+						
+						if(p = this.field.up('p.field'))
+							p.hide()
+						
+						this.changeDate(CalendarDate.parse())
+						
+						this.createPagerBar()
+						
+						// 2 days ago
+						prevDate = this.date.previous(2)
+						this.addDateToPagerBar(this.shorterDate(prevDate), prevDate)
+						
+						prevDate = this.date.previous(1)
+						this.addDateToPagerBar(this.shorterDate(prevDate), prevDate)
+						
+						this.addDateToPagerBar("Today", this.date)
+						
+						this.addArbitraryDatePicker()
+					},
+					createPagerBar: function(){
+						this.pager = new Element('div', {className:'qe-datepager clearfix'})
+						this.container.insert({top:this.pager})
+					},
+					addDateToPagerBar:function(text,date){
+						date = CalendarDate.parse(date)
+						
+						link = new Element('a', {href:'javascript:void%200',className:'tab',id:('dt'+date.toString())})
+						link.writeAttribute('date', date)
+						
+						if(date.equals(this.date))
+							link.addClassName('selected')
+						
+						link.update(text)
+						
+						link.observe('click', function(e){
+							link = e.findElement()
+							this.pager.select('.tab').invoke('removeClassName','selected')
+							link.addClassName('selected')
+							
+							date = CalendarDate.parse(link.getAttribute('date'))
+							this.changeDate(date)
+							e.stop()
+						}.bind(this))
+						
+						this.pager.insert({bottom:link})
+					},
+					changeDate: function(date){
+						this.date = date
+						this.field.setValue(this.date)
+						
+						if(this.pickerToggle)
+							this.pickerToggle.update("Other date&hellip;")
+						
+						if(this.calendar)
+							this.hideCalendar()
+							
+						//if(this.datePicker)
+							//this.datePicker.element.fire("calendar:dateSelected", { date: this.date })
+					},
+					addArbitraryDatePicker: function(){
+						this.datePicker = new CalendarDateSelect(this.field)
+						this.pickerContainer = new Element('div', {className:'picker tab other'})
+						
+						
+						this.pickerContainer.makePositioned()
+						this.pickerContainer.insert({top:this.datePicker})
+						
+						this.calendar = this.pickerContainer.down('.calendar_date_select')
+						this.calendar.hide()
+						
+						this.calendar.observe("calendar:dateSelected", function(e){
+							this.hideCalendar()
+							this.updateDescriptionFromPicker()
+						}.bind(this))
+						
+						this.pickerToggle = new Element('a', {href:'javascript:void%200', className:'toggle'})
+						this.pickerToggle.update('Other date&hellip;')
+						this.pickerContainer.insert({top:this.pickerToggle})
+						this.pickerOpen = false
+						
+						this.pickerToggle.observe('click', function(e){
+							link = e.findElement()
+							
+							if(this.pickerOpen)
+								this.hideCalendar()
+							else
+								this.showCalendar()
+						}.bind(this))
+						
+						this.pager.insert({bottom:this.pickerContainer})
+					},
+					showCalendar: function(){
+						//this.opened = true
+						this.calendar.show()
+						this.pickerToggle.addClassName('open')
+						this.pickerOpen = true
+						
+						if(!$('overlay')){
+							$(document.body).insert(new Element('div',{id:'overlay'}))
+							$('overlay').observe('click', function(){
+								this.hideCalendar()
+							}.bind(this))
+						}
+					},
+					hideCalendar: function(){
+						this.calendar.hide()
+						this.pickerToggle.removeClassName('open')
+						this.pickerOpen = false
+						if($('overlay')){ $('overlay').remove() }
+					},
+					updateDescriptionFromPicker: function(){
+						this.changeDate(this.datePicker.date)
+						this.pager.select('.tab').invoke('removeClassName','selected')
+						
+						if(tab = $(('dt'+this.date.toString()))) {
+							console.log("Existing tab")
+							tab.addClassName('selected')
+							this.pickerToggle.update('Other date&hellip;')
+						}
+						else {
+							
+							this.pickerToggle.up('.tab').addClassName('selected')
+							this.pickerToggle.update(this.shorterDate(this.datePicker.date));
+						}
+						
+						
+						
+					},
+					shorterDate: function(date){
+						return "#{month} #{day}".interpolate({
+				    	 	month: date.getMonthName(),
+							day:   date.day
+					   })
+					}
+				})
+			})
+			
+			new Ticktock.DatePager('event_date', 'quick_entry_form')
+		</script>
+
+		<% current_range.to_a.each do |date| %>
+
+		<% events_for_day(date) do |events| %>
+
+		<h3 class="date_header">
+			<span><%= date.strftime("%A, %b %e") %></span>
+		</h3>
+
+		<ul>
+		<%- events.each do |event| -%>
+			<li class="hover_container">
+				<p class="event_body"><span class="hover_target">
+					<%= event_subject(event.subject) unless event.subject.nil? %>
+					<%= event_message(event.body) %>
+					<%- if event.duration && (event.duration > 0) -%>
+					<span class="duration">for <%= distance_of_time_in_words 0, event.duration %></span>
+					<%- end -%>
+				</span></p>
+				<p class="event_actions hover_target">
+					<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
+					<%= link_to "Edit", [:edit, event], :class => "edit" %>
+				</p>
+			</li>
+		<%- end -%>
+			<li class="no-events">Nothing happened today</li>
+		</ul>	
+
+
+		<hr class="date-separator" style="clear:both">
+
+		<% end %>
+
+		<% end %>
+
+		<div class="pagination">
+			<%= pagination_links %>
+		</div>
+	</td>
+	
+	<td>&nbsp;</td>
+	
+	<td class="four calendar-sidebar">
+	
+	<%- if @events.total_duration > 0 -%>
+	<p class="total_logged">
+		You logged
+		<strong><%= duration_in_words @events.total_duration %></strong>
+		this <%= time_frame %>
+	</p>
+	<%- end -%>
+	
+	<%# image_tag GChart.pie(:data => [33, 33, 34]).to_url %>
+	
+	
+	<%- if @events.trackables.length > 0 -%>
+	<div class="sidebar-module tags">
+		<h4>This <%= time_frame %>'s projects</h4>
+	
+		<p><%= trackables_pie_chart(@events.trackables.sort { |a,b| b.duration <=> a.duration }) %></p>
+	
+		<%- @events.trackables.sort { |a,b| b.duration <=> a.duration }.each_with_index do |trackable, x| -%>
+		<p><span style="background:#<%= trackables_colors[x] %>">&nbsp;</span>
+		<%= trackable rescue "WTF" %> <%= duration_in_billable_hours trackable.duration %></p>
+		<%- end -%>
+		<hr style="clear:both">
 	</div>
-<% end %>
+	<%- end -%>
+	
+	<%- if @events.tags.length > 0 -%>
+	<div class="sidebar-module tags">
+		<h4>This <%= time_frame %>&rsquo;s top tags</h4>
+	
+		
+		<script type="text/javascript" charset="utf-8">
+			tags_data = '<%= escape_javascript(@events.tags.sort { |a,b| b.duration <=> a.duration }.collect(&:duration).to_json) %>'.evalJSON()
+			colors = '<%= escape_javascript(trackables_colors.to_json) %>'.evalJSON()
+			//<canvas id="tags_chart" height="120" width="300"></canvas>
+			//new Ticktock.BarChart('tags_chart',{data:tags_data, colors:colors}, "blah")
+		</script>
+		
+		<ul>
+		<%- @events.tags.sort { |a,b| b.duration <=> a.duration }.first(10).each_with_index do |tag, x| -%>
+		<li class="<%= tag_class(tag.duration) %>">
+			<a href="#"><%= tag %></a>
+			<!-- <span class="total"><%= duration_in_words tag.duration %></span> -->
+		</li>
+		<%- end -%>
+		</ul>
+	</div>
+	
+	</td>
+	<%- end -%>
+	
+	
+	
+</tr></table>

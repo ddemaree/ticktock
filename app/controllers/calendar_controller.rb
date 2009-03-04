@@ -2,7 +2,7 @@ class CalendarController < ApplicationController
   include Ticktock::DateNavigation
   
   def index
-    @events = current_account.events.for_date_range(current_range)
+    @events = current_account.events.for_date_range(current_range).find_and_extend
   end
   
   def current_view

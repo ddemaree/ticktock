@@ -1,7 +1,78 @@
 module CalendarHelper
   
+  def trackables_colors
+    %w(ff0000 ffcc00 88aa00 0088dd 9900aa cccccc)
+  end
+  
+  def tag_class(time)
+    returning('') do |className|
+      className <<
+        case time
+          when (0..60.minutes) then 'tag1'
+          when (0..3.hours) then 'tag2'
+          when (0..6.hours) then 'tag3'
+          when (0..12.hours) then 'tag4'
+          when (0..24.hours) then 'tag5'
+          else 'tag6'
+        end
+    end
+  end
+  
+  def trackables_pie_chart(dataset)
+    total = @events.total_duration
+    trackables = dataset[0,5]
+    
+    pie = GChart.pie do |p|
+      p.data = trackables.collect(&:duration)
+      
+      if dataset.length > 5
+        p.data << dataset[5,100].sum(&:duration)
+      end
+      
+      #p.legend = trackables.sort.collect(&:name)
+      p.colors = *trackables_colors.first(p.data.length)
+      p.width = 96
+      p.height = 96
+      p.extras = {:chma => "0,0,0,0"}
+      p.entire_background = 'f5f5f5'
+    end
+    
+    image_tag pie.to_url
+  end
+  
   def span_for_date(date)
     content_tag(:span, relative_date(date), :class => "date")
+  end
+  
+  def time_to_units(time)
+    hours = (time / 3600).floor
+    minutes = ((time % 3600) / 60).floor
+    seconds = (time % 60).floor
+    
+    [hours, minutes, seconds]
+  end
+  
+  def duration_in_words(time,options={})
+    hours, minutes, seconds = time_to_units(time)
+    
+    hr_string  = pluralize(hours,   "hour")
+    min_string = pluralize(minutes, "minute")
+    sec_string = pluralize(seconds, "second")
+    
+    case time
+      when (0..60)   then sec_string
+      when (0..3559) then min_string
+      else "#{hr_string} #{min_string if minutes > 0}".strip
+    end
+  end
+  
+  def duration_in_billable_hours(time)
+    hours = (time.to_f / 3600.0)
+    nearest = 0.25
+    
+    base_hours = (hours - (hours % nearest))
+    base_hours += nearest if ((hours % nearest) > (nearest / 2))
+    return base_hours
   end
   
   def relative_date(date)

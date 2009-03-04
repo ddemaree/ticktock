@@ -1,16 +1,2 @@
 <%= @workspace_title_content %>
-<div id="events_list" class="ten left">
-<%= yield :layout %>
-</div>
-<script type="text/javascript" charset="utf-8">
-	new HoverObserver('events_list')
-</script>
 
-<div id="sidebar" class="two right">
-	<ul id="main_navigation">
-		<li><%= link_to_unless(controller_name == "events", "<span>Log</span>", events_path) %></li>
-		<li><%= link_to_unless(controller_name == "calendar", "<span>Calendar</span>", calendar_path) %></li>
-	</ul>
-</div>
-
-<hr class="clear">

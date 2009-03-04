@@ -9,7 +9,8 @@ var CalendarDateSelect = Class.create({
     this.setCursor(this.date);
 
     this.createElement();
-    this.field.insert({ after: this });
+
+		//this.field.insert({ after: this });
   },
   
   createElement: function() {

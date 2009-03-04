@@ -15,7 +15,7 @@ class Trackable < ActiveRecord::Base
   before_validation :autofill_name_if_blank
   
   def to_s
-    name || nickname
+    name || nickname || "NO NAME"
   end
 
 protected
