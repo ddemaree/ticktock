@@ -68,7 +68,7 @@ class EventSet < Array
     inject({}) do |trackables, event|
       if event.subject
         trackables[event.subject] ||= TrackableProxy.new(event.subject)
-        trackables[event.subject].duration += event.duration
+        trackables[event.subject].duration += event.duration.to_i
         trackables[event.subject].count    += 1
       end
       

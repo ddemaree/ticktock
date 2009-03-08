@@ -8,6 +8,10 @@ Factory.sequence :login do |n|
   "user#{n}"
 end
 
+Factory.sequence :domain do |n|
+  "test#{n}"
+end
+
 Factory.define :user do |u|
   u.association :account
   u.name  { Faker::Name.name }
