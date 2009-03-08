@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserAssignmentObserverTest < ActiveSupport::TestCase
 
-  context "created_by" do
+  context "Sender#created_by" do
     setup do
       @current_user = Factory(:user)
       @account = @current_user.account

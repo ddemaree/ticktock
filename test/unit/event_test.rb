@@ -127,6 +127,21 @@ class EventTest < ActiveSupport::TestCase
       assert_equal message, event.body
       assert_equal 2, event.tags.length
     end
+    
+    should "allow setting of duration" do
+      message = "Hello world 1:45"
+      event   = @account.events.create(:body => message)
+      assert_not_nil event.duration
+      assert_not_nil 1.75.hours, event.duration
+    end
+    
+    should "take duration from body when duration is provided separately" do
+      message = "Hello world 1:45"
+      event   = @account.events.create(:duration => "", :body => message)
+      
+      assert_not_nil event.duration
+      assert_not_nil 1.75.hours, event.duration
+    end
   end
   
   

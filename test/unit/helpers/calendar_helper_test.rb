@@ -2,6 +2,35 @@ require 'test_helper'
 
 class CalendarHelperTest < ActionView::TestCase
   
+  context "duration_to_string" do
+    
+    should "return default format with zero suppression" do
+      formatted_string = duration_to_string(2.hours)
+      assert_equal "2h", formatted_string
+    end
+    
+    should "return default format for hours and minutes" do
+      formatted_string = duration_to_string(2.5.hours)
+      assert_equal "2h 30m", formatted_string
+    end
+    
+    should "allow format override" do
+      formatted_string = duration_to_string(2.5.hours, "%H hours %M minutes")
+      assert_equal "2 hours 30 minutes", formatted_string
+    end
+    
+    should "allow format override with optionals" do
+      formatted_string = duration_to_string(2.hours, "%H hours {%M minutes}")
+      assert_equal "2 hours", formatted_string
+    end
+    
+    should "return billables on request" do
+      formatted_string = duration_to_string(1.75.hours, "%B hours")
+      assert_equal "1.75 hours", formatted_string
+    end
+    
+  end
+  
   context "duration_in_words" do
     should "handle times in minutes" do
       assert_equal "3 minutes", duration_in_words(3.minutes)

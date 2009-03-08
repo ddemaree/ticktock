@@ -79,6 +79,18 @@ class EventsControllerTest < ActionController::TestCase
       should_render_the_new_form
     end
     
+    context "with body containing duration and duration" do
+      setup { create_new_event(:body => "Blah blah 1:45", :duration => "") }
+      #should_render_the_new_form
+      
+      should_respond_with 302
+      
+      should "assign duration based on message" do
+        assert_not_nil assigns(:event).duration
+        assert_equal   1.75.hours, assigns(:event).duration
+      end
+    end
+    
     context "with nonblank date" do
       setup { create_new_event(:date => "2007-11-03") }
       should_assign_to :event

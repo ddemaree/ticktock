@@ -27,8 +27,8 @@
 
 #workspace {
 	background: #fff;
-	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 	border-bottom: 8px solid #deebdb;
+	-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
 }
 
 .workspace-title {
@@ -135,7 +135,7 @@ a:hover {
 /* @group Events for calendar view */
 
 .events_for_day {
-	padding: 10px 2.08% 0;
+	padding: 10px 0px 0 20px;
 }
 
 .events_for_day .date_header {
@@ -143,12 +143,20 @@ a:hover {
 }
 
 .events_for_day .date_header span {
-	padding: 4px 4px 2px 2.08%;
+	padding: 4px 8px 2px 20px;
 	border-bottom: 1px solid #888;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: bold;
-	color: #444;
-	margin-left: -2.08%;
+	color: #222;
+	margin-left: -20px;
+	font-family: 'Helvetica';
+	
+	background: ;
+}
+
+.events_for_day.empty .date_header span {
+	color: #b9b9b9;
+	border-color: #ccc;
 }
 
 .events_for_day ul {
@@ -159,13 +167,18 @@ a:hover {
 .events_for_day li {
 	list-style-type: square;
 	position: relative;
-	margin: 0 0 6px 0;
-	font-size: 18px;
-	color: #ccc;
+	margin: 0 0 9px 0;
+	font-size: 15px;
+	color: #cbb79e;
+	background: url(../images/bg-lines.png) repeat 0 0px;
+	line-height: 18px;
 }
 
 .events_for_day li p.event_body {
 	color: #555;
+	position: relative;
+	margin-left: 60px;
+	font-family: 'American Typewriter', Georgia;
 }
 
 .events_for_day li a.tag {
@@ -174,10 +187,11 @@ a:hover {
 
 .events_for_day li .event_subject {
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 13px;
 	margin-right: 2px;
 	position: relative;
-	top: -1px;
+	top: 0px;
+	font-family: Helvetica, Arial;
 }
 
 .events_for_day li .event_subject a {
@@ -186,9 +200,15 @@ a:hover {
 }
 
 .events_for_day li .duration {
-	font-size: 15px;
-	color: #a5b3b7;
-	margin-left: 1px;
+	font-size: 13px;
+	color: #689b4b;
+	
+	position: absolute;
+	display: block;
+	top: 1px;
+	width: 50px;
+	text-align: right;
+	font-weight: bold;
 }
 
 .events_for_day li .event_actions {
@@ -215,7 +235,7 @@ a:hover {
 	display: none;
 	font-size: 17px;
 	list-style-type: square;
-	margin-left: -18px;
+	background: 0;
 }
 
 .events_for_day.empty .no-events {
@@ -246,15 +266,13 @@ a:hover {
 
 
 #quick_entry_form {
-	padding: 8px;
-	margin: 0;
+	margin: 10px 0 0 10px;
 	position: relative;
-	width: 100%;
 }
 
 #quick_entry_form .bd {
 	padding: 10px;
-	background: #666;width: 100%;
+	background: #666;
 }
 
 .qe-datepager {
@@ -301,16 +319,10 @@ a:hover {
 
 #quick_entry_form table.bnd {
 	width: auto;
-	margin-right: 80px;
 }
 
 #quick_entry_form table.bnd td {
 	position: relative;
-}
-
-#quick_entry_form textarea {
-	height: 60px;
-	width: 380px;
 }
 
 #quick_entry_form label {
@@ -326,7 +338,8 @@ a:hover {
 	font-size: 13px;
 }
 
-#quick_entry_form input {
+#quick_entry_form input,
+#quick_entry_form textarea {
 	font-size: 17px;
 	width: 100%;
 }
@@ -338,6 +351,10 @@ a:hover {
 
 #quick_entry_form .duration {
 	width: 20%;
+}
+
+#quick_entry_form .bnd .action {
+	padding-left: 10px;
 }
 
 #quick_entry_form .calendar_date_select {

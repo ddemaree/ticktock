@@ -98,6 +98,8 @@ class Event < ActiveRecord::Base
   end
   
   def duration=(int_or_string)
+    return @duration_set_via_body if @duration_set_via_body
+    
     case int_or_string
     when String
       write_attribute(:duration, Event::TimeParser.from_string(int_or_string))
@@ -112,6 +114,13 @@ class Event < ActiveRecord::Base
     
     self.tags      = params[:tags] if self.tags.empty?
     self.subject ||= params[:subject]
+    
+    if params[:duration]
+      self.duration  = params[:duration]
+      @duration_set_via_body = params[:duration]
+    end
+    
+      #self.duration.blank?
     write_attribute :body, params[:body]
     
     params[:body]

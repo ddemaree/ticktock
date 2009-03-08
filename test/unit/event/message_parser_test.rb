@@ -62,4 +62,67 @@ class Event::MessageParserTest < ActiveSupport::TestCase
     end
   end
   
+  context "Messages containing duration" do
+    context "in hh:mm:ss format" do
+      setup do
+        @message = "Working on a thing 2:00:00"
+        @params  = Event::MessageParser.parse(:body => @message)
+      end
+      
+      should "extract duration" do
+        assert_not_nil @params[:duration]
+      end
+      
+      should "return correct time in hours" do
+        assert_equal 2.hours, @params[:duration]
+      end
+    end
+    context "in hh:mm format" do
+      setup do
+        @message = "Working on a thing 2:00"
+        @params  = Event::MessageParser.parse(:body => @message)
+      end
+      
+      should "extract duration" do
+        assert_not_nil @params[:duration]
+      end
+      
+      should "return correct time in hours" do
+        assert_equal 2.hours, @params[:duration]
+      end
+    end
+    
+    context "in 1.75h format" do
+      setup do
+        @message = "Working on a thing 1.75h"
+        @params  = Event::MessageParser.parse(:body => @message)
+      end
+      
+      should "extract duration" do
+        assert_not_nil @params[:duration]
+      end
+      
+      should "return correct time in hours" do
+        assert_equal 1.75.hours, @params[:duration]
+      end
+    end
+
+    # TODO: Hook up this parser
+    # context "in 1h 25m format" do
+    #   setup do
+    #     @message = "Working on a thing 1h 25m"
+    #     @params  = Event::MessageParser.parse(:body => @message)
+    #   end
+    #   
+    #   should "extract duration" do
+    #     assert_not_nil @params[:duration]
+    #   end
+    #   
+    #   should "return correct time in hours" do
+    #     assert_equal((1.hours + 25.minutes), @params[:duration])
+    #   end
+    # end
+    
+  end
+  
 end

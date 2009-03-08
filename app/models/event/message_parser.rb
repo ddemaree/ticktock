@@ -1,4 +1,5 @@
 class Event::MessageParser
+  TimeRegex = /((?:\d+:\d+(?:\:\d+)?)|(?:\d+.\d+(?:h|hr|hour)))/
   
   # Parses message string into params
   def self.parse(params={})
@@ -33,6 +34,11 @@ class Event::MessageParser
       # Trackables denotes with Twitter-like @name syntax
       params[:body].gsub!(/(?:@([a-zA-Z0-9_]+))\s*/) do |match|
         output[:subject] = $1; ""
+      end
+      
+      # Duration
+      params[:body].sub!(TimeRegex) do |match|
+        output[:duration] = Event::TimeParser.from_string($1); ""
       end
       
       # # Date using machine-readable format

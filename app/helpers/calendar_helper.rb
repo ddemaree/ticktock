@@ -52,6 +52,34 @@ module CalendarHelper
     [hours, minutes, seconds]
   end
   
+  def duration_to_string(time, format=nil)
+    format ||= "{%Hh} {%Mm}"
+    hours, minutes, seconds = time_to_units(time)
+    
+    format.gsub!(/(\{)?\%(\w)(?:([\w ]+)\})?/) do |match|
+      optional = ($1 == "{")
+      
+      value =
+        case $2
+          when "H" then hours
+          when "M" then minutes
+          when "S" then seconds
+          when "B" then duration_in_billable_hours(time)
+          else $2
+        end
+        
+      if optional && value == 0
+        ""
+      elsif $3
+        value.to_s + $3.to_s
+      else
+        value
+      end
+    end
+    
+    format.strip
+  end
+  
   def duration_in_words(time,options={})
     hours, minutes, seconds = time_to_units(time)
     
