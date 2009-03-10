@@ -22,10 +22,12 @@ module EventsHelper
     content_tag(:span, tags_html, :class => 'tags')
   end
   
-  def event_subject(subject)
+  def event_subject(subject, url=nil)
+    url ||= subject
+    
     returning("") do |output|
       output << tag(:strong, {:class => "#{dom_class(subject)} event_subject"}, true)
-      output << link_to("#{subject}", subject)
+      output << link_to("#{subject}", url)
       output << '</strong>'
     end
   end

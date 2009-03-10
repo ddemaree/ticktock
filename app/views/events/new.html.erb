@@ -1,24 +1,67 @@
-<h1>New event</h1>
-
-<% form_for @event do |f| %>
-
-<p class="field">
-	<%= f.label :body %>
-	<%= f.text_area :body, :cols => 60, :rows => 4 %>
-</p>
-
-<p class="field">
-	<%= f.label :date %>
-	<%= f.date_select :date %>
-</p>
-
-<p class="field">
-	<%= f.label :hours %>
-	<%= f.text_field :hours %>
-</p>
-
-<p class="actions">
-	<button type="submit">Create</button>
-</p>
-	
+<% @event_row = capture do %>
+<%= render :partial => 'new', :locals => {:index => "\#{index}"} %>
 <% end %>
+<%= javascript_tag %{var eventRow = new Template("#{escape_javascript(@event_row)}")} %>
+
+<div class="hd">
+	<p class="back">
+		<%= link_to "&lsaquo; Back to your calendar", root_path %>
+	</p>
+	
+	<h1>Add new events</h1>
+</div>
+
+<div class="eight left">
+<% form_for @event, :html => {:class => "bd"} do |f| %>
+	<noscript>
+	<% 10.times do |x| %>
+	<%= render :partial => 'new', :locals => {:index => x} %>
+	<% end %>
+	</noscript>
+
+	<table id="eventRows">
+	<tr>
+		<th class="date">When?</th>
+		<th class="body">What?</th>
+		<th class="duration">How long?</th>
+		<th class="actions">&nbsp;</th>
+	</tr>
+	</table>
+
+
+	<p class="actions">
+		<button type="submit">Create</button>
+	</p>
+<% end %>
+</div>
+<div class="two right">
+	
+	<%= link_to "Import from CSV file", new_event_import_path %>
+	
+</div>
+<hr class="clear">
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+for(x = 0; x <= 10; x++){
+	row = eventRow.evaluate({index:x})
+	$('eventRows').insert({bottom:row})
+	
+	row = $('row_' + x)
+	
+	remover = new Element('a', {href:'javascript:void%200', className:'remover'})
+	remover.update('remove')
+	remover.observe('click', function(){
+		this.up('tr').remove()
+	}.bind(remover))
+	
+	row.down('td.actions').insert(remover)
+}
+
+$$('.event_date').each(function(elem){
+	new Ticktock.DateSelect(elem)
+})
+
+</script>

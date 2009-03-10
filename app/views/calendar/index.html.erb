@@ -1,151 +1,64 @@
 <%- pagination_links = capture do -%>
-	<%= link_to "Previous #{time_frame}", params_for_previous, :class => "nav previous" %>
+	<%= link_to "&lsaquo; Previous", params_for_previous, :class => "nav previous" %>
 	<span class="sep">|</span>
 	<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
 	<span class="sep">|</span>
-	<%= link_to "Next #{time_frame}", params_for_next, :class => "nav next" %>
+	<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
 <%- end -%>
 
-<div id="calendar_nav" class="workspace-title">
-	<h2><%= range_description %></h2>
-	<p class="nav">
-		<%= pagination_links %>
-	</p>
+<div class="hd">
+	<h1><%= range_description %></h1>
 </div>
 
-<table width="100%" cellspacing="0" border="0"><tr valign="top">
-	<td class="seven calendar-main">
-		<% form_for :event, :url => events_path, :html => {:id => "quick_entry_form"} do |f| %>
-		<div class="bd">
-			<table class="bnd">
-				<tr>
-				<td class="body" colspan="2">
-					<div class="overlay-label">
-						<%= f.label :body, "What did you do?" %>
-						<%= f.text_area :body, :rows => 3, :cols => 60 %>
-					</div>
-				</td>
-				</tr>
-				<tr>
-				<td class="duration">
-					<div class="overlay-label">
-						<%= f.label :duration, "For how long?" %>
-						<%= f.text_field :duration, :size => 20 %>
-					</div>
-				</td>
-				<td class="action">
-					<button type="submit">Update &rsaquo;</button>
-				</td>
-				</tr>
+<div class="pagination top">
+	<%= pagination_links %>
+</div>
 
-			</table>
-		</div>		
-		
-		<p class="field" id="event_date_field">
-			<%= f.label :date, "On what day?" %>
-			<%= f.text_field :date %>
-		</p>
-
-		<input type="hidden" name="return" value="yes" />
-		<% end %>
-		<script type="text/javascript" charset="utf-8">
-			$$('.overlay-label').each(function(elem){
-				new Ticktock.GhostLabel(elem)
-			})
-			
-			new Ticktock.DatePager('event_date', 'quick_entry_form')
-		</script>
-
+<table class="calendar frame <%= time_frame %>" width="100%" cellspacing="0" border="0"><tr valign="top">
+	<td class="seven calendar-main" rowspan="2">
 		<% current_range.to_a.each do |date| %>
+			<% events_for_day(date) do |events| %>
 
-		<% events_for_day(date) do |events| %>
+			<h3 class="date_header">
+				<span><%= date.strftime("%A, %b %e") %></span>
+			</h3>
 
-		<h3 class="date_header">
-			<span><%= date.strftime("%A, %b %e") %></span>
-		</h3>
+			<ul>
+				<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
+				<li class="no-events">Nothing happened today</li>
+			</ul>	
 
-		<ul>
-		<%- events.each do |event| -%>
-			<li class="hover_container">
-				<%- if event.duration && (event.duration > 0) -%>
-				<span class="duration"><%= duration_to_string event.duration %></span>
-				<%- end -%>
-				<p class="event_body"><span class="hover_target">
-					<%= event_subject(event.subject) unless event.subject.nil? %>
-					<%= event_message(event.body) %>
-				</span></p>
-				<p class="event_actions hover_target">
-					<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
-					<%= link_to "Edit", [:edit, event], :class => "edit" %>
-				</p>
-			</li>
-		<%- end -%>
-			<li class="no-events">Nothing happened today</li>
-		</ul>	
-
-
-		<hr class="date-separator" style="clear:both">
-
+			<hr class="date-separator" style="clear:both">
+			<% end %>
 		<% end %>
 
-		<% end %>
-
-		<div class="pagination">
-			<%= pagination_links %>
-		</div>
+		
 	</td>
 	
-	<td class="gutter">&nbsp;</td>
+	<td class="gutter" rowspan="2">&nbsp;</td>
 	
 	<td class="three calendar-sidebar">
-	
-	<%- if @events.total_duration > 0 -%>
-	<p class="total_logged">
-		You logged
-		<strong><%= duration_in_words @events.total_duration %></strong>
-		this <%= time_frame %>
-	</p>
-	<%- end -%>
-	
-	<%- if @events.trackables.length > 0 -%>
-	<div class="sidebar-module tags">
-		<h4>This <%= time_frame %>'s projects</h4>
-	
-		<p><%= trackables_pie_chart(@events.trackables.sort { |a,b| b.duration <=> a.duration }) %></p>
-	
-		<%- @events.trackables.sort { |a,b| b.duration <=> a.duration }.each_with_index do |trackable, x| -%>
-		<p><span style="background:#<%= trackables_colors[x] %>">&nbsp;</span>
-		<%= trackable rescue "WTF" %> <%= duration_in_billable_hours trackable.duration %></p>
+		<%- if @events.total_duration > 0 -%>
+		<p class="total_logged">
+			You logged
+			<strong><%= duration_to_string @events.total_duration %></strong>
+			this <%= time_frame %>
+		</p>
 		<%- end -%>
-		<hr style="clear:both">
-	</div>
-	<%- end -%>
-	
-	<%- if @events.tags.length > 0 -%>
-	<div class="sidebar-module tags">
-		<h4>This <%= time_frame %>&rsquo;s top tags</h4>
-	
-		
-		<script type="text/javascript" charset="utf-8">
-			tags_data = '<%= escape_javascript(@events.tags.sort { |a,b| b.duration <=> a.duration }.collect(&:duration).to_json) %>'.evalJSON()
-			colors = '<%= escape_javascript(trackables_colors.to_json) %>'.evalJSON()
-			//<canvas id="tags_chart" height="120" width="300"></canvas>
-			//new Ticktock.BarChart('tags_chart',{data:tags_data, colors:colors}, "blah")
-		</script>
-		
-		<ul>
-		<%- @events.tags.sort { |a,b| b.duration <=> a.duration }.first(10).each_with_index do |tag, x| -%>
-		<li class="<%= tag_class(tag.duration) %>">
-			<a href="#"><%= tag %></a>
-			<!-- <span class="total"><%= duration_in_words tag.duration %></span> -->
-		</li>
-		<%- end -%>
-		</ul>
-	</div>
-	
 	</td>
-	<%- end -%>
-	
-	
-	
-</tr></table>
+
+</tr>
+<tr>
+	<td class="calendar-sidebar" valign="bottom">
+		
+	</td>
+</tr>
+
+</table>
+<div class="pagination">
+	<%= pagination_links %>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	new HoverObserver('main')
+</script>

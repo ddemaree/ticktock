@@ -1,0 +1,35 @@
+<%- if @events.trackables.length > 0 -%>
+<div class="sidebar-module tags">
+	<h4>This <%= time_frame %>'s projects</h4>
+
+	<p><%= trackables_pie_chart(@events.trackables.sort { |a,b| b.duration <=> a.duration }) %></p>
+
+	<%- @events.trackables.sort { |a,b| b.duration <=> a.duration }.each_with_index do |trackable, x| -%>
+	<p><span style="background:#<%= trackables_colors[x] %>">&nbsp;</span>
+	<%= trackable rescue "WTF" %> <%= duration_in_billable_hours trackable.duration %></p>
+	<%- end -%>
+	<hr style="clear:both">
+</div>
+<%- end -%>
+
+<%- if @events.tags.length > 0 -%>
+<div class="sidebar-module tags">
+	<h4>This <%= time_frame %>&rsquo;s top tags</h4>
+
+	
+	<script type="text/javascript" charset="utf-8">
+		tags_data = '<%= escape_javascript(@events.tags.sort { |a,b| b.duration <=> a.duration }.collect(&:duration).to_json) %>'.evalJSON()
+		colors = '<%= escape_javascript(trackables_colors.to_json) %>'.evalJSON()
+		//<canvas id="tags_chart" height="120" width="300"></canvas>
+		//new Ticktock.BarChart('tags_chart',{data:tags_data, colors:colors}, "blah")
+	</script>
+	
+	<ul>
+	<%- @events.tags.sort { |a,b| b.duration <=> a.duration }.first(10).each_with_index do |tag, x| -%>
+	<li class="<%= tag_class(tag.duration) %>">
+		<a href="#"><%= tag %></a>
+		<!-- <span class="total"><%= duration_in_words tag.duration %></span> -->
+	</li>
+	<%- end -%>
+	</ul>
+</div>

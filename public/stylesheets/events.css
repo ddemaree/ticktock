@@ -1,0 +1,292 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/events.css */
+
+#events.new #container {
+	width: 960px;
+}
+
+#events.new .bd {
+	padding: 15px;
+}
+
+table#eventRows {
+	width: 100%;
+	border-spacing: 0;
+	margin: 10px 0;
+}
+
+table#eventRows td,
+table#eventRows th {
+	border-bottom: 1px solid #bcd0e5;
+	padding: 8px 5px;
+}
+
+table#eventRows th {
+	font-weight: bold;
+	font-size: 11px;
+	color: #666;
+	padding-top: 0;
+	padding-bottom: 4px;
+}
+
+table#eventRows td input {
+	font-size: 15px;
+	width: 100%;
+}
+
+table#eventRows .actions {
+	white-space: nowrap;
+	text-align: right;
+	width: 50px;
+}
+
+table#eventRows .date {
+	white-space: nowrap;
+	width: 90px;
+}
+
+table#eventRows .body {
+}
+
+table#eventRows .duration {
+	width: 140px;
+}
+
+
+
+
+
+/* @group Events List View */
+
+
+
+#calendar_nav p.nav {
+	position: absolute;
+	right: 10px;
+	top: 12px;
+}
+
+#calendar_nav p.nav .sep {
+	color: #ccc;
+}
+
+/* @group Event list actions */
+
+.event_actions {
+	white-space: nowrap;
+}
+
+.event_actions a {
+	color: #c00;
+	float: left;
+	position: relative;
+	padding: 6px 2px;
+}
+
+.event_actions a.delete {
+	background: url(../images/trash.gif) no-repeat center center;
+	width: 16px;
+	height: 16px;
+	text-indent: -9999px;
+	top: -2px;
+}
+
+.event_actions a.edit {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+/* @end */
+
+/* @group Events for calendar view */
+
+.events_for_day {
+	padding: 20px 0px 0 20px;
+}
+
+.events_for_day + .events_for_day {
+	padding-top: 14px;
+}
+
+.events_for_day .date_header {
+	margin: 0 0 20px;
+	
+}
+
+.events_for_day .date_header span {
+	padding: 4px 8px 3px 20px;
+	/*border-bottom: 1px solid #888;*/
+	font-size: 12px;
+	font-weight: bold;
+	color: #222;
+	margin-left: -20px;
+	font-family: 'Helvetica';
+	
+	background: url(../images/date-header.png) no-repeat left bottom;
+}
+
+.events_for_day.empty .date_header span {
+	color: #b9b9b9;
+	border-color: #ccc;
+}
+
+.events_for_day ul {
+	padding: 0 0 6px;
+}
+
+.events_for_day li {
+	position: relative;
+	margin: 0;
+	font-size: 15px;
+	color: #cbb79e;
+	line-height: 18px;
+}
+
+.events_for_day li + li {
+	margin-top: 12px;
+}
+
+.events_for_day li > .ln {
+	
+}
+
+.events_for_day li p.event_body {
+	color: #555;
+	position: relative;
+	margin-left: 60px;
+	font-family: 'American Typewriter', Georgia;
+	background: #fff url(../images/bg-lines.png) repeat 0 0px;
+}
+
+.events_for_day li a.tag {
+	text-decoration: none;
+}
+
+.events_for_day li .event_subject {
+	font-weight: bold;
+	font-size: 13px;
+	margin-right: 2px;
+	position: relative;
+	top: 0px;
+	font-family: Helvetica, Arial;
+}
+
+.events_for_day li .event_subject a {
+	color: #000;
+	text-decoration: none;
+}
+
+.events_for_day li .duration {
+	font-size: 13px;
+	color: #689b4b;
+	
+	position: absolute;
+	display: block;
+	top: 1px;
+	width: 50px;
+	text-align: right;
+	font-weight: bold;
+}
+
+.events_for_day li .event_actions {
+	position: absolute;
+	left: -52px;
+	top: -5px;
+	font-size: 11px;
+	background: #fff;
+	padding-left: 4px;
+	display: none;
+}
+
+.events_for_day li.hover .event_actions {
+	display: block;
+}
+
+.events_for_day li span.hover_target {
+	padding-left: 24px;
+	margin-left: -24px;
+}
+
+.events_for_day .no-events {
+	color: #b9b9b9;
+	display: none;
+	font-size: 17px;
+	list-style-type: square;
+	background: 0;
+}
+
+.events_for_day.empty .no-events {
+	display: block;
+}
+
+/* @end */
+/* @end */
+
+.pagination {
+	padding: 10px 10px 20px;
+	margin: 10px 10px 0;
+	border-top: 2px solid #d4d4d4;
+}
+
+.pagination span.disabled {
+	color: #999;
+}
+
+.pagination .sep {
+	color: #999;
+}
+
+.pagination a {
+	color: #c00;
+	text-decoration: none;
+}
+
+#calendar.index #main table.frame {
+	margin: 10px 0;
+}
+
+.calendar-sidebar {
+	border-left: 1px solid #e5e5e5;
+}
+
+.calendar-sidebar .pagination {
+	font-size: 13px;
+	text-align: center;
+	padding: 0 0 10px;
+	padding-top: 10px;
+}
+
+.calendar-sidebar .pagination.top {
+	border-bottom: 2px solid #ccc;
+	border-top: 0;
+	padding-top: 0;
+}
+
+.calendar-sidebar .pagination a {
+	padding: 1px 2px;
+	-webkit-border-radius: 4px;
+}
+
+.calendar-sidebar .pagination a:hover {
+	background: #def;
+	text-decoration: none !important;
+}
+
+.total_logged {
+	margin: 6px 10px;
+	text-align: center;
+	font-size: 13px;
+	color: #888;
+	padding: 6px 0 8px;
+	background: #ffd;
+}
+
+.total_logged strong {
+	font-size: 15px;
+	color: #000;
+	padding: 0 2px;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+#events.index .bd {
+	padding: 10px 0;
+}

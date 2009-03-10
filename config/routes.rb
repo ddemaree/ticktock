@@ -1,11 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
+  SprocketsApplication.routes(map) 
   
   #map.connect '/emails.:format', :controller => 'emails', :action => 'create', :conditions => {:method => :post} 
   map.resources :emails, :only => [:create]
   
-  map.import_events '/events/import', :controller => "event_imports", :action => "new"
-  map.resources :event_imports, :only => [:new, :create]
-  map.resources :events, :trackables, :users
+  map.resources :event_imports, :member => {:mapping => :get}, :except => [:index, :show, :edit]
+  map.resources :events, :users
+  
+  map.resources :trackables, :has_many => [:events]
   
   map.with_options :controller => 'calendar', :action => 'index' do |calendar|
     

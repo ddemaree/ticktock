@@ -1,6 +1,9 @@
 class CalendarController < ApplicationController
   include Ticktock::DateNavigation
   
+  section_name "events"
+  layout 'events'
+  
   def index
     @events = current_account.events.for_date_range(current_range).find_and_extend
   end

@@ -1,3 +1,5 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/shared.css */
+
 @import url(lib/fonts.css);
 @import url(lib/reset.css);
 @import url(lib/forms.css);
@@ -11,18 +13,20 @@ body {
 }
 
 body, html {
-	background: #f5f5f5;
+	background: #e5e5e5;
 }
 
 #container {
-	width: 800px;
+	width: 960px;
 	margin: 10px auto;
 }
 
-#main {
-	width: 97.5%;
+#main, .wrap {
+	width: 940px;
 	margin: 0 auto;
 }
+
+
 
 #footer {
 	background: #d1d1c9;
@@ -43,3 +47,7 @@ body, html {
 /* Hide from IE Mac \*/
 .clearfix {display:block;}
 /* End hide from IE Mac */
+
+table#stretcher {
+	width: 100%;
+}

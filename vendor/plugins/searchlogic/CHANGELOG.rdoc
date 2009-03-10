@@ -1,3 +1,14 @@
+== 1.6.5
+
+* Skip all associations defined with the :finder_sql option, since conditions can not be chained to them, etc.
+* Fixed bug when using non string values for the keywords condition.
+* Fixed undefined methods link_options error.
+* Return blank conditions when trying to scope blank conditions. Fixes the issue with groups that return a blank SQL string.
+
+== 1.6.4 released 2009-01-22
+
+* Fixed calling attribute_condition with newer versions of rails.
+
 == 1.6.3 released 2008-12-13
 
 * Added in avg, count, and sum modifiers for SQLite and Postgres.
@@ -5,6 +16,8 @@
 * Ignore :include option for calculations since we don't need it and AR throws an error for polymorphic relationships.
 * Removed sum and count since they can not be in the WHERE statement, but must be in the HAVING statement
 * Added in auto joins for groups so that the joins don't have to be manually specified.
+* Use first column in column_names as the default column for calculations, since a column is required when using DISTINCT and some tables can have more than one primary key.
+* On associations see what the first conditions "any" status is to determine if to join with "ANY" or "AND"
 
 == 1.6.2 released 2008-12-13
 

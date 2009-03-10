@@ -13,8 +13,8 @@ module Event::Importing
   module ClassMethods
     
     def signature(body,date,start=nil,stop=nil)
-      start = start.to_time.strftime("%Y%m%d%I%M%S%Z") unless start.nil?
-      stop  = stop.to_time.strftime("%Y%m%d%I%M%S%Z")  unless stop.nil?
+      start = start.to_time.strftime("%Y%m%d%I%M%S%Z") unless start.blank?
+      stop  = stop.to_time.strftime("%Y%m%d%I%M%S%Z")  unless stop.blank?
       
       %{#{body}:#{date}:#{start}:#{stop}:}
     end

@@ -18,6 +18,10 @@ Rails::Initializer.run do |config|
   config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com', :version => '~> 2.0.2'
   
   config.gem 'gchart', :version => '~>0.5.0'
+  
+  config.gem 'fastercsv', :version => '~>1.2.3'
+  
+  config.gem 'thoughtbot-paperclip', :lib => 'paperclip', :source => 'http://gems.github.com', :version => '~>2.2.6'
  
  
   # Settings in config/environments/* take precedence over those specified here.

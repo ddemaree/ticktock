@@ -8,10 +8,12 @@ class EventsController < ApplicationController
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
   def index
-    @events = current_account.events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
+    scoped_events = current_account.events.filtered({
+      :trackable => params[:trackable_id],
+      :tag => params[:tags]
+    })
     
-    #@search = current_account.events.new_search(params[:search])
-    #@events = @search.all
+    @events = scoped_events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
     
     respond_to do |format|
       format.html
@@ -21,6 +23,7 @@ class EventsController < ApplicationController
   end
   
   def new
+    @section_name = "new_event"
     @event = current_account.events.build
     
     respond_to do |format|
@@ -31,6 +34,13 @@ class EventsController < ApplicationController
   end
   
   def create
+    if params[:event].keys.any? { |k| !!((k.to_s =~ /^\d+$/) == 0)  }
+      return create_several_via_hash
+    elsif params[:events] && params[:events].is_a?(Array)
+      raise "Array format"
+    end
+    
+    # Single event in hash format is default
     @event = current_account.events.build
     @event.update_attributes! params[:event]
     
@@ -49,6 +59,27 @@ class EventsController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     respond_on_failed_create @event
     
+  end
+  
+  def create_several_via_hash
+    @events = []
+    @unsaved_events = []
+    
+    params[:event].each do |key, params|
+      next if params[:body].blank?
+      
+      event = current_account.events.build
+      event.attributes = params
+      
+      if event.save
+        @events << event 
+      else
+        @unsaved_events << event
+      end
+    end
+    
+    flash[:notice] = "Created #{@events.length} event#{"s" if @events.length != 1}"
+    redirect_to(params[:return] == "yes" ? request.referrer : root_path)
   end
   
   def edit

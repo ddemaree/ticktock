@@ -5,6 +5,7 @@ class Trackable < ActiveRecord::Base
   
   # #   A S S O C I A T I O N S   # #
   belongs_to :account
+  has_many :events, :foreign_key => "subject_id"
   
   # #   V A L I D A T I O N S   # #
   validates_presence_of :account, :name

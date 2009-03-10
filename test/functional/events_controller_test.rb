@@ -63,11 +63,23 @@ class EventsControllerTest < ActionController::TestCase
   end
   
   context "on POST to :create" do
+    context "using batch array" do
+      setup { create_several_events_via_hash }
+      
+      should_assign_to :events
+      should_respond_with 302
+      should_redirect_to("the home page") { root_path }
+    
+      should "create multiple events" do
+        assert_equal 6, assigns(:events).length
+      end
+    end
+    
     context "with valid data" do
       setup { create_new_event }
       should_assign_to :event
       should_respond_with 302
-      should_redirect_to 'events_path'
+      should_redirect_to('events index') { events_path }
       
       should "set date to today's date" do
         assert_equal Date.today, assigns(:event).date
@@ -137,7 +149,7 @@ class EventsControllerTest < ActionController::TestCase
       end
     
       should_respond_with :redirect
-      should_redirect_to  'events_path'
+      should_redirect_to("events index") { events_path }
     end
     
     context "with blank body" do
@@ -171,7 +183,7 @@ class EventsControllerTest < ActionController::TestCase
 
       should_assign_to :event
       should_respond_with :redirect
-      should_redirect_to 'events_path'
+      should_redirect_to('events index') { events_path }
     end
   end
   
@@ -267,6 +279,22 @@ protected
   def create_new_event(params={})
     post :create, {
       :event => { :body => Faker::Lorem.paragraph }.merge(params)
+    }
+  end
+  
+  def create_several_events_via_hash(params={})
+    events =
+      (0..5).inject({}) do |events, x|
+        events[x] = { 
+          :body => Faker::Lorem.paragraph,
+          :date => Date.today.to_s(:db),
+          :duration => "1 hour"
+        }.merge(params)
+        events
+      end
+    
+    post :create, {
+      :event => events
     }
   end
 

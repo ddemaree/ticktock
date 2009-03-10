@@ -62,12 +62,13 @@ namespace :practical do
     task :copy do
       run "cp #{shared_path}/config/* #{release_path}/config/"
     end
+    after "deploy:update_code", "practical:config:copy"
     
     desc "Symlink config files"
     task :symlink do
       run "ln -s #{shared_path}/config/* #{release_path}/config/"
     end
-    after "deploy:update_code", "practical:config:symlink"
+    
   
   end
   

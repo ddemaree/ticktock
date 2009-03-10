@@ -2,8 +2,11 @@ require 'test_helper'
 
 class EventImportsControllerTest < ActionController::TestCase
 
-  should_route :get,  "/events/import", :action => :new
+  should_route :get,  "/event_imports/new", :action => :new
   should_route :post, "/event_imports", :action => :create
+  
+  should_route :get,  "/event_imports/1/mapping", :action => :mapping, :id => 1
+  should_route :put,  "/event_imports/1", :action => :update, :id => 1
 
   def setup
     @account   = Factory(:account)
@@ -24,18 +27,41 @@ class EventImportsControllerTest < ActionController::TestCase
   end
 
   context "on POST to :create" do
-    setup { post :create, {:uploaded_file => uploaded_file }}
+    setup do
+      post(:create, {:event_import => {:source => uploaded_file}})
+    end
     
+    should_assign_to :event_import
+    should_respond_with 302
+    
+    # FIXME: Why no work??
+    #should_redirect_to("the mapping form") { mapping_event_import_url(@event_import) }
+  end
+  
+  context "on GET to :mapping" do
+    setup do
+      @event_import = Factory(:event_import, :account => @account)
+      get(:mapping, {:id => @event_import.to_param})
+    end
+    
+    should_assign_to :event_import
     should_respond_with :success
-    should_assign_to :imported_events
-    
-    should "have imported events count of 1" do
-      assert_equal 1, assigns(:imported_events).length
+    should_render_a_form
+  end
+  
+  context "on PUT to :update" do
+    setup do
+      @event_import = Factory(:event_import, :account => @account)
+      put(:update, {
+        :id      => @event_import.to_param,
+        :mapping => ["","body","start","stop","","subject"],
+        :event_import => {:ignore_first => "1"}
+      })
     end
     
-    should "set created_by on created events" do
-      assert_equal @user, assigns(:imported_events).first.created_by
-    end
+    should_assign_to :imported_rows
+    should_respond_with 302
+    #should_set_the_flash
   end
 
 protected

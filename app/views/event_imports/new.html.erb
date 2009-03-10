@@ -1,11 +1,13 @@
 <h1>EventImports#new</h1>
 <p>Find me in app/views/event_imports/new.html.erb</p>
 
-<% form_tag event_imports_path, :multipart => true do %>
+<%= error_messages_for :event_import %>
+
+<% form_for @event_import, :html => {:multipart => true} do |f| %>
 	
-<p class="label">
-	<%= label_tag :uploaded_file %>
-	<%= file_field_tag :uploaded_file %>
+<p class="field">
+	<%= f.label :source, "Upload CSV file" %>
+	<%= f.file_field :source %>
 </p>
 
 <p class="actions">

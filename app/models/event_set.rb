@@ -54,7 +54,6 @@ class EventSet < Array
   def tags
     inject({}) do |tags, event|
       event.tags.each do |tag|
-        #tags[tag] ||= {:duration => 0, :count => 0}
         tags[tag] ||= TagProxy.new(tag)
         tags[tag].duration += event.duration
         tags[tag].count    += 1

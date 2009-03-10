@@ -25,6 +25,14 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def self.section_name(name)
+    before_filter do |controller|
+      controller.instance_eval do
+        @section_name = name
+      end
+    end
+  end
+  
   # def self.api_key_allowed_for(*allowed_actions)
   #   # def authorized
   #   #       logged_in? or logged_in_via_api_key?

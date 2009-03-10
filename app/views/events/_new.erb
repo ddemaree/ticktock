@@ -1,0 +1,8 @@
+<% fields_for :event, :index => (index ||= nil) do |f| %>
+<tr id="row_<%= index %>">
+	<td><%= f.text_field :date, :class => "event_date" %></td>
+	<td><%= f.text_field :body %></td>
+	<td><%= f.text_field :duration %></td>
+	<td class="actions"></td>
+</tr>
+<%- end -%>

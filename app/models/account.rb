@@ -10,6 +10,7 @@ class Account < ActiveRecord::Base
   has_many :trackables, :dependent => :destroy
   has_many :events,     :dependent => :destroy, :extend => Account::EventsExtension
   has_many :labels,     :dependent => :destroy
+  has_many :event_imports, :dependent => :destroy
 
   # #   V A L I D A T I O N S   # #
   validates_presence_of   :name, :domain, :timezone

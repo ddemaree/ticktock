@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Ticktockapp</title>
+	<%= sprockets_include_tag %>
+	<%= stylesheet_link_tag "default" %>
+	<%= @content_for_head %>
+</head>
+
+<% content_tag :body, :id => body_id, :class => body_classes.join(" ") do %>
+	
+<div id="header"><div class="wrap clearfix">
+	<h1><%= current_account.name %></h1>
+	
+	<p class="current_user">
+		<%= current_user %>
+		(<%= link_to "Sign out", logout_path %>)
+	</p>
+</div></div>
+
+<div id="container">
+<div id="main" class="workspace wrap">
+
+<table id="stretcher">
+	<tr valign="top">
+		<td class="left-side two-plus" id="main-sidebar">
+			<p id="add-event">
+				<%= link_to_unless (section_name == "new_event"), "Add event", new_event_path %>
+			</p>
+			
+			<ul id="main-navigation">
+				<li>
+					<%= link_to_unless (section_name == "events"), "Calendar", calendar_path %>
+				</li>
+				<li><%= link_to_unless (section_name == "trackables"), "Projects", trackables_path %>	
+				</li>
+			</ul>
+		</td>
+		
+		<td class="workspace ten">
+			<div id="workspace">
+				<%= yield %>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<div id="footer">
+	&copy;2009 Practical Creative &amp; Code
+</div>
+
+</div>
+</div>
+
+<% end %>
+</html>

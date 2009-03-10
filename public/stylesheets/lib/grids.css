@@ -1,8 +1,8 @@
-
+/* @override http://practical.ticktock.local:3000/stylesheets/lib/grids.css */
 
 /* @group Grid Layout */
 
-/*.one    { width: 60px;  }
+.one    { width: 60px;  }
 .two    { width: 140px; }
 .three  { width: 220px; }
 .four   { width: 300px; }
@@ -13,23 +13,26 @@
 .nine   { width: 700px; }
 .ten    { width: 780px; }
 .eleven { width: 860px; }
-.twelve { width: 940px; }*/
+.twelve { width: 940px; }
 
-.one    { width: 7.5%;  }
-.two    { width: 17.5%; }
-.three  { width: 27.5%; }
-.four   { width: 37.5%; }
-.five   { width: 47.5%; }
-.six    { width: 57.5%; }
-.seven  { width: 67.5%; }
-.eight  { width: 77.5%; }
-.nine   { width: 87.5%; }
-.ten    { width: 97.5%; }
+.gutter { width: 20px; }
 
-.gutter { width: 2.5%; }
+.two-plus { width: 160px; }
 
 .left   { float: left;  }
 .right  { float: right; }
 .clear  { clear: both;  }
 
 /* @end */
+
+.clearfix:after {
+  content:".";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+.clearfix {display:inline-block;}
+/* Hide from IE Mac \*/
+.clearfix {display:block;}
+/* End hide from IE Mac */

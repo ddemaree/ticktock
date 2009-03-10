@@ -1,0 +1,71 @@
+<script type="text/javascript" charset="utf-8">
+	var Mapping = {
+	  rows: [],
+	  currentRow: 0,
+
+	  selectFirstRecord: function() {
+	    this.currentRow = 0;
+	    this.populateColumns();
+	  },
+
+	  selectNextRecord: function() {
+	    this.currentRow = (this.currentRow + 1) % this.rows.length;
+	    this.populateColumns();
+	  },
+
+	  selectPreviousRecord: function() {
+	    this.currentRow = this.currentRow - 1;
+	    if(this.currentRow < 0) this.currentRow = this.rows.length - 1;
+
+	    this.populateColumns();
+	  },
+
+	  populateColumns: function() {
+	    var row = this.rows[this.currentRow];
+
+	    for(var i = 0; i < this.rows[0].length; i++) {
+	      $('column_' + i).innerHTML = row[i] || "";
+	    }
+	  }
+	}
+	
+</script>
+
+<% form_for @event_import do |f| %>
+
+<%= javascript_tag %{Mapping.rows = #{@event_import.from_csv.to_json}} %>
+
+<table>
+<tr>
+	<td>Ticktock field</td>
+	<td>
+		Review another:
+		<%= link_to_function "Previous", "Mapping.selectPreviousRecord()" %> |
+		<%= link_to_function "Next", "Mapping.selectNextRecord()" %>
+	</td>
+</tr>
+<%- @event_import.columns.times do |x| -%>
+<tr>
+	<td id="column_header_<%= x %>">
+		<select name="mapping[]"><%= options_for_select(EventImport.mappable_fields) %></select>
+	</td>
+	<td id="column_<%= x %>">
+		
+	</td>
+</tr>
+<%- end -%>
+</table>
+
+<div>
+	<%= f.check_box :ignore_first %> Ignore first row
+</div>
+
+<p class="action">
+	<button type="submit">Import events</button>
+	
+</p>
+<% end %>
+<script type="text/javascript" charset="utf-8">
+Mapping.populateColumns()
+
+</script>

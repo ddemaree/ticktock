@@ -7,13 +7,10 @@
 @import url(lib/datepicker.css);
 
 #header {
-	background: #f4f4eb;
-	padding: 1px;
+	background: #7a95f5;
 }
 
 #header .wrap {
-	width: 95.83%;
-	padding: 10px 1.04% 6px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -25,10 +22,73 @@
 	font-size: 11px;
 }
 
+#header h1,
+#header ul,
+#header li {
+	float: left;
+}
+
+#header h1 {
+	padding: 9px 10px 9px;
+	font-weight: bold;
+	color: #fff;
+}
+
+#header ul {
+	padding-top: 4px;
+	padding-left: 10px;
+}
+
+#header li {
+	margin-left: 2px;
+	background: #f5f5f5;
+}
+
+#header li a,
+#header li span {
+	display: block;
+}
+
+#header li a {
+	background: #6680dc;
+	color: #172c76;
+	text-decoration: none;
+}
+
+#header li span {
+	padding: 6px 10px;
+}
+
+
+
+
+
 #workspace {
 	background: #fff;
-	border-bottom: 8px solid #deebdb;
-	-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+	
+	min-height: 400px;
+}
+
+#workspace .hd {
+	padding: 16px 10px;
+	border-bottom: 2px solid #ffd1cc;
+	background: #fafafa;
+	position: relative;
+}
+
+#workspace .hd h1 {
+	font-size: 19px;
+	padding: 0 10px;
+}
+
+#workspace .hd .back {
+	padding: 4px 10px 0;
+	font-size: 11px;
+}
+
+#workspace .hd a {
+	text-decoration: none;
 }
 
 .workspace-title {
@@ -45,6 +105,43 @@
 	text-shadow: 1px 1px 0 #fff;
 }
 
+#main-navigation li {
+	margin: 4px 0 0;
+}
+
+#main-navigation li a,
+#main-navigation li span {
+	padding: 6px 20px 6px 10px;
+	display: block;
+	text-decoration: none;
+	background: -webkit-gradient(linear, left top, right top, from(#aaa), to(#e5e5e5), color-stop(0.7,#aaa));
+	color: #fff;
+	border-right: 0;
+}
+
+#main-navigation li span {
+	font-weight: bold;
+	background: #000;
+	color: #fff;
+}
+
+#main-sidebar #add-event {
+	padding: 10px 0;
+}
+
+#main-sidebar #add-event a,
+#main-sidebar #add-event span {
+	padding: 6px 10px;
+	font-size: 15px;
+	display: block;
+}
+
+#main-sidebar #add-event span {
+	background: #000;
+	color: #fff;
+}
+
+
 #footer {
 	background: #d1d1c9;
 	margin: 16px 0 40px;
@@ -53,27 +150,7 @@
 	color: #777;
 }
 
-#main_navigation li {
-	margin: 6px 10px 0 0;
-	background: #000;
-	color: #fff;
-}
 
-#main_navigation span {
-	display: block;
-	padding: 6px 20px;
-}
-
-#main_navigation a {
-	background: #e5e5e5;
-	color: #666;
-	display: block;
-	text-decoration: none;
-}
-
-#main_navigation a:hover {
-	background: #ccc;
-}
 
 a:link, a:visited {
 	color: #c00;
@@ -87,182 +164,6 @@ hr {
 a:hover {
 	text-decoration: underline !important;
 }
-
-
-
-/* @group Events List View */
-
-
-
-#calendar_nav p.nav {
-	position: absolute;
-	right: 10px;
-	top: 12px;
-}
-
-#calendar_nav p.nav .sep {
-	color: #ccc;
-}
-
-/* @group Event list actions */
-
-.event_actions {
-	white-space: nowrap;
-}
-
-.event_actions a {
-	color: #c00;
-	float: left;
-	position: relative;
-	padding: 6px 2px;
-}
-
-.event_actions a.delete {
-	background: url(../images/trash.gif) no-repeat center center;
-	width: 16px;
-	height: 16px;
-	text-indent: -9999px;
-	top: -2px;
-}
-
-.event_actions a.edit {
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-/* @end */
-
-/* @group Events for calendar view */
-
-.events_for_day {
-	padding: 10px 0px 0 20px;
-}
-
-.events_for_day .date_header {
-	margin: 0 0 20px;
-}
-
-.events_for_day .date_header span {
-	padding: 4px 8px 2px 20px;
-	border-bottom: 1px solid #888;
-	font-size: 12px;
-	font-weight: bold;
-	color: #222;
-	margin-left: -20px;
-	font-family: 'Helvetica';
-	
-	background: ;
-}
-
-.events_for_day.empty .date_header span {
-	color: #b9b9b9;
-	border-color: #ccc;
-}
-
-.events_for_day ul {
-	margin: 0 0 0 18px;
-	padding: 0 0 6px;
-}
-
-.events_for_day li {
-	list-style-type: square;
-	position: relative;
-	margin: 0 0 9px 0;
-	font-size: 15px;
-	color: #cbb79e;
-	background: url(../images/bg-lines.png) repeat 0 0px;
-	line-height: 18px;
-}
-
-.events_for_day li p.event_body {
-	color: #555;
-	position: relative;
-	margin-left: 60px;
-	font-family: 'American Typewriter', Georgia;
-}
-
-.events_for_day li a.tag {
-	text-decoration: none;
-}
-
-.events_for_day li .event_subject {
-	font-weight: bold;
-	font-size: 13px;
-	margin-right: 2px;
-	position: relative;
-	top: 0px;
-	font-family: Helvetica, Arial;
-}
-
-.events_for_day li .event_subject a {
-	color: #000;
-	text-decoration: none;
-}
-
-.events_for_day li .duration {
-	font-size: 13px;
-	color: #689b4b;
-	
-	position: absolute;
-	display: block;
-	top: 1px;
-	width: 50px;
-	text-align: right;
-	font-weight: bold;
-}
-
-.events_for_day li .event_actions {
-	position: absolute;
-	left: -70px;
-	top: -2px;
-	font-size: 11px;
-	background: #fff;
-	padding-left: 4px;
-	display: none;
-}
-
-.events_for_day li.hover .event_actions {
-	display: block;
-}
-
-.events_for_day li span.hover_target {
-	padding-left: 24px;
-	margin-left: -24px;
-}
-
-.events_for_day .no-events {
-	color: #b9b9b9;
-	display: none;
-	font-size: 17px;
-	list-style-type: square;
-	background: 0;
-}
-
-.events_for_day.empty .no-events {
-	display: block;
-}
-
-/* @end */
-
-.pagination {
-	padding: 10px 10px 20px;
-	margin: 10px 10px 0;
-	border-top: 2px solid #d4d4d4;
-}
-
-.pagination span.disabled {
-	color: #999;
-}
-
-.pagination .sep {
-	color: #999;
-}
-
-.pagination a {
-	color: #c00;
-}
-
-/* @end */
 
 
 #quick_entry_form {
@@ -495,29 +396,6 @@ table.month_grid {
 	padding: 3px 8px 4px;
 }
 
-.calendar-sidebar {
-	background: #fafafa;
-	border-left: 1px solid #e5e5e5;
-}
-
-
-.total_logged {
-	margin: 10px;
-	text-align: center;
-	font-size: 13px;
-	color: #888;
-}
-
-.total_logged strong {
-	display: block;
-	font-size: 18px;
-	line-height: 24px;
-	position: relative;
-	top: 0px;
-	color: #000;
-	text-shadow: 0px 0px 2px #fff;
-}
-
 .sidebar-module h4 {
 	font-family: 'MuseoSans';
 	text-transform: uppercase;
@@ -571,4 +449,31 @@ table.month_grid {
 	display: inline-block;
 	position: relative;
 	top: 1px;
+}
+
+
+
+#trackables.index .bd {
+	padding: 10px;
+}
+
+#trackables.index .trackable {
+	padding: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+#trackables.index .trackable h3 {
+	font-size: 17px;
+}
+
+#trackables.index .trackable h4 {
+	font-size: 13px;
+	font-weight: bold;
+	padding-top: 2px;
+	color: #888;
+}
+
+#trackables.index .trackable .nickname {
+	font-size: 13px;
+	color: #666;
 }

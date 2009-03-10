@@ -2,7 +2,7 @@
 
 @import url(calendar_date_select.css);
 
-.cds-container {
+.cds-container.open {
 	position: relative;
 	z-index: 92;
 	display: inline;
@@ -12,19 +12,22 @@
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.0);
+	background: rgba(0,0,0,0.3);
 	top: 0;
 	left: 0;
 	z-index: 22;
 }
 
 .cds-container .description {
-	position: relative;
-	z-index: 92;
 	text-decoration: none;
 	color: inherit;
 	padding-left: 16px;
 	background: url(../../images/calendar.gif) no-repeat left center;
+}
+
+.cds-container.open .description {
+	position: relative;
+	z-index: 94;
 }
 
 .cds-container.open .description {

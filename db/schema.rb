@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090225151717) do
+ActiveRecord::Schema.define(:version => 20090308221020) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -19,6 +19,18 @@ ActiveRecord::Schema.define(:version => 20090225151717) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "api_key"
+  end
+
+  create_table "event_imports", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "rows_in_source"
+    t.integer  "rows_imported"
+    t.string   "source_file_name"
+    t.string   "source_content_type"
+    t.integer  "source_file_size"
+    t.datetime "source_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "events", :force => true do |t|

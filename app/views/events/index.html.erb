@@ -1,20 +1,43 @@
-<%- @workspace_title_content = capture do -%>
-<form class="workspace-title" id="events-search">
-	<input type="text">
-	<button>Search</button>
-</form>
+<div class="hd">
+	<h1>Events</h1>
+</div>
 
-<%= render :partial => "/shared/quick_entry" %>
+<div class="bd">
+<table class="frame"><tr valign="top">
+	<td class="six" rowspan="2">
+		<%- @events.group_by(&:date).each do |date, events| -%>
+		<% events_for_day date, events do %>
+		<h3 class="date_header">
+			<span><%= date.strftime("%A, %b %e") %></span>
+		</h3>
+
+		<ul>
+			<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
+			<li class="no-events">Nothing happened today</li>
+		</ul>	
 
 
+		<hr class="date-separator" style="clear:both">
+		<% end %>
+		<%- end -%>
+	</td>
+	<td class="gutter" rowspan="2">&nbsp;</td>
 
-<% end %>
+	<td class="four calendar-sidebar">
+		&nbsp;
+	</td>
 
-<% render :layout => "/layouts/events" do %>
-	
-	
-	<%= render :partial => "list_item", :collection => @events, :as => :event %>
-	
-	<%= will_paginate @events, :page_links => false, :prev_label => ((params[:page] || 1).to_i == 1 ? "First page" : "Previous page"), :next_label => "Next page", :separator => " <span class=\"sep\">|</span> " %>
-	
-<% end %>
+</tr>
+<tr>
+	<td class="calendar-sidebar" valign="bottom">
+		<div class="pagination">
+			<%# pagination_links %>
+		</div>
+	</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	new HoverObserver('main')
+</script>
