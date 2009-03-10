@@ -111,17 +111,16 @@
 
 #main-navigation li a,
 #main-navigation li span {
-	padding: 6px 20px 6px 10px;
+	padding: 4px 10px;
 	display: block;
-	text-decoration: none;
-	background: -webkit-gradient(linear, left top, right top, from(#aaa), to(#e5e5e5), color-stop(0.7,#aaa));
-	color: #fff;
+	/*background: -webkit-gradient(linear, left top, right top, from(#d4d4d4), to(#e5e5e5), color-stop(0.8,#d4d4d4));*/
+	color: #c00;
 	border-right: 0;
 }
 
 #main-navigation li span {
 	font-weight: bold;
-	background: #000;
+	background: #a00;
 	color: #fff;
 }
 
@@ -131,14 +130,15 @@
 
 #main-sidebar #add-event a,
 #main-sidebar #add-event span {
-	padding: 6px 10px;
+	padding: 4px 10px;
 	font-size: 15px;
 	display: block;
 }
 
 #main-sidebar #add-event span {
-	background: #000;
+	background: #a00;
 	color: #fff;
+	font-weight: bold;
 }
 
 
