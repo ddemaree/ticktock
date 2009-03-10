@@ -1,0 +1,40 @@
+<% form_for :event, :url => events_path, :html => {:id => "quick_entry_form"} do |f| %>
+<div class="bd">
+	<table class="bnd">
+		<tr>
+		<td class="body" colspan="2">
+			<div class="overlay-label">
+				<%= f.label :body, "What did you do?" %>
+				<%= f.text_area :body, :rows => 3, :cols => 60 %>
+			</div>
+		</td>
+		</tr>
+		<tr>
+		<td class="duration">
+			<div class="overlay-label">
+				<%= f.label :duration, "For how long?" %>
+				<%= f.text_field :duration, :size => 20 %>
+			</div>
+		</td>
+		<td class="action">
+			<button type="submit">Update &rsaquo;</button>
+		</td>
+		</tr>
+
+	</table>
+</div>		
+
+<p class="field" id="event_date_field">
+	<%= f.label :date, "On what day?" %>
+	<%= f.text_field :date %>
+</p>
+
+<input type="hidden" name="return" value="yes" />
+<% end %>
+<script type="text/javascript" charset="utf-8">
+	$$('.overlay-label').each(function(elem){
+		new Ticktock.GhostLabel(elem)
+	})
+	
+	new Ticktock.DatePager('event_date', 'quick_entry_form')
+</script>
