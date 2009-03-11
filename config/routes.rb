@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/events/add_multiple', :controller => 'events', :action => 'add_multiple'
   map.resources :events, :users
   
-  map.resources :trackables, :has_many => [:events]
+  map.resources :trackables, :has_many => [:events, :duplicates]
   
   map.with_options :controller => 'calendar', :action => 'index' do |calendar|
     

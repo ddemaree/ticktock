@@ -1,0 +1,22 @@
+<div class="hd calendar-hd clearfix">
+	<h1>Merge projects?</h1>
+</div>
+
+<% form_tag nil do %>
+
+<p>
+	Losing project: <%= @trackable %>
+</p>
+
+<p>
+	Winning project:
+	<select id="winnerId">
+		<%= options_from_collection_for_select Trackable.all(:conditions => "id != #{@trackable.id}"), :id, :to_s %>
+	</select>
+</p>
+
+<p>
+	<button type="submit">Merge these projects</button>
+</p>
+
+<% end %>

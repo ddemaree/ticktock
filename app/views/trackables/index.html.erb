@@ -10,6 +10,10 @@
 		<%= trackable_nickname(trackable) %>
 	</h3>
 	<h4><%= pluralize(trackable.events.count, "event") %></h4>
+	
+	<p class="actions">
+		<%= link_to "Edit", [:edit, trackable], :class => "edit" %>
+	</p>
 <% end %>
 <% end %>
 </div>
