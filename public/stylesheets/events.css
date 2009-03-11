@@ -244,6 +244,54 @@ table#eventRows .duration {
 	margin: 10px 0;
 }
 
+#calendar .calendar-hd {
+	background: #b00;
+	border: 0;
+	position: relative;
+	padding: 0;
+}
+
+#calendar .calendar-hd h1 {
+	float: left;
+	padding: 8px 0 8px;
+	margin-left: 72px;
+	font-family: 'American Typewriter', Georgia;
+	color: #fff;
+	text-shadow: 1px 1px 1px #800;
+	font-size: 22px;
+}
+
+#calendar .calendar-hd a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+#calendar .calendar-hd .pagination {
+	float: left;
+	border: 0;
+	position: absolute;
+	left: 10px;
+	top: 8px;
+	padding: 0;
+	margin: 0;
+}
+
+#calendar .calendar-hd .pagination a {
+	color: #000;
+	background: #f0f;
+	float: left;
+	width: 24px;
+	height: 24px;
+	text-indent: -9999px;
+	margin-right: 4px;
+	
+}
+
+#calendar .calendar-hd .jump_to_current {
+	float: left;
+	padding: 14px 12px 0;
+}
+
 .calendar-sidebar {
 	border-left: 1px solid #e5e5e5;
 }

@@ -6,8 +6,23 @@
 @import url(shared.css);
 @import url(lib/datepicker.css);
 
+a:link, a:visited {
+	color: #c00;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+}
+
+a:hover {
+	text-decoration: underline !important;
+}
+
+/* @group Header */
+
 #header {
-	background: #7a95f5;
+	/*background: #79b0f4;*/
 }
 
 #header .wrap {
@@ -59,15 +74,18 @@
 	padding: 6px 10px;
 }
 
+/* @end */
+
+/* @group Stretcher */
 
 
 
+/* @group Workspace */
 
-#workspace {
+#stretcher td#workspace {
 	background: #fff;
-	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-	
 	min-height: 400px;
+	border-bottom: 2px solid #d4d4d4;
 }
 
 #workspace .hd {
@@ -91,56 +109,54 @@
 	text-decoration: none;
 }
 
-.workspace-title {
-	background: #f1ffe9;
-	padding: 8px 1.04%;
-	position: relative;
-	border-bottom: 1px solid #ccc;
+/* @end */
+
+/* @group Sidebar */
+
+#stretcher td#sidebar {
+	padding-top: 20px;
+	background: -webkit-gradient(linear, left top, right top, from(#e5e5e5), to(#ccc), color-stop(0.98,#e5e5e5));
 }
 
-.workspace-title h2 {
-	font: 19px 'MuseoSerif', Georgia;
-	margin: 0;
-	font-weight: 300;
-	text-shadow: 1px 1px 0 #fff;
+#sidebar .nav li {
+	margin: 4px 0 0 0;
 }
 
-#main-navigation li {
-	margin: 4px 0 0;
-}
-
-#main-navigation li a,
-#main-navigation li span {
+#sidebar .nav a,
+#sidebar .nav span {
 	padding: 4px 10px;
 	display: block;
-	/*background: -webkit-gradient(linear, left top, right top, from(#d4d4d4), to(#e5e5e5), color-stop(0.8,#d4d4d4));*/
 	color: #c00;
 	border-right: 0;
 }
 
-#main-navigation li span {
+#sidebar .nav span {
 	font-weight: bold;
-	background: #a00;
+	background: #aaa;
 	color: #fff;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 }
 
-#main-sidebar #add-event {
-	padding: 10px 0;
+#sidebar #add-event {
+	padding: 0px 0 20px;
 }
 
-#main-sidebar #add-event a,
-#main-sidebar #add-event span {
-	padding: 4px 10px;
-	font-size: 15px;
-	display: block;
+#sidebar .nav .big a,
+#sidebar .nav .big span {
+	font-size: 17px;
 }
 
-#main-sidebar #add-event span {
-	background: #a00;
-	color: #fff;
+#sidebar .nav .quick a,
+#sidebar .nav .quick span {
+	font-size: 12px;
 	font-weight: bold;
 }
 
+/* @end */
+
+/* @end */
+
+/* @group Footer */
 
 #footer {
 	background: #d1d1c9;
@@ -152,38 +168,55 @@
 
 
 
-a:link, a:visited {
-	color: #c00;
+/* @end */
+
+/* @group Quick Entry */
+
+#quick-entry {
+	left: 88px;
+	top: 22px;
+	position: absolute;
+	z-index: 99;
+	width: 480px;
+	background: rgba(216,216,216,0.9);
+	border: 2px solid #4a4a4a;
+	-webkit-border-radius: 8px;
+	
+	-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 
-hr {
-	border: 0;
-	height: 1px;
+#quick-entry .arrow {
+	position: absolute;
+	left: -16px;
+	top: 12px;
+	width: 14px;
+	height: 60px;
+	background: url(../images/darkgray-arrow-left.png) no-repeat left center;
 }
-
-a:hover {
-	text-decoration: underline !important;
-}
-
 
 #quick_entry_form {
-	margin: 10px 0 0 10px;
 	position: relative;
+	-webkit-border-radius: 6px;
+	border: 1px solid #fff;
 }
 
 #quick_entry_form .bd {
 	padding: 10px;
-	background: #666;
+	border-top: 1px solid #666;
 }
 
 .qe-datepager {
-	padding: 0 6px;
+	padding: 6px 6px 0;
+	border-bottom: 4px solid #000;
+	background: #557190;
+	-webkit-border-top-left-radius: 7px;
+	-webkit-border-top-right-radius: 7px;
 }
 
 .qe-datepager .tab {
 	float: left;
 	margin-right: 4px;
-	background-color: #ccc;
+	background-color: #104d90;
 	position: relative;
 	z-index: 99;
 	font-size: 12px;
@@ -194,7 +227,7 @@ a:hover {
 	display: block;
 	padding: 4px 8px;
 	text-decoration: none;
-	color: #666;
+	color: #a6a6a6;
 }
 
 .qe-datepager .tab.other > a,
@@ -207,8 +240,7 @@ a:hover {
 .qe-datepager a.tab.selected,
 .qe-datepager .tab.selected a {
 	color: #fff;
-	background: url(../images/check.gif) no-repeat 10px center;
-	background-color: #000;
+	background: #000 url(../images/check.gif) no-repeat 10px center;
 	padding-left: 22px;
 	padding-right: 10px;
 }
@@ -286,6 +318,8 @@ a:hover {
 	border-width: 0 0 1px 1px;
 	padding: 0 0 10px 10px;
 }
+
+/* @end */
 
 
 

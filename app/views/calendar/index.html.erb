@@ -6,12 +6,17 @@
 	<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
 <%- end -%>
 
-<div class="hd">
+<div class="hd calendar-hd clearfix">
 	<h1><%= range_description %></h1>
-</div>
-
-<div class="pagination top">
-	<%= pagination_links %>
+	
+	<div class="pagination">
+		<%= link_to "&lsaquo; Previous", params_for_previous, :class => "nav previous" %>
+		<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
+	</div>
+	
+	<p class="jump_to_current">
+		<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
+	</p>
 </div>
 
 <table class="calendar frame <%= time_frame %>" width="100%" cellspacing="0" border="0"><tr valign="top">
