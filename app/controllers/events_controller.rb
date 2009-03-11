@@ -33,6 +33,11 @@ class EventsController < ApplicationController
     end
   end
   
+  def add_multiple
+    @section_name = "new_event"
+    @event = current_account.events.build
+  end
+  
   def create
     if params[:event].keys.any? { |k| !!((k.to_s =~ /^\d+$/) == 0)  }
       return create_several_via_hash

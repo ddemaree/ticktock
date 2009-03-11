@@ -23,6 +23,13 @@
 .right  { float: right; }
 .clear  { clear: both;  }
 
+#workspace .gutter { width:  2.6%; }
+#workspace .seven  { width: 69.2%; }
+#workspace .three  { width: 28.2%; }
+
+#workspace .eight  { width: 79.5%; }
+#workspace .two    { width: 17.9%; }
+
 /* @end */
 
 .clearfix:after {
@@ -36,3 +43,19 @@
 /* Hide from IE Mac \*/
 .clearfix {display:block;}
 /* End hide from IE Mac */
+
+table.frame {
+	border-spacing: 0;
+	width: 100%;
+	margin: 10px 0;
+}
+
+table.frame tr,
+table.frame td,
+table.frame th {
+	vertical-align: top;
+}
+
+table.frame .sidebar {
+	border-left: 1px solid #d4d4d4;
+}

@@ -3,65 +3,47 @@
 <% end %>
 <%= javascript_tag %{var eventRow = new Template("#{escape_javascript(@event_row)}")} %>
 
-<div class="hd">
-	<p class="back">
-		<%= link_to "&lsaquo; Back to your calendar", root_path %>
-	</p>
-	
+<div class="hd calendar-hd">
 	<h1>Add new events</h1>
 </div>
 
-<div class="eight left">
-<% form_for @event, :html => {:class => "bd"} do |f| %>
-	<noscript>
-	<% 10.times do |x| %>
-	<%= render :partial => 'new', :locals => {:index => x} %>
+<table class="frame">
+<tr>
+	<td class="seven">
+	<% form_for @event, :html => {:class => "bd"} do |f| %>
+		<div class="field" id="event_date_field">
+			<%= f.label :date, "On what day?" %>
+			<p class="field"><%= f.text_field :date %></p>
+			<div id="event_date_pager"></div>
+		</div>
+		<%= javascript_tag "new Ticktock.DatePager('event_date', 'event_date_pager')" %>
+	
+		<div class="field event_body">
+			<%= f.label :body, "What did you do?" %>
+			<p><%= f.text_area :body, :cols => 60, :rows => 5 %></p>
+		</div>
+		
+		<div class="field event_duration">
+			<%= f.label :duration, "For how long?" %>
+			<p><%= f.text_field :duration %></p>
+			<p class="info">Examples: <strong>1:30</strong>, <strong>1.75h</strong>, <strong>2 hours</strong></p>
+		</div>
+
+
+		<p class="actions">
+			<button type="submit">Create</button>
+		</p>
 	<% end %>
-	</noscript>
-
-	<table id="eventRows">
-	<tr>
-		<th class="date">When?</th>
-		<th class="body">What?</th>
-		<th class="duration">How long?</th>
-		<th class="actions">&nbsp;</th>
-	</tr>
-	</table>
-
-
-	<p class="actions">
-		<button type="submit">Create</button>
-	</p>
-<% end %>
-</div>
-<div class="two right">
+	</td>
 	
-	<%= link_to "Import from CSV file", new_event_import_path %>
+	<td class="gutter">&nbsp;</td>
 	
-</div>
-<hr class="clear">
-
-
-
-
-<script type="text/javascript" charset="utf-8">
-for(x = 0; x <= 10; x++){
-	row = eventRow.evaluate({index:x})
-	$('eventRows').insert({bottom:row})
-	
-	row = $('row_' + x)
-	
-	remover = new Element('a', {href:'javascript:void%200', className:'remover'})
-	remover.update('remove')
-	remover.observe('click', function(){
-		this.up('tr').remove()
-	}.bind(remover))
-	
-	row.down('td.actions').insert(remover)
-}
-
-$$('.event_date').each(function(elem){
-	new Ticktock.DateSelect(elem)
-})
-
-</script>
+	<td class="three sidebar">
+		<ul class="actions">
+			<h3>More options</h3>
+			<li><%= link_to "Add multiple events&hellip;", {:action => "add_multiple"}, :class => "action import" %></li>
+			<li><%= link_to "Import from CSV file&hellip;", new_event_import_path, :class => "action import" %></li>
+		</ul>
+	</td>
+</tr>
+</table>

@@ -17,13 +17,12 @@ body, html {
 }
 
 #container {
-	width: 960px;
+	width: 100%;
 	margin: 10px auto;
-	background: url(../images/bg-grid.png);
 }
 
 #main, .wrap {
-	width: 940px;
+	width: 97.92%;
 	margin: 0 auto;
 	position: relative;
 }

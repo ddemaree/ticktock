@@ -1,0 +1,51 @@
+<% @event_row = capture do %>
+<%= render :partial => 'new', :locals => {:index => "\#{index}"} %>
+<% end %>
+<%= javascript_tag %{var eventRow = new Template("#{escape_javascript(@event_row)}")} %>
+
+<div class="hd calendar-hd">
+	<h1>Add new events</h1>
+</div>
+
+<% form_for @event, :html => {:class => "bd"} do |f| %>
+	<noscript>
+	<% 10.times do |x| %>
+	<%= render :partial => 'new', :locals => {:index => x} %>
+	<% end %>
+	</noscript>
+
+	<table id="eventRows">
+	<tr>
+		<th class="date">When?</th>
+		<th class="body">What?</th>
+		<th class="duration">How long?</th>
+		<th class="actions">&nbsp;</th>
+	</tr>
+	</table>
+
+
+	<p class="actions">
+		<button type="submit">Create</button>
+	</p>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+for(x = 0; x <= 10; x++){
+	row = eventRow.evaluate({index:x})
+	$('eventRows').insert({bottom:row})
+	
+	row = $('row_' + x)
+	
+	remover = new Element('a', {href:'javascript:void%200', className:'remover'})
+	remover.update('remove')
+	remover.observe('click', function(){
+		this.up('tr').remove()
+	}.bind(remover))
+	
+	row.down('td.actions').insert(remover)
+}
+
+$$('.event_date').each(function(elem){
+	new Ticktock.DateSelect(elem)
+})
+</script>

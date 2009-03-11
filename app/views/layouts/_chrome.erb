@@ -27,11 +27,11 @@
 <table id="stretcher">
 	<tr valign="top">
 		
-		<td id="sidebar" class="sidebar two-plus">
-			<div id="quick-entry" style="display:none">
+		<td id="sidebar" class="sidebar">
+			<!-- <div id="quick-entry" style="display:none">
 				<span class="arrow">&nbsp;</span>
-				<%= render :partial => '/events/quick_entry' %>
-			</div>
+				<%# render :partial => '/events/quick_entry' %>
+			</div> -->
 			
 			<ul class="nav" id="add-event">
 				<li class="big"><%= link_to_unless (section_name == "new_event"), "Add event", new_event_path %></li>
@@ -47,7 +47,7 @@
 			</ul>
 		</td>
 		
-		<td id="workspace" class="ten">
+		<td id="workspace">
 			<div class="workspace-content">
 				<%= yield %>
 			</div>
@@ -57,12 +57,12 @@
 </table>
 
 <div id="footer">
-	&copy;2009 Practical Creative &amp; Code
+<div class="copyright">&copy;2009 Practical Creative &amp; Code</div>
 </div>
 
 </div>
 </div>
-<script type="text/javascript" charset="utf-8">
+<!-- <script type="text/javascript" charset="utf-8">
 	QuickEntry = {
 		open:function(){
 			$('quick-entry').show()
@@ -83,7 +83,7 @@
 			e.stop()
 		})
 	})
-</script>
+</script> -->
 
 <% end %>
 </html>

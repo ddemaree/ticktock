@@ -1,7 +1,39 @@
 /* @override http://practical.ticktock.local:3000/stylesheets/events.css */
 
-#events.new #container {
-	width: 960px;
+a.action {
+	background: url(../images/document-16-red.png) no-repeat left center;
+	padding: 2px 0 2px 20px;
+	text-decoration: none;
+}
+
+#event_date_field .picker {
+	position: relative;
+	z-index: 99;
+}
+
+#event_date_field .picker .calendar_date_select {
+	position: absolute;
+}
+
+#events.new .sidebar .actions {
+	padding-top: 20px;
+}
+
+#events.new .sidebar .actions h3 {
+	font-weight: bold;
+	padding-bottom: 0px;
+}
+
+#events.new .sidebar .actions li {
+	margin: 8px 0 0;
+}
+
+#events.new .frame .sidebar {
+	border: 0;
+}
+
+#events.new .frame .seven {
+	border-right: 1px solid #d4d4d4;
 }
 
 #events.new .bd {
@@ -14,8 +46,8 @@ table#eventRows {
 	margin: 10px 0;
 }
 
-table#eventRows td,
-table#eventRows th {
+table#eventRows > tbody > tr > td,
+table#eventRows > tbody > tr > th {
 	border-bottom: 1px solid #bcd0e5;
 	padding: 8px 5px;
 }

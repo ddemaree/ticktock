@@ -26,6 +26,7 @@ Object.extend(Ticktock, {
 			this.addArbitraryDatePicker()
 		},
 		createPagerBar: function(){
+			console.log("Creating pager bar")
 			this.pager = new Element('div', {className:'qe-datepager clearfix'})
 			this.container.insert({top:this.pager})
 		},

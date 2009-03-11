@@ -5,6 +5,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :emails, :only => [:create]
   
   map.resources :event_imports, :member => {:mapping => :get}, :except => [:index, :show, :edit]
+  
+  map.connect '/events/add_multiple', :controller => 'events', :action => 'add_multiple'
   map.resources :events, :users
   
   map.resources :trackables, :has_many => [:events]
