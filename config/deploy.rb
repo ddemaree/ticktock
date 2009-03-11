@@ -27,11 +27,15 @@ namespace :deploy do
       update_code
       symlink
       
-      rails_env = fetch(:rails_env, "production")
-      run "cd #{current_path} && #{try_sudo} rake gems:install RAILS_ENV=#{rails_env}"
+      install_gems
     end
   end
   after "deploy:setup", "deploy:setup_environment"
+  
+  task :install_gems do
+    rails_env = fetch(:rails_env, "production")
+    run "cd #{current_path} && #{try_sudo} rake gems:install RAILS_ENV=#{rails_env}"
+  end
   
   task :restart do
     run "cd #{current_path} && touch tmp/restart.txt"
