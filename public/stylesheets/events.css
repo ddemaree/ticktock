@@ -254,7 +254,7 @@ table#eventRows .duration {
 #calendar .calendar-hd h1 {
 	float: left;
 	padding: 8px 0 8px;
-	margin-left: 72px;
+	margin-left: 64px;
 	font-family: 'American Typewriter', Georgia;
 	color: #fff;
 	text-shadow: 1px 1px 1px #800;
@@ -278,13 +278,22 @@ table#eventRows .duration {
 
 #calendar .calendar-hd .pagination a {
 	color: #000;
-	background: #f0f;
+	background-position: center center;
+	background-repeat: no-repeat;
 	float: left;
-	width: 24px;
+	width: 22px;
 	height: 24px;
 	text-indent: -9999px;
-	margin-right: 4px;
+	margin-right: 0px;
 	
+}
+
+.calendar-hd a.previous {
+	background-image: url(../images/black/arrow_right.gif);
+}
+
+.calendar-hd a.next {
+	background-image: url(../images/black/arrow_left.gif);
 }
 
 #calendar .calendar-hd .jump_to_current {
