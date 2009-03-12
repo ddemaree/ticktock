@@ -2,6 +2,8 @@
 
 <% form_tag session_path do -%>
 
+<p><%= flash[:error] || flash[:notice] || "Please sign in to access TickTock" %></p>
+
 <fieldset>
 	<p class="field">
 		<%= label_tag 'login' %>
