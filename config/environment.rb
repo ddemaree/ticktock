@@ -8,10 +8,10 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   
-  config.action_controller.session = {
-    :session_key => '_com_ticktockapp_session',
-    :secret      => 'bc25e97d55eb997a950f8fa780870044'
-  }
+  # config.action_controller.session = {
+  #   :session_key => '_com_ticktockapp_session',
+  #   :secret      => 'bc25e97d55eb997a950f8fa780870044'
+  # }
 
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.2.3'
 
