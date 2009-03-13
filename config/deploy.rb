@@ -1,10 +1,4 @@
 set :application, "ticktock"
-#set :repository,  "git://"
-
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-# set :scm, :subversion
-
 set :user, "practical"
 set :deploy_to, "/var/www/apps/#{application}"
 
@@ -16,9 +10,9 @@ set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
-role :app, "practical.cc"
-role :web, "practical.cc"
-role :db,  "practical.cc", :primary => true
+role :app, "katsushiro.practical.cc"
+role :web, "katsushiro.practical.cc"
+role :db,  "katsushiro.practical.cc", :primary => true
 
 namespace :deploy do
   
