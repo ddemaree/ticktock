@@ -46,6 +46,7 @@ protected
   end
 
   def set_default_values
+    name ||= domain
     timezone ||= "UTC"
   end
   
