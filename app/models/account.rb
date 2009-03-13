@@ -46,8 +46,8 @@ protected
   end
 
   def set_default_values
-    name ||= domain
-    timezone ||= "UTC"
+    self.name     ||= (self.domain || "My TickTock Account")
+    self.timezone ||= "UTC"
   end
   
   # def internal_client_params

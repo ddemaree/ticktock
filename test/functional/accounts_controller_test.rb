@@ -54,7 +54,8 @@ class AccountsControllerTest < ActionController::TestCase
           :domain   => "practical",
           :name     => "My Cool Account",
           :timezone => "UTC",
-          :terms_of_service => "1"
+          :terms_of_service => "1",
+          :invite_code => "ANYOLDSTRING"
         },
         :user => {
           :name  => "David Nemesis",
@@ -68,7 +69,12 @@ class AccountsControllerTest < ActionController::TestCase
     
     should_assign_to :account, :user
     should_respond_with 302
-    should_redirect_to '"http://practical.ticktockapp.test/account"'
+    should_redirect_to("the account page") { 'http://practical.ticktockapp.test/account' }
+    
+    should "save the stuff" do
+      assert assigns(:account).valid?, assigns(:account).errors.full_messages
+      assert assigns(:user).valid?, assigns(:user).errors.full_messages
+    end
   end
   
 end

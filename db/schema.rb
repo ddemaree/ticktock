@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090308221020) do
+ActiveRecord::Schema.define(:version => 20090313172710) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -105,6 +105,5 @@ ActiveRecord::Schema.define(:version => 20090308221020) do
   end
 
   add_index "users", ["login", "account_id"], :name => "index_users_on_login_and_account_id", :unique => true
-  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
 end
