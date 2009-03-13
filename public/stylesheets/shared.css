@@ -5,6 +5,19 @@
 @import url(lib/forms.css);
 @import url(lib/grids.css);
 
+a:link, a:visited {
+	color: #c00;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+}
+
+a:hover {
+	text-decoration: underline !important;
+}
+
 body {
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 13px;

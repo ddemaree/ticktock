@@ -1,88 +1,137 @@
 <div class="page-header">
-	<h1>Create my TickTock account now</h1>
+	<h1>Sign Up</h1>
 </div>
 
-<div class="eight left">
-	<%= error_messages_for :account, :user %>
+<%- if flash[:error] -%>
+<div class="bigError">
+	<p><%= flash[:error] %></p>
+</div>
+<%- end -%>
 
-	<% form_for @account, :url => account_path, :method => :post do |f| %>
+<% form_for @account, :url => account_path, :method => :post do |f| %>
 
 	<fieldset>
 		<legend>Create your user account</legend>
-		<p class="more"><em class="highlight">This is the master log-in for your account.</em> All fields are required. Once your TickTock account is created, you can create accounts for other people as well.</p>
+		<p class="more"><em class="highlight">This is the master log-in for your account.</em> All fields are required. <!-- Once your TickTock account is created, you can create accounts for other people as well. --></p>
 
 		<% fields_for :user do |uf| %>
-		<div class="field">
+		<div class="field <%= "hasErrors" if @user.errors.on(:name) %>">
 			<%= uf.label :name, "Your name" %>
-			<p>
+			<div class="withExample">
 				<%= uf.text_field :name %>
 				<span class="example">John Q. Smith</span>
-			</p>
+			</div>
+			<%= error_messages @user, :name %>
 		</div>
-		<div class="field">
+		
+		<div class="field <%= "hasErrors" if @user.errors.on(:email) %>">
 			<%= uf.label :email, "E-mail address" %>
-			<p>
+			<div class="withExample">
 				<%= uf.text_field :email %>
 				<span class="example">john.smith@mailserver.com</span>
-			</p>
+			</div>
+			
+			<%= error_messages @user, :email %>
 		</div>
 		<hr>
-		<p class="field">
+		
+		<div class="field <%= "hasErrors" if @user.errors.on(:login) %>">
 			<%= uf.label :login, "Username" %>
-			<%= uf.text_field :login %>
-		</p>
-		<div class="field">
+			<p><%= uf.text_field :login %></p>
+			<%= error_messages @user, :login %>
+		</div>
+		
+		<div class="field <%= "hasErrors" if @user.errors.on(:password) %>">
 			<%= uf.label :password %>
 			<p><%= uf.password_field :password %></p>
+			<%= error_messages @user, :password %>
+			
 			<p class="info">Please re-type your password to confirm</p>
 			<p><%= uf.password_field :password_confirmation %></p>
+			<%= error_messages @user, :password_confirmation %>
 		</div>
 		<% end %>
 		<hr>
-		<p class="field">
+		<p class="field <%= "hasErrors" if @account.errors.on(:timezone) %>">
 			<%= f.label :timezone %>
 			<%= f.time_zone_select :timezone %>
+		
+			<%= error_messages @account, :timezone %>
 		</p>
-	</fieldset>
-
-	<fieldset>
-		<legend>Set up your account</legend>
-
-		<!-- <p class="field">
-			<%= f.label :name, "Company name" %>
-			<%= f.text_field :name %>
-		</p> -->
-		<div class="domain">
-			<%= f.label :domain %>
-			<p>http://<%= f.text_field :domain, :size => 16 %>.ticktockapp.com/</p>
-		</div>
+		
 		
 	</fieldset>
 
+	<fieldset class="account-domain">
+		<legend>Create your personal TickTock address</legend>
+		
+		<p class="more">
+			Every TickTock account has its own unique web address. This is where you'll login. For example, if you wanted your TickTock site to be at <code>acme.ticktockapp.com</code> you'd enter <strong>acme</strong> in the field below. Letters and numbers only — no spaces.
+		</p>
+		
+		<% content_tag :div, :class => ("hasErrors" if @account.errors.on(:domain)) do %>
+		<div class="domain">
+			<p><span>http://<%= f.text_field :domain, :size => 16 %>.ticktockapp.com/</span></p>
+		</div>
+		
+		<%= error_messages @account, :domain %>
+		<% end %>
+	</fieldset>
+	
+	<%- if Ticktock.beta? -%>
+	<fieldset class="invite_code">
+		<legend>Super Seekrit Invite Code</legend>
+		<p class="more">Enter your invitation code below to join the beta test.</p>
+		
+		<% content_tag :div, :class => ("hasErrors" if @account.errors.on(:invite_code)) do %>
+		<p class="ic-field">
+			<%= f.text_field :invite_code %>
+			<span class="example">Invite code</span>
+		</p>
+		
+		<%= error_messages @account, :invite_code %>
+		<% end %>
+		
+		<p class="more">
+			<em class="highlight">Please note: your invite code is keyed on your e-mail address</em>; you have to use the same e-mail address where your invitation was sent. Please e-mail <%= mail_to "david@practical.cc" %> if you have any problems signing up.
+		</p>
+		
+		
+	</fieldset>
+	<%- end -%>
+	
 	<fieldset class="terms_of_service">
 		<legend>Accept our Terms of Service</legend>
+		
+		<% content_tag :div, :class => ("hasErrors" if @account.errors.on(:terms_of_service)) do %>
+		
 		<p class="checkbox">
 			<%= f.check_box :terms_of_service %>
 			If TickTock had <a href="#">Terms of Service</a>, you bet I would accept them
 		</p>
+		<%= error_messages @account, :terms_of_service %>
+	
+		<% end %>
 	</fieldset>
 	<p class="form-action">
-		<button type="submit">Create my account now</button>
+		<button type="submit">Create my TickTock account now</button>
 	</p>
 
-	<% end %>
-</div>
-<hr class="clear">
+<% end %>
 
 <script type="text/javascript" charset="utf-8">
 	FormExemplar = Class.create({
 		initialize: function(elem){
 			this.example   = elem
-			this.container = this.example.up('p')
-			this.field     = this.container.down('input')
-		
+			this.container = this.example.up('.withExample')
+			this.field     = this.container.down('input')			
 			this.container.makePositioned()
-			this.example.setStyle('position:absolute;left:0;top:0')
+			
+			this.example.setStyle("position:absolute; left:#{left}px;top:#{top}px".interpolate(
+			{
+				left: 0,
+				top:  0
+			}))
 			
 			this.example.observe('click', this.handleLabelClick.bind(this))
 			this.field.observe('blur', this.handleFieldBlur.bind(this))

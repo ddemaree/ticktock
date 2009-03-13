@@ -19,6 +19,8 @@ class AccountsController < ApplicationController
         format.html { redirect_to :action => "show", :host => account_host(@account) }
         format.xml  { render :xml => @account, :status => :created, :location => @account }
       else
+        flash[:error] = "We're sorry, but we weren't able to create your account using the information you provided. Please correct the errors below and try again."
+        
         format.html { render :action => "new" }
         format.xml  { render :xml => @account.errors, :status => :unprocessable_entity }
       end

@@ -6,19 +6,6 @@
 @import url(shared.css);
 @import url(lib/datepicker.css);
 
-a:link, a:visited {
-	color: #c00;
-}
-
-hr {
-	border: 0;
-	height: 1px;
-}
-
-a:hover {
-	text-decoration: underline !important;
-}
-
 /* @group Header */
 
 #header {

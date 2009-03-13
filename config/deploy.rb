@@ -1,5 +1,5 @@
 set :application, "ticktock"
-set :user, "practical"
+set :user, "deploy"
 set :deploy_to, "/var/www/apps/#{application}"
 
 default_run_options[:pty] = true

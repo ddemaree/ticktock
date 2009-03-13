@@ -56,7 +56,7 @@ namespace :practical do
         inform "Please edit database.yml in the shared directory."
       end
     end
-    #after "deploy:setup", "practical:config:setup"
+    after "deploy:setup", "practical:config:setup"
 
     desc "Copy config files"
     task :copy do

@@ -1,9 +1,39 @@
-/* @override http://practical.ticktock.local:3000/stylesheets/signup.css */
+/* @override 
+	http://practical.ticktock.local:3000/stylesheets/signup.css
+	http://practical.ticktock.local/stylesheets/signup.css
+*/
 
 @import url(shared.css);
 
 html, body {
 	background-color: #fff;
+}
+
+body#signup #container {
+	width: 960px;
+	margin: 20px auto;
+}
+
+body#signup #main {
+	width: 620px;
+}
+
+body#signup #footer {
+	width: 620px;
+	padding: 10px 0 40px;
+	margin: 20px auto 0;
+	background: #fff;
+	font-size: 11px;
+	text-align: center;
+	border-top: 1px solid #ccc;
+}
+
+.page-header h1 {
+	font-family: 'American Typewriter', Georgia;
+	font-size: 36px;
+	padding: 0 20px 20px;
+	text-shadow: 1px 1px 1px rgba(204,0,0,0.2);
+	color: #a00;
 }
 
 hr.clear {
@@ -12,18 +42,32 @@ hr.clear {
 }
 
 form#new_account fieldset {
-	background: #f5f5f5;
+	background: #fafafa;
 	margin: 0 0 20px;
-	border-top: 1px solid #000;
+	border: 0;
+	border-top: 2px solid #000;
+	border-bottom: 1px solid #d4d4d4;
+}
+
+.example {
+	display: none;
+}
+
+.field > div.withExample {
+	margin-left: 120px;
+	padding-top: 2px;
+	display: block;
 }
 
 form#new_account legend {
 	background: #fff;
-	padding: 0 4px;
+	padding: 0px 4px;
 	position: relative;
 	font-weight: bold;
 	left: -4px;
 	font-size: 15px;
+	
+	margin-left: 10px;
 }
 
 form#new_account input {
@@ -38,18 +82,34 @@ form#new_account label {
 	font-size: 12px;
 	text-align: right;
 	padding-right: 10px;
-	width: 100px;
+	width: 110px;
 	padding-top: 0;
 	top: 6px;
 	position: relative;
 }
 
+form#new_account .form-action {
+	padding: 0 16px;
+}
+
 form#new_account button {
-	background: #f0f;
+	background: #c33;
+	font-size: 19px;
+	border: 1px solid #a00;
+	-webkit-border-radius: 8px;
+	padding: 6px 10px;
+	-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+	font-family: 'American Typewriter', Georgia;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(153,0,0,0.6);
 }
 
 form#new_account .field {
 	border: 0;
+}
+
+form#new_account .field > p {
+	margin-left: 120px;
 }
 
 form#new_account .example {
@@ -58,25 +118,127 @@ form#new_account .example {
 	color: #b4b4b4;
 }
 
-form#new_account fieldset .more {
-	max-width: 540px;
-	line-height: 18px;
-	padding: 0 0 6px;
+form#new_account .checkbox {
+	background: transparent;
+	padding: 10px 20px;
+}
+
+form#new_account .checkbox input {
+	margin-right: 4px;
 }
 
 em.highlight {
 	background: #ffa;
 }
 
-/* @group Domain Field */
-
-form#new_account .field.domain p {
-	font-size: 19px;
-	color: #888;
+p.more {
+	padding: 6px 20px 20px 10px;
+	max-width: 500px;
+	line-height: 17px;
 }
 
-form#new_account .field.domain input {
+
+.invite_code p.more {
+	padding-bottom: 0;
+}
+
+.ic-field {
+	margin: 10px;
+}
+
+/* @group Domain Field */
+
+form#new_account .domain p {
+	color: #888;
+	font-size: 19px;
+	padding: 20px 10px 10px;
+}
+
+form#new_account .domain input {
 	margin: 0 4px;
+}
+
+.account-domain p.more {
+	padding-bottom: 0;
+}
+
+/* @end */
+
+/* @group Error Handling */
+
+.fieldWithErrors,
+.fieldWithNoErrors {
+	display: inline;
+}
+
+body#signup .bigError {
+	background: #ffa url(../images/!.png) no-repeat 20px center;
+	padding: 10px 10px 10px 70px;
+	border: 1px solid #ca0;
+	margin-bottom: 20px;
+	-webkit-border-radius: 8px;
+}
+
+body#signup .bigError p {
+	max-width: 500px;
+	font-size: 15px;
+	line-height: 18px;
+}
+
+form#new_account .hasErrors label {
+	font-weight: bold;
+	color: #c00;
+}
+
+form#new_account .hasErrors {
+	background: #fffde5;
+	padding: 10px;
+	margin: 10px 0;
+	-webkit-border-radius: 8px;
+	border: 1px solid #eecccc;
+}
+
+form#new_account .field.hasErrors {
+	padding: 10px 0;
+	margin-top: 0;
+}
+
+ul.form-errors {
+	margin: 0;
+	padding: 2px 16px 6px;
+	max-width: 400px;
+}
+
+.field > ul.form-errors {
+	padding-left: 6px;
+	margin-top: 5px;
+	margin-left: 120px;
+}
+
+.account-domain > ul.form-errors,
+.invite_code > ul.form-errors,
+.terms_of_service > ul.form-errors {
+	padding: 2px 10px 6px;
+	margin-left: 10px;
+	margin: 10px 0 10px 10px;
+}
+
+ul.form-errors li {
+	color: #c00;
+	margin-top: 4px;
+	font-size: 12px;
+	background: url(../images/alert.gif) no-repeat left center;
+	padding-left: 16px;
+	font-weight: bold;
+}
+
+.fieldWithErrors label {
+	font-weight: bold;
+	color: #a00;
+}
+
+form#new_account .hasErrors .domain p {
+	padding-top: 10px;
 }
 
 /* @end */
