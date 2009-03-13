@@ -33,19 +33,6 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
-  # def self.api_key_allowed_for(*allowed_actions)
-  #   # def authorized
-  #   #       logged_in? or logged_in_via_api_key?
-  #   #     end
-  #   
-  #   class_eval do
-  #     def authorized
-  #       if allowed_actions.include?(action_name)
-  #       super or logged_in_via_api_key?
-  #     end
-  #   end
-  # end
 
 protected
   
@@ -56,8 +43,16 @@ protected
         when Account then account_or_subdomain.domain
       end
     
-    "#{subdomain}.#{request.domain}#{request.port_string}"
+    "#{subdomain}.#{base_domain}"
   end
+  
+  def base_domain
+    output = []
+    output += request.subdomains[1..10]
+    output << "#{request.domain}#{request.port_string}"
+    output.join(".")
+  end
+  helper_method :base_domain
   
   def current_account
     @current_account ||= Account.find_by_domain!(current_subdomain)
