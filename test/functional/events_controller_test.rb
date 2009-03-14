@@ -79,7 +79,7 @@ class EventsControllerTest < ActionController::TestCase
       setup { create_new_event }
       should_assign_to :event
       should_respond_with 302
-      should_redirect_to('events index') { events_path }
+      should_redirect_to('events index') { @controller.current_events_path_for(@event) }
       
       should "set date to today's date" do
         assert_equal Date.today, assigns(:event).date

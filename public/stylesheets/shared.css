@@ -1,4 +1,7 @@
-/* @override http://practical.ticktock.local:3000/stylesheets/shared.css */
+/* @override 
+	http://practical.ticktock.local:3000/stylesheets/shared.css
+	http://practical.tt.local.practical.cc:3000/stylesheets/shared.css
+*/
 
 @import url(lib/fonts.css);
 @import url(lib/reset.css);
@@ -18,6 +21,31 @@ a:hover {
 	text-decoration: underline !important;
 }
 
+#flash {
+	padding: 11px 9px 12px 45px;
+	background: #def url(../images/check-24-blue.png) no-repeat 10px center;
+	margin: 10px;
+	border: 1px solid #a0c2d6;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	font-size: 15px;
+	color: #20668e;
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+#flash > p {
+	max-width: 500px;
+	line-height: 18px;
+}
+
+#flash.error {
+	background-color: #ffedc0;
+	background-image: url(../images/!-24-orange.png);
+	border-color: #ff9245;
+	color: #be342a;
+}
+
+
 body {
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 13px;
@@ -26,7 +54,7 @@ body {
 }
 
 body, html {
-	background: #e5e5e5;
+	background: #e5e5e5 url(../images/bg-pattern.png);
 }
 
 #container {
@@ -41,14 +69,6 @@ body, html {
 }
 
 
-
-#footer {
-	background: #d1d1c9;
-	margin: 16px 0 40px;
-	padding: 10px 2.08%;
-	-webkit-border-radius: 12px;
-	color: #777;
-}
 
 .clearfix:after {
   content:".";

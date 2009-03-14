@@ -2,11 +2,7 @@ module Ticktock::DateNavigation
   
   def self.included(base)
     base.class_eval do
-      # helper_method :time_frame, :time_frame_params, :params_for_date, :start_date
-      #       helper_method :time_frame_params, :time_frame, :start_date, :params_for_previous, :params_for_next, :params_for_today, :time_frame_description, :params_for_time_frame
-      
       helper_method :current_range, :start_date, :end_date, :params_for_date, :params_for_today, :params_for_time_frame, :params_for_next, :params_for_previous, :time_frame, :time_frame_params
-      
     end
   end
   

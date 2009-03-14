@@ -20,6 +20,8 @@ class TrackablesController < ApplicationController
         format.xml  { render :xml  => @trackable, :status => :created, :location => @trackable }
         format.json { render :json => @trackable, :status => :created, :location => @trackable }
       else
+        flash.now[:error] = "Oops, the project could not be saved. Please fix the errors below and try again."
+        
         format.html { render :action => "new" }
         format.xml  { render :xml  => @trackable.errors, :status => :unprocessable_entity }
         format.json { render :json => @trackable.errors, :status => :unprocessable_entity }

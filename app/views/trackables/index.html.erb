@@ -3,17 +3,44 @@
 </div>
 
 <div class="bd">
-<%- @trackables.each do |trackable| -%>
-<% content_tag_for :div, trackable do %>
-	<h3>
-		<strong class="name"><%= link_to trackable, trackable_events_path(trackable) %></strong>
-		<%= trackable_nickname(trackable) %>
-	</h3>
-	<h4><%= pluralize(trackable.events.count, "event") %></h4>
+<table class="frame"><tr valign="top">
+	<td class="seven">
+		
+		<%- @trackables.each do |trackable| -%>
+		<% content_tag_for :div, trackable, :class => "#{cycle(*%w(x y))} #{'first' if trackable == @trackables.first} hover_container".strip.gsub(/ +/," ") do %>
+			<% link_to(trackable_events_path(trackable), :class => "img hover_target") do %>
+			<%= image_tag "icon-folder-50.png" %>
+			<% end %>
+		
+			<div class="t-bd">
+				<h3>
+					<strong class="name hover_target"><%= link_to trackable, trackable_events_path(trackable) %></strong>
+					<%= trackable_nickname(trackable) %>
+				</h3>
+				<h4><%= pluralize(trackable.events.count, "event") %></h4>
+			</div>
+
+			<p class="actions hover_target">
+				<%= link_to "Edit", [:edit, trackable], :class => "edit" %>
+			</p>
+			
+		<hr class="trackable-divider">
+		<% end %>
+		<% end %>
+		
+	</td>
+	<td class="gutter">&nbsp;</td>
+	<td class="sidebar three">
+		
+		<p class="add-project actions">
+			<%= link_to "Add a new project", new_trackable_path, :class => "add button" %>
+		</p>
+		
+	</td>
+</tr></table>
 	
-	<p class="actions">
-		<%= link_to "Edit", [:edit, trackable], :class => "edit" %>
-	</p>
-<% end %>
-<% end %>
+
 </div>
+<script type="text/javascript" charset="utf-8">
+	new HoverObserver('main')
+</script>

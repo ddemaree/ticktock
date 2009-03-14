@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CalendarHelperTest < ActionView::TestCase
+class CalendarHelperTest < ActionView::TestCase  
   
   context "duration_to_string" do
     

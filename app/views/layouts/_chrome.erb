@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>TickTock &mdash; [PAGE TITLE HERE]</title>
+	<title><%= page_title %></title>
 	<%= sprockets_include_tag %>
 	<%= stylesheet_link_tag "default" %>
 	<%= @content_for_head %>
@@ -21,8 +21,6 @@
 	</p>
 </div></div>
 
-<%= base_domain %>
-
 <div id="container">
 <div id="main" class="workspace wrap">
 
@@ -30,23 +28,19 @@
 	<tr valign="top">
 		
 		<td id="sidebar" class="sidebar">
-			<!-- <div id="quick-entry" style="display:none">
-				<span class="arrow">&nbsp;</span>
-				<%# render :partial => '/events/quick_entry' %>
-			</div> -->
-			
 			<ul class="nav" id="add-event">
-				<li class="big"><%= link_to_unless (section_name == "new_event"), "Add event", new_event_path %></li>
+				<li class="big"><%= link_to_unless (section_name == "new_event"), "Log stuff", new_event_path %></li>
 				<li class="quick"><a href="javascript:void%200">Quick Add</a></li>
 			</ul>
-			
+			<hr>
 			<ul class="nav" id="main-navigation">
 				<li>
-					<%= link_to_unless (section_name == "events"), "Calendar", calendar_path %>
+					<%= link_to_unless (section_name == "events"), "Browse my log", calendar_path %>
 				</li>
 				<li><%= link_to_unless (section_name == "trackables"), "Projects", trackables_path %>	
 				</li>
 			</ul>
+			<hr>
 		</td>
 		
 		<td id="workspace">
@@ -59,7 +53,12 @@
 </table>
 
 <div id="footer">
-<div class="copyright">&copy;2009 Practical Creative &amp; Code</div>
+	<div class="logo">
+		<h4>TickTock</h4>
+	</div>
+	<div class="copyright">
+		<p>&copy;2009 Practical Creative &amp; Code</p>
+	</div>
 </div>
 
 </div>

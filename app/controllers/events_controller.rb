@@ -8,6 +8,14 @@ class EventsController < ApplicationController
   rescue_from NoActiveEvent,               :with => :respond_on_no_active_event
   
   def index
+    session[:events_view] = {
+      :controller => 'events',
+      :page => params[:page],
+      :per_page => params[:per_page],
+      :tags => params[:tags],
+      :trackable_id => params[:trackable_id]
+    }
+    
     scoped_events = current_account.events.filtered({
       :trackable => params[:trackable_id],
       :tag => params[:tags]
@@ -49,10 +57,11 @@ class EventsController < ApplicationController
     @event = current_account.events.build
     @event.update_attributes! params[:event]
     
+    # TODO: Better flash copy here
     respond_to do |format|
-      flash[:notice] = 'Article was successfully created.'
+      flash[:notice] = 'Event added!'
       
-      format.html { redirect_to(params[:return] == "yes" ? request.referrer : events_path) }
+      format.html { redirect_to(params[:return] == "yes" ? request.referrer : current_events_path_for(@event)) }
       format.js   {
         headers["X-JSON"] = @event.to_json
         render :partial => 'list_item', :locals => {:event => @event }, :status => :created

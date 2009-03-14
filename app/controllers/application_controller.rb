@@ -33,6 +33,24 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  
+  def current_events_path(options={})
+    url_for(session[:events_view].merge(options))
+  end
+  
+  def current_events_path_for(event)
+    view_mode = (session[:events_view][:controller] || "calendar")
+    
+    if view_mode == "calendar"
+      current_events_path({
+        :week => @event.date.cweek,
+        :year => @event.date.year
+      })
+    else
+      current_events_path
+    end
+  end
+  helper_method :current_events_path, :current_events_path_for
 
 protected
   
@@ -84,6 +102,10 @@ protected
   def set_current_user
     return unless logged_in?
     UserAssignmentObserver.current_user = current_user
+    
+    session[:events_view] = {
+      :controller => 'calendar'
+    }
   end
   
   def current_event

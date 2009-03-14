@@ -1,4 +1,7 @@
-/* @override http://practical.ticktock.local:3000/stylesheets/events.css */
+/* @override 
+	http://practical.ticktock.local:3000/stylesheets/events.css
+	http://practical.tt.local.practical.cc:3000/stylesheets/events.css
+*/
 
 a.action {
 	background: url(../images/document-16-red.png) no-repeat left center;
@@ -37,7 +40,7 @@ a.action {
 }
 
 #events.new .bd {
-	padding: 15px;
+	padding: 15px 15px 0;
 }
 
 table#eventRows {
@@ -276,21 +279,9 @@ table#eventRows .duration {
 	margin: 10px 0;
 }
 
-#calendar .calendar-hd {
-	background: #b00;
-	border: 0;
-	position: relative;
-	padding: 0;
-}
-
 #calendar .calendar-hd h1 {
 	float: left;
-	padding: 8px 0 8px;
-	margin-left: 64px;
-	font-family: 'American Typewriter', Georgia;
-	color: #fff;
-	text-shadow: 1px 1px 1px #800;
-	font-size: 22px;
+	margin-left: 44px;
 }
 
 #calendar .calendar-hd a {
@@ -303,7 +294,7 @@ table#eventRows .duration {
 	border: 0;
 	position: absolute;
 	left: 10px;
-	top: 8px;
+	top: 26px;
 	padding: 0;
 	margin: 0;
 }
@@ -330,7 +321,8 @@ table#eventRows .duration {
 
 #calendar .calendar-hd .jump_to_current {
 	float: left;
-	padding: 14px 12px 0;
+	margin-top: 16px;
+	padding: 14px 12px 0 0;
 }
 
 .calendar-sidebar {
@@ -378,4 +370,77 @@ table#eventRows .duration {
 
 #events.index .bd {
 	padding: 10px 0;
+}
+
+#recent-events {
+	padding: 10px;
+	padding-top: 0;
+}
+
+#recent-events h2 {
+	padding: 10px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+#recent-events table {
+	border-top: 1px solid #e5e5e5;
+}
+
+#recent-events tr {
+	position: relative;
+}
+
+#recent-events td {
+	padding: 4px 5px 4px 10px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+#recent-events .even td {
+	background: #fcfcfc;
+}
+
+#recent-events .date,
+#recent-events .duration,
+#recent-events .actions {
+	white-space: nowrap;
+}
+
+#recent-events .actions {
+	text-align: right;
+	font-size: 11px;
+	vertical-align: middle;
+}
+
+#recent-events .date span {
+	background: url(../images/calendar.gif) no-repeat left center;
+	padding-left: 14px;
+}
+
+#recent-events .duration {
+	text-align: right;
+	color: #689b4b;
+	font-weight: bold;
+}
+
+#recent-events .body {
+	font-family: 'American Typewriter', Georgia;
+	font-size: 15px;
+	color: #666;
+}
+
+#recent-events .body p {
+	font-size: 15px;line-height: 17px;
+}
+
+#recent-events .subject {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+#recent-events .subject a {
+	text-decoration: none;
+	color: #000;
+	margin-right: 4px;
 }

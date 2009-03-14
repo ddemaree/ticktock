@@ -5,6 +5,13 @@ class CalendarController < ApplicationController
   layout 'events'
   
   def index
+    session[:events_view] = {
+      :controller => 'calendar',
+      :week => params[:week],
+      :year => params[:year],
+      :month => params[:month]
+    }
+    
     @events = current_account.events.for_date_range(current_range).find_and_extend
   end
   

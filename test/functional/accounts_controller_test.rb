@@ -69,7 +69,7 @@ class AccountsControllerTest < ActionController::TestCase
     
     should_assign_to :account, :user
     should_respond_with 302
-    should_redirect_to("the account page") { 'http://practical.ticktockapp.test/account' }
+    should_redirect_to("the account page") { 'http://practical.ticktockapp.test/' }
     
     should "save the stuff" do
       assert assigns(:account).valid?, assigns(:account).errors.full_messages

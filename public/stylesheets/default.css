@@ -1,6 +1,7 @@
 /* @override 
 	http://practical.ticktock.local:3000/stylesheets/default.css
 	http://www.ticktock.local:3000/stylesheets/default.css
+	http://practical.tt.local.practical.cc:3000/stylesheets/default.css
 */
 
 @import url(shared.css);
@@ -9,7 +10,9 @@
 /* @group Header */
 
 #header {
-	/*background: #79b0f4;*/
+	background: #fff;
+	border-bottom: 1px solid #bbb;
+	-webkit-box-shadow: 0 1px 0 #d4d4d4;
 }
 
 #header .wrap {
@@ -33,7 +36,7 @@
 #header h1 {
 	padding: 9px 10px 9px;
 	font-weight: bold;
-	color: #fff;
+	color: #666;
 }
 
 #header ul {
@@ -76,16 +79,16 @@
 	border-bottom: 2px solid #d4d4d4;
 }
 
+
 #workspace .hd {
 	background: #b00;
 	border: 0;
-	position: relative;
 	padding: 0;
 	position: relative;
 }
 
 #workspace .hd h1 {
-	padding: 8px 20px 8px;
+	padding: 25px 20px 8px;
 	font-family: 'American Typewriter', Georgia;
 	color: #fff;
 	text-shadow: 1px 1px 1px #800;
@@ -95,10 +98,14 @@
 #workspace .hd .back {
 	padding: 4px 10px 0;
 	font-size: 11px;
+	position: absolute;
+	left: 10px;
+	top: 6px;
 }
 
 #workspace .hd a {
 	text-decoration: none;
+	color: #fff;
 }
 
 /* @end */
@@ -108,7 +115,7 @@
 #stretcher td#sidebar {
 	padding-top: 20px;
 	width: 17%;
-	background: -webkit-gradient(linear, left top, right top, from(#e5e5e5), to(#ccc), color-stop(0.98,#e5e5e5));
+	background: url(../images/bg-shadow-trans.png) repeat-y right 0;
 }
 
 #sidebar .nav li {
@@ -131,7 +138,7 @@
 }
 
 #sidebar #add-event {
-	padding: 0px 0 20px;
+	padding: 0px;
 }
 
 #sidebar .nav .big a,
@@ -145,6 +152,11 @@
 	font-weight: bold;
 }
 
+#sidebar hr {
+	background: #bbb;
+	margin: 10px 0;
+}
+
 /* @end */
 
 /* @end */
@@ -152,13 +164,30 @@
 /* @group Footer */
 
 #footer {
-	background: #d1d1c9;
-	-webkit-border-radius: 12px;
-	color: #777;
-	margin-left: 17%;
+	border-top: 2px solid #d4d4d4;
+	margin-top: 20px;
+	padding: 10px 0 50px;
 }
 
-#footer > div {
+#footer > .logo {
+	float: left;
+	width: 17%;
+}
+
+#footer > .logo h4 {
+	padding: 0 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #666;
+}
+
+#footer > .copyright {
+	margin-left: 17%;
+	padding: 0 0px;
+	color: #999;
+}
+
+#footer > .copyright p {
 	padding: 0px 0px;
 }
 
@@ -175,7 +204,7 @@
 	background: rgba(216,216,216,0.9);
 	border: 2px solid #4a4a4a;
 	-webkit-border-radius: 8px;
-	
+	-moz-border-radius: 8px;
 	-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 
@@ -312,192 +341,19 @@
 /* @end */
 
 
-
-table.month_grid {
-	margin: 20px 0;
-}
-
-.month_grid td {
-	background: #f5f5f5;
-	border: 2px solid #fff;
-	width:  14px;
-	height: 14px;
-}
-
-.month_grid td.currentmonth {
-	background: #ccc;
-}
-
-/*.month_grid td.in_range {
-	background: #def;
-}
-
-.month_grid td.today {
-	background: #f2f2b6;
-}*/
-
-.month_grid .header_row th {
-	padding: 2px 0;
+table.frame .sidebar > p.actions {
+	padding: 10px;
 	text-align: center;
-	font-weight: bold;
-	color: #ccc;
-	font-size: 10px;
+	background: #def;
+	font-size: 16px;
+	margin-top: 10px;
+	margin-left: 10px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
 }
 
-.month_grid .day_of_month {
-	display: block;
-	text-align: right;
-	font-size: 9px;
-	font-weight: bold;
-	display: none;
-}
-
-.month_grid .event_count {
-	display: none;
-}
-
-.month_grid .currentmonth .event_count {
-	background: #8b97af;
-	display: block;
-	height: 14px;
-	width: 14px;
-	text-indent: -9999px;
-}
-
-.month_grid .events-3 .event_count {
-	background-color: #59657b;
-}
-
-.month_grid .events-more .event_count {
-	background-color: #001132;
-}
-
-/*.month_grid .events-1 .event_count {
-	background-color: #8e9ab2;
-}
-
-
-
-.month_grid .events-2 .event_count {
-	background-color: #4c5d7f;
-}
-
-.month_grid .events-3 .event_count {
-	background-color: #071e4c;
-}
-
-.month_grid .events-more .event_count {
-	background-color: #001132;
-}*/
-
-#timer {
-	position: relative;
-	background: #8eb100;
-	color: #fff;
-	/*width: 300px;*/
-	overflow: auto;
-	margin-bottom: 20px;
-}
-
-#timer h4 {
-	background: #45551f;
-	padding: 7px 10px;
-	font-weight: bold;
-	text-transform: uppercase;
-	float: left;
-}
-
-#timer .body {
-	padding: 6px 100px 4px 10px;
-	font-size: 15px;
-	float: left;
-}
-
-#timer #seconds {
-	float: right;
-	margin: 0;
-	font-size: 19px;
-	padding: 3px 8px 4px;
-}
-
-.sidebar-module h4 {
-	font-family: 'MuseoSans';
-	text-transform: uppercase;
-	padding: 20px 4px 4px;
-	margin: 0 6px;
-	font-weight: 500;
-	border-bottom: 1px solid #ccc;
-}
-
-.sidebar-module ul {
-	padding: 0 10px;
-	font-size: 17px;
-}
-
-.sidebar-module ul li {
-	margin: 3px 0;
-}
-
-.sidebar-module ul .tag1 {
-	font-size: 75%;
-}
-
-.sidebar-module ul .tag2 {
-	font-size: 95%;
-}
-
-.sidebar-module ul .tag3 {
-	font-size: 116%;
-}
-
-.sidebar-module ul .tag4 {
-	font-size: 150%;
-}
-
-.sidebar-module ul .tag5 {
-	font-size: 175%;
-}
-
-.sidebar-module ul .tag6 {
-	font-size: 200%;
-}
-
-.sidebar-module ul .total {
-	font-size: 11px;
-	color: #666;
-}
-
-.colordot {
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	position: relative;
-	top: 1px;
-}
-
-
-
-#trackables.index .bd {
-	padding: 10px;
-}
-
-#trackables.index .trackable {
-	padding: 10px;
-	border-bottom: 1px solid #ccc;
-}
-
-#trackables.index .trackable h3 {
-	font-size: 17px;
-}
-
-#trackables.index .trackable h4 {
-	font-size: 13px;
-	font-weight: bold;
-	padding-top: 2px;
-	color: #888;
-}
-
-#trackables.index .trackable .nickname {
-	font-size: 13px;
-	color: #666;
+a.add {
+	color: #468c1c;
+	background: url(../images/plus-16-green.png) no-repeat left center;
+	padding: 2px 0 2px 22px;
 }

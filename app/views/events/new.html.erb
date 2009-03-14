@@ -1,16 +1,22 @@
+<%- @page_title = "Add events" -%>
 <% @event_row = capture do %>
 <%= render :partial => 'new', :locals => {:index => "\#{index}"} %>
 <% end %>
 <%= javascript_tag %{var eventRow = new Template("#{escape_javascript(@event_row)}")} %>
 
 <div class="hd calendar-hd">
-	<h1>Add new events</h1>
+	<h1>Add new events to your log</h1>
 </div>
 
 <table class="frame">
 <tr>
 	<td class="seven">
 	<% form_for @event, :html => {:class => "bd"} do |f| %>
+		<div id="errorContainer" style="display:none">
+			<p>We're sorry, but we couldn't add this event to your log. Please correct these errors and try again:</p>
+			<ul></ul>
+		</div>
+		
 		<div class="field" id="event_date_field">
 			<%= f.label :date, "On what day?" %>
 			<p class="field"><%= f.text_field :date %></p>
@@ -30,10 +36,16 @@
 		</div>
 
 
-		<p class="actions">
-			<button type="submit">Create</button>
+		<p class="form-action">
+			<button type="submit"><span>Create</span></button>
 		</p>
 	<% end %>
+	
+	<div id="recent-events">
+		<h2>Your last 20 entries</h2>
+		<table border="0" cellspacing="5" cellpadding="5">
+		</table>
+	</div>
 	</td>
 	
 	<td class="gutter">&nbsp;</td>
@@ -41,9 +53,21 @@
 	<td class="three sidebar">
 		<ul class="actions">
 			<h3>More options</h3>
-			<li><%= link_to "Add multiple events&hellip;", {:action => "add_multiple"}, :class => "action import" %></li>
 			<li><%= link_to "Import from CSV file&hellip;", new_event_import_path, :class => "action import" %></li>
 		</ul>
 	</td>
 </tr>
 </table>
+
+<%= javascript_tag "var recentEvents = #{Event.recent.to_json(:include => :subject)}" %>
+<script type="text/javascript" charset="utf-8">
+
+Event.observe(window, 'load', function(){
+	recentEvents.each(function(row){
+		$('recent-events').down('table').insert({bottom:new RecentEvents.Row(row.event)})
+	})
+	
+	Ticktock.zebraStripe('#recent-events tr')
+	$('new_event').observe('submit', RecentEvents.createEvent)
+})
+</script>

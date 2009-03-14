@@ -132,6 +132,8 @@ module CalendarHelper
     concat(tag(:div, wrapper_options, true))
     yield events
     concat('</div>')
+  rescue
+    ""
   end
   
   def range_description

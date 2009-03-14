@@ -1,28 +1,37 @@
-
-
-<div class="hd calendar-hd">
-	<p class="back"><%= link_to "&lsaquo; Trackables" %></p>
-	<h1>Edit trackable</h1>
+<div class="hd">
+	<h1>Projects</h1>
 </div>
 
-<%= link_to "Merge with another project", trackable_duplicates_path(@trackable) %>
-
-<% form_for @trackable do |f| %>
-<%= f.error_messages %>
-
-<fieldset>
-	<p class="field">
-		<%= f.label :name %>
-		<%= f.text_field :name %>
-	</p>
+<div class="bd">
+<table class="frame"><tr valign="top">
+	<td class="seven">
 	
-	<p class="field">
-		<%= f.label :nickname %>
-		<%= f.text_field :nickname %>
-	</p>
-</fieldset>
-<p class="form-action">
-	<button type="submit">Create my account now</button>
-</p>
+		<div class="hd calendar-hd">
+			<p class="back"><%= link_to "&lsaquo; Trackables" %></p>
+			<h1>Edit trackable</h1>
+		</div>
+
+		<%= link_to "Merge with another project", trackable_duplicates_path(@trackable) %>
+
+		<% form_for @trackable do |f| %>
+		<%= f.error_messages %>
+
+		<fieldset>
+			<p class="field">
+				<%= f.label :name %>
+				<%= f.text_field :name %>
+			</p>
+
+			<p class="field">
+				<%= f.label :nickname %>
+				<%= f.text_field :nickname %>
+			</p>
+		</fieldset>
+		<p class="form-action">
+			<button type="submit">Create my account now</button>
+		</p>
+
+		<% end %>
 	
-<% end %>
+	</td>
+</tr></table>

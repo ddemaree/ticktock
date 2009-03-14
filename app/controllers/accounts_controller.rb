@@ -16,7 +16,7 @@ class AccountsController < ApplicationController
     respond_to do |format|
       if @account.save
         flash[:notice] = 'Account was successfully created.'
-        format.html { redirect_to :action => "show", :host => account_host(@account) }
+        format.html { redirect_to root_url(:host => account_host(@account)) }
         format.xml  { render :xml => @account, :status => :created, :location => @account }
       else
         flash[:error] = "We're sorry, but we weren't able to create your account using the information you provided. Please correct the errors below and try again."
