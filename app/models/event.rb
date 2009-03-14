@@ -41,6 +41,8 @@ class Event < ActiveRecord::Base
   validate                :stop_must_be_after_start
   validate                :start_or_date_present
   
+  attr_accessor :source
+  
   class << self
   
     def find_and_extend(*args,&block)
