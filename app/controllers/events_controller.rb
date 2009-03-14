@@ -59,9 +59,12 @@ class EventsController < ApplicationController
     
     # TODO: Better flash copy here
     respond_to do |format|
-      flash[:notice] = 'Event added!'
       
-      format.html { redirect_to(params[:return] == "yes" ? request.referrer : current_events_path_for(@event)) }
+      format.html { 
+        flash[:notice] = 'Event added!'
+        #redirect_to(params[:return] == "yes" ? request.referrer : current_events_path_for(@event))
+        redirect_to(params[:return] == "yes" ? request.referrer : new_event_path)
+      }
       format.js   {
         headers["X-JSON"] = @event.to_json
         render :partial => 'list_item', :locals => {:event => @event }, :status => :created

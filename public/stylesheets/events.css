@@ -39,9 +39,9 @@ a.action {
 	border-right: 1px solid #d4d4d4;
 }
 
-#events.new .bd {
+/*#events.new .bd {
 	padding: 15px 15px 0;
-}
+}*/
 
 table#eventRows {
 	width: 100%;
@@ -372,6 +372,46 @@ table#eventRows .duration {
 	padding: 10px 0;
 }
 
+#events.new #new_event {
+	margin: 10px;
+	padding: 10px;
+	background: #faf6d6;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+}
+
+#events.new #new_event .instructions {
+	font-size: 11px;
+	line-height: 15px;
+	color: #444;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	width: 78%;
+	max-width: 500px;
+	float: left;
+}
+
+#events.new #new_event .instructions strong {
+	font-weight: bold;
+}
+
+#events.new #new_event .event_body textarea {
+	width: 99.2%;
+}
+
+#events.new #new_event .event_body h4 {
+	font-size: 15px;
+	padding-bottom: 5px;
+	font-family: 'American Typewriter', Georgia;
+}
+
+#events.new #new_event .form-action {
+	padding-bottom: 0;
+	float: right;
+}
+
+/* @group Recent Events List */
+
 #recent-events {
 	padding: 10px;
 	padding-top: 0;
@@ -444,3 +484,5 @@ table#eventRows .duration {
 	color: #000;
 	margin-right: 4px;
 }
+
+/* @end */

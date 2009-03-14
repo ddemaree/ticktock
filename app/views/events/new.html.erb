@@ -17,28 +17,36 @@
 			<ul></ul>
 		</div>
 		
-		<div class="field" id="event_date_field">
+		<!-- <div class="field" id="event_date_field">
 			<%= f.label :date, "On what day?" %>
 			<p class="field"><%= f.text_field :date %></p>
 			<div id="event_date_pager"></div>
 		</div>
-		<%= javascript_tag "new Ticktock.DatePager('event_date', 'event_date_pager')" %>
+		<%= javascript_tag "new Ticktock.DatePager('event_date', 'event_date_pager')" %> -->
 	
-		<div class="field event_body">
-			<%= f.label :body, "What did you do?" %>
+		<div class="event_body">
+			<h4><%= f.label :body, "What did you do?" %></h4>
 			<p><%= f.text_area :body, :cols => 60, :rows => 5 %></p>
 		</div>
 		
-		<div class="field event_duration">
+		<p class="instructions">
+			<strong>Dates</strong> can be specified in <code>MM/DD/YYYY</code> format, e.g. <code>3/9/2009</code>. <strong>Durations</strong> can be specified in hours and minutes, e.g. <code>3:30</code> for 3 hours and 30 minutes. <strong>Tags</strong> are denoted by a pound sign (<code>#</code>), e.g. <code>#workout</code>. <strong>Projects</strong> are denoted by an <code>@</code>-sign, e.g. <code>@marathon</code>.
+		</p>
+		
+		<p class="form-action">
+			<button type="submit"><span>Add to log</span></button>
+		</p>
+		
+		<hr class="clear">
+		
+		<!-- <div class="field event_duration">
 			<%= f.label :duration, "For how long?" %>
 			<p><%= f.text_field :duration %></p>
 			<p class="info">Examples: <strong>1:30</strong>, <strong>1.75h</strong>, <strong>2 hours</strong></p>
-		</div>
+		</div> -->
 
 
-		<p class="form-action">
-			<button type="submit"><span>Create</span></button>
-		</p>
+		
 	<% end %>
 	
 	<div id="recent-events">
