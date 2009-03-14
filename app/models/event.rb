@@ -112,6 +112,11 @@ class Event < ActiveRecord::Base
     end
   end
   
+  def date=(date_or_string)
+    return @date_set_via_body if @date_set_via_body
+    write_attribute(:date, date_or_string)
+  end
+  
   def body=(message)
     params = MessageParser.parse(:body => message)
     logger.debug("\n\n#{params.inspect}\n\n")
@@ -122,6 +127,11 @@ class Event < ActiveRecord::Base
     if params[:duration]
       self.duration  = params[:duration]
       @duration_set_via_body = params[:duration]
+    end
+    
+    if params[:date]
+      self.date = params[:date]
+      @date_set_via_body = params[:date]
     end
     
       #self.duration.blank?

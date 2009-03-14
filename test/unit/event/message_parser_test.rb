@@ -106,6 +106,54 @@ class Event::MessageParserTest < ActiveSupport::TestCase
         assert_equal 1.75.hours, @params[:duration]
       end
     end
+    
+    context "Messages containing date" do
+      context "in MM/DD/YYYY format" do
+        setup do
+          @message = "12/3/1980 was born"
+          @params  = Event::MessageParser.parse(:body => @message)
+        end
+        
+        should "extract date" do
+          #flunk @params.inspect
+          assert_not_nil @params[:date]
+          assert_equal "1980-12-03".to_date, @params[:date]
+        end
+        
+        context "as well as duration" do
+          setup do
+            @message = "12/3/1980 was born 0:05"
+            @params  = Event::MessageParser.parse(:body => @message)
+          end
+          
+          should "extract date" do
+            assert_not_nil @params[:date]
+            assert_equal "1980-12-03".to_date, @params[:date]
+          end
+          
+          should "extract duration" do
+            assert_not_nil @params[:duration]
+          end
+          
+          should "provide correct duration" do
+            assert_equal 5.minutes, @params[:duration]
+          end
+        end
+      end
+      
+      context "in MM-DD-YYYY format" do
+        setup do
+          @message = "12-3-1980 was born"
+          @params  = Event::MessageParser.parse(:body => @message)
+        end
+        
+        should "extract date" do
+          #flunk @params.inspect
+          assert_not_nil @params[:date]
+          assert_equal "1980-12-03".to_date, @params[:date]
+        end
+      end
+    end
 
     # TODO: Hook up this parser
     # context "in 1h 25m format" do

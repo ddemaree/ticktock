@@ -142,6 +142,20 @@ class EventTest < ActiveSupport::TestCase
       assert_not_nil event.duration
       assert_not_nil 1.75.hours, event.duration
     end
+    
+    should "allow setting of date" do
+      message = "Hello world 12/3/1980"
+      event   = @account.events.create(:body => message)
+      assert_not_nil event.date
+      assert_not_nil "1980-12-03".to_date, event.date
+    end
+    
+    should "set date from body when provided separately" do
+      message = "Hello world 12/3/1980"
+      event   = @account.events.create(:date => "2009-01-01", :body => message)
+      assert_not_nil event.date
+      assert_not_nil "1980-12-03".to_date, event.date
+    end
   end
   
   

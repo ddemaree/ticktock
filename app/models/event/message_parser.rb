@@ -8,7 +8,7 @@ class Event::MessageParser
       :tags => Array(params[:tags]),
       :subject => nil,
       :user_name => nil,
-      :date => Date.today
+      :date => nil
     })
     
     returning(params) do |output|
@@ -39,6 +39,12 @@ class Event::MessageParser
       # Duration
       params[:body].sub!(TimeRegex) do |match|
         output[:duration] = Event::TimeParser.from_string($1); ""
+      end
+      
+      # Date in MM/DD/YYYY
+      params[:body].gsub!(/(?:^|\W)(\d{1,2})(?:\/|-)(\d{1,2})(?:\/|-)(\d{2,4})/) do |match|
+        output[:date] = "#{$3}-#{$1.rjust(2,"0")}-#{$2.rjust(2,"0")}".to_date
+        ""
       end
       
       # # Date using machine-readable format
