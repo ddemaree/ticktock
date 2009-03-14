@@ -59,7 +59,7 @@
 </tr>
 </table>
 
-<%= javascript_tag "var recentEvents = #{Event.recent.to_json(:include => :subject)}" %>
+<%= javascript_tag "var recentEvents = #{current_account.events.recent.to_json(:include => :subject)}" %>
 <script type="text/javascript" charset="utf-8">
 
 Event.observe(window, 'load', function(){
