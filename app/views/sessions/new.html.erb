@@ -2,7 +2,7 @@
 
 <% form_tag session_path do -%>
 
-<p><%= flash[:error] || flash[:notice] || "Please sign in to access TickTock" %></p>
+<%= flash_message %>
 
 <fieldset>
 	<p class="field">
@@ -17,7 +17,7 @@
 	
 </fieldset>
 
-<p class="actions">
-<button type="submit">Sign me in</button>
+<p class="actions form-action">
+<button type="submit"><span>Sign me in</span></button>
 </p>
 <% end -%>
