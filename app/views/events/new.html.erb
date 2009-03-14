@@ -77,5 +77,13 @@ Event.observe(window, 'load', function(){
 	
 	Ticktock.zebraStripe('#recent-events tr')
 	$('new_event').observe('submit', RecentEvents.createEvent)
+	$('new_event').down('textarea').focus()
+	
+	$('new_event').down('textarea').observe('keypress', function(event){
+		if(Event.KEY_RETURN == event.keyCode){
+			RecentEvents.createEvent()
+			event.stop()
+		}
+	})
 })
 </script>
