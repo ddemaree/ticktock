@@ -13,6 +13,21 @@
 <% content_tag :body, :id => body_id, :class => body_classes.join(" ") do %>
 	
 <div id="header"><div class="wrap clearfix">
+	
+	<div id="quick-entry" class="quick">
+		<a href="/events/new.quick" onclick="Quickbox.remote(this);return false;" class="add">Add an entry</a>
+	
+		<% form_for :event, :html => {:id => "tt-quick-entry"} do |f| %>
+		<div>
+			<p>Add an event to your log:</p>
+			<div class="field">
+				<%= f.text_field :body %>
+				<button type="submit">Add</button>
+			</div>
+		</div>
+		<% end %>
+	</div>
+	
 	<h1><%= current_account.name %></h1>
 	
 	<p class="current_user">
@@ -20,6 +35,14 @@
 		(<%= link_to "Sign out", logout_path %>)
 	</p>
 </div></div>
+
+<script type="text/javascript" charset="utf-8">
+	//$('tt-quick-entry').makePositioned()
+	
+	$('tt-quick-entry').down('button').remove()
+	$('tt-quick-entry').hide()
+	
+</script>
 
 <div id="container">
 <div id="main" class="workspace wrap">
@@ -30,12 +53,11 @@
 		<td id="sidebar" class="sidebar">
 			<ul class="nav" id="add-event">
 				<li class="big"><%= link_to_unless (section_name == "new_event"), "Log stuff", new_event_path %></li>
-				<li class="quick"><a href="javascript:void%200">Quick Add</a></li>
 			</ul>
 			<hr>
 			<ul class="nav" id="main-navigation">
 				<li>
-					<%= link_to_unless (section_name == "events"), "Browse my log", calendar_path %>
+					<%= link_to_unless (section_name == "events"), "Browse my log", current_events_path %>
 				</li>
 				<li><%= link_to_unless (section_name == "trackables"), "Projects", trackables_path %>	
 				</li>

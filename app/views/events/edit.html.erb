@@ -1,4 +1,31 @@
+<div class="hd calendar-hd">
+	<h1>Edit entry</h1>
+</div>
 
-<% form_for @event do |f| %>
+<% form_for @event, :html => {:class => "bd"} do |f| %>
+
+<% f.field_wrapper :body do %>
+	<%= f.label :body %>
+	<p><%= f.text_area :body, :cols => 60, :rows => 5 %></p>
+<% end %>
+
+<% f.field_wrapper :duration do %>
+	<%= f.label :duration %>
+	<p><%= f.text_field :duration %></p>
+<% end %>
+
+<% f.field_wrapper :date do %>
+	<%= f.label :date %>
+	<p><%= f.text_field :date %></p>
+<% end %>
+
+<% f.field_wrapper :subject_id do %>
+	<%= f.label :subject_id, "Project" %>
+	<p><%= f.collection_select :subject_id, current_account.trackables.all, :id, :to_s, :include_blank => true %></p>
+<% end %>
 	
+<p class="form-action">
+	<button type="submit"><span>Save changes</span></button>
+</p>	
+
 <% end %>

@@ -36,8 +36,9 @@ class CalendarHelperTest < ActionView::TestCase
       assert_equal "3 minutes", duration_in_words(3.minutes)
     end
     
+    # FIXME: Can we pluralize?
     should "display minutes when over an hour" do
-      assert_equal "1 hour 30 minutes", duration_in_words(1.5.hours)
+      assert_equal "1 hours 30 minutes", duration_in_words(1.5.hours)
     end
     
     should "only show hours if no minutes" do

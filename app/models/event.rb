@@ -16,7 +16,7 @@ class Event < ActiveRecord::Base
   named_scope   :active, :conditions => { :state => 'active' }
   
   # TODO: Need to filter out imported events
-  named_scope :recent, :limit => 20
+  named_scope :recent, lambda {|num| {:limit => (num||20)} }
   
   named_scope :for_date_range, lambda { |range|
     raise ArgumentError, "Argument passed to Event.for_date_range must be range" unless range.is_a?(Range)
@@ -124,7 +124,14 @@ class Event < ActiveRecord::Base
     logger.debug("\n\n#{params.inspect}\n\n")
     
     self.tags      = params[:tags] if self.tags.empty?
-    self.subject ||= params[:subject]
+    
+    if self.new_record?
+      self.subject ||= params[:subject]
+    elsif params[:subject]
+      self.subject = params[:subject]
+    elsif self.subject && (!params[:subject] || params[:subject].blank?)
+      self.subject = nil
+    end
     
     if params[:duration]
       self.duration  = params[:duration]
@@ -142,6 +149,25 @@ class Event < ActiveRecord::Base
     params[:body]
   end
   
+  def quick_body
+    returning("") do |output|
+      output << "@#{subject.nickname} " if subject
+      
+      date_string = date.strftime("%m/%d/%Y")
+      output << "#{date_string} "
+      
+      if duration.to_i > 0
+        duration_string = Ticktock::Durations.duration_to_string(duration, "%H:%N")
+        output << "#{duration_string} "
+      end
+      
+      output << body
+    end
+  end
+  
+  def quick_body=(message)
+    self.body = message
+  end
   
   def user=(user_or_username)
     case user_or_username

@@ -86,10 +86,6 @@ table#eventRows .duration {
 	width: 140px;
 }
 
-
-
-
-
 /* @group Events List View */
 
 
@@ -134,41 +130,13 @@ table#eventRows .duration {
 
 /* @group Events for calendar view */
 
-.events_for_day {
-	padding: 20px 0px 0 20px;
-}
 
-.events_for_day + .events_for_day {
-	padding-top: 14px;
-}
 
-.events_for_day .date_header {
-	margin: 0 0 20px;
-	
-}
-
-.events_for_day .date_header span {
-	padding: 4px 8px 3px 20px;
-	/*border-bottom: 1px solid #888;*/
-	font-size: 12px;
-	font-weight: bold;
-	color: #222;
-	margin-left: -20px;
-	font-family: 'Helvetica';
-	
-	background: url(../images/date-header.png) no-repeat left bottom;
-}
-
-.events_for_day.empty .date_header span {
-	color: #b9b9b9;
-	border-color: #ccc;
-}
-
-.events_for_day ul {
+.events-list ul {
 	padding: 0 0 6px;
 }
 
-.events_for_day li {
+.events-list li {
 	position: relative;
 	margin: 0;
 	font-size: 15px;
@@ -176,15 +144,19 @@ table#eventRows .duration {
 	line-height: 18px;
 }
 
-.events_for_day li + li {
+.events-list li + li {
 	margin-top: 12px;
 }
 
-.events_for_day li > .ln {
+.events-list li > .ln {
 	
 }
 
-.events_for_day li p.event_body {
+.events-list li .date {
+	display: none;
+}
+
+.events-list li p.event_body {
 	color: #555;
 	position: relative;
 	margin-left: 60px;
@@ -192,11 +164,11 @@ table#eventRows .duration {
 	background: #fff url(../images/bg-lines.png) repeat 0 0px;
 }
 
-.events_for_day li a.tag {
+.events-list li a.tag {
 	text-decoration: none;
 }
 
-.events_for_day li .event_subject {
+.events-list li .event_subject {
 	font-weight: bold;
 	font-size: 13px;
 	margin-right: 2px;
@@ -205,12 +177,12 @@ table#eventRows .duration {
 	font-family: Helvetica, Arial;
 }
 
-.events_for_day li .event_subject a {
+.events-list li .event_subject a {
 	color: #000;
 	text-decoration: none;
 }
 
-.events_for_day li .duration {
+.events-list li .duration {
 	font-size: 13px;
 	color: #689b4b;
 	
@@ -222,7 +194,7 @@ table#eventRows .duration {
 	font-weight: bold;
 }
 
-.events_for_day li .event_actions {
+.events-list li .event_actions {
 	position: absolute;
 	left: -52px;
 	top: -5px;
@@ -230,15 +202,131 @@ table#eventRows .duration {
 	background: #fff;
 	padding-left: 4px;
 	display: none;
+	z-index: 990;
 }
 
-.events_for_day li.hover .event_actions {
+.events-list li.hover .event_actions,
+.events-list li.editing .event_actions {
 	display: block;
 }
 
-.events_for_day li span.hover_target {
+.events-list li.editing .event_actions .edit {
+	font-weight: bold;
+	color: #888;
+	background: #fff;
+	text-decoration: none;
+}
+
+.events-list li .event_body span.hover_target {
 	padding-left: 24px;
 	margin-left: -24px;
+}
+
+.events-list li form {
+	position: absolute;
+	left: 0;
+	top: -33px;
+	background: #ffd;
+	padding: 10px;
+	border: 1px solid #ccc;
+	padding-right: 60px;
+	z-index: 1000;
+	-webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.events-list li form h4 {
+	color: #666;
+	font-size: 13px;
+}
+
+.events-list li form textarea {
+	font-size: 15px;
+	width: auto;
+	padding: 2px 0 3px;
+	line-height: 21px;
+}
+
+.events-list li form button {
+	position: absolute;
+	right: 14px;
+	bottom: 14px;
+	text-indent: -9999px;
+	width: 40px;
+	height: 24px;
+}
+
+#recent-events-2 {
+	padding: 10px;
+}
+
+.events-list.show-dates li {
+	border-bottom: 1px solid #c4e4f2;
+	margin: 0;
+	padding: 8px 0;
+}
+
+.events-list.show-dates li .event_actions {
+	top: 2px;
+	left: -46px;
+}
+
+.events-list.show-dates li .date {
+	display: block;
+	float: left;
+	font-size: 13px;
+	
+	margin-left: 0;
+	
+	width: 90px;
+	color: #666;
+	padding-left: 10px;
+}
+
+.events-list.show-dates li .duration {
+	position: static;
+	float: left;
+	width: 60px;
+	text-align: left;
+}
+
+.events-list.show-dates li .event_body {
+	margin-left: 160px;
+	background: 0;
+}
+
+.events-list.show-dates li form {
+	top: -26px;
+}
+
+/* @end */
+
+/* @group Date Header */
+
+.events_for_day {
+	padding: 20px 0px 0 20px;
+}
+
+.events_for_day + .events_for_day {
+	padding-top: 14px;
+}
+
+.events_for_day .date_header {
+	margin: 0 0 20px;
+}
+
+.events_for_day .date_header span {
+	padding: 4px 8px 3px 20px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #222;
+	margin-left: -20px;
+	font-family: 'Helvetica';
+	background: url(../images/date-header.png) no-repeat left bottom;
+}
+
+.events_for_day.empty .date_header span {
+	color: #b9b9b9;
+	border-color: #ccc;
 }
 
 .events_for_day .no-events {
@@ -486,3 +574,8 @@ table#eventRows .duration {
 }
 
 /* @end */
+
+#events.edit .bd {
+	padding: 10px;
+}
+

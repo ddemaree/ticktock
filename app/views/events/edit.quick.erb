@@ -1,0 +1,9 @@
+<div id="quick_editor_for_<%= dom_id(@event) %>" class="inline-event-editor">
+<% form_remote_for @event do |f| %>
+<h4>Edit event (<a href="#">cancel</a>)</h4>
+<p>
+	<%= f.text_area :quick_body, :rows => 1, :cols => 60 %>
+	<button type="submit">Save changes</button>
+</p>
+<% end %>
+</div>

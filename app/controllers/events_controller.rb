@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   
   class AlreadyHasActiveEvent < Exception; end
   class NoActiveEvent < Exception; end
@@ -36,6 +37,7 @@ class EventsController < ApplicationController
     
     respond_to do |format|
       format.html
+      format.quick
       format.xml  { render :xml  => @event }
       format.json { render :json => @event }
     end
@@ -59,10 +61,8 @@ class EventsController < ApplicationController
     
     # TODO: Better flash copy here
     respond_to do |format|
-      
       format.html { 
         flash[:notice] = 'Event added!'
-        #redirect_to(params[:return] == "yes" ? request.referrer : current_events_path_for(@event))
         redirect_to(params[:return] == "yes" ? request.referrer : new_event_path)
       }
       format.js   {
@@ -101,6 +101,22 @@ class EventsController < ApplicationController
   
   def edit
     @event = current_account.events.find(params[:id])
+    
+    respond_to do |format|
+      format.html
+      format.js {
+        headers["X-JSON"] = @event.to_json
+        render :text => @event.quick_body
+      }
+    end
+  end
+  
+  def show
+    @event = current_account.events.find(params[:id])
+    respond_to do |format|
+      format.json { render :json => @event.to_json }
+      format.xml  { render :xml  => @event.to_xml  }
+    end
   end
   
   def update
@@ -108,11 +124,13 @@ class EventsController < ApplicationController
     @event.update_attributes!(params[:event])
     
     respond_to do |format|
-      flash[:notice] = 'Event was successfully created.'
-      
       format.html { redirect_to events_path }
       format.xml  { head :ok }
       format.json { head :ok }
+      format.js {
+        headers["X-JSON"] = @event.to_json
+        render :partial => 'list_item', :locals => {:event => @event}
+      }
     end
 
   rescue ActiveRecord::RecordInvalid

@@ -1,8 +1,6 @@
 <% content_tag_for :li, event, :class => "hover_container" do %>
 <div class="ln">
-	<%- if (show_date ||= false) -%>
 	<span class="date hover_target"><%= relative_date event.date %></span>
-	<%- end -%>
 	<%- if event.duration && (event.duration > 0) -%>
 	<span class="duration hover_target"><%= duration_to_string event.duration %></span>
 	<%- end -%>

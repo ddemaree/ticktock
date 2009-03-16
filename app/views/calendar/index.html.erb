@@ -30,7 +30,7 @@
 				<span><%= date.strftime("%A, %b %e") %></span>
 			</h3>
 
-			<ul>
+			<ul class="events-list">
 				<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
 				<li class="no-events">Nothing happened today</li>
 			</ul>	
@@ -68,4 +68,10 @@
 
 <script type="text/javascript" charset="utf-8">
 	new HoverObserver('main')
+	
+	Event.observe(window, 'load', function(){
+		$$('.event a.edit').each(function(link){
+			new InlineEventEditor(link)
+		})
+	})
 </script>

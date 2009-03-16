@@ -44,6 +44,14 @@ module Event::Taggable
     def tags
       @tags_as_array ||= Label.unserialize(self.tag.to_s)
     end
+    
+    def tag_string
+      self.tags.join(", ")
+    end
+    
+    def tag_string=(string)
+      self.tags = string
+    end
 
     def update_tags
       Label.transaction do

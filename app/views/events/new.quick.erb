@@ -1,0 +1,15 @@
+<% form_for @event, :html => {:id => "quick_event"} do |f| %>
+<p>Add an event to your log:</p>
+<div class="field">
+	<%= f.text_field :body %>
+	<button type="submit">Add</button>
+</div>
+<% end %>
+<script type="text/javascript" charset="utf-8">
+$('quick_event').down('button').remove()
+$('quick_event').down('input').focus()
+$('quick_event').observe('submit', function(e){
+	console.log("Submit!")
+	e.stop()
+})
+</script>

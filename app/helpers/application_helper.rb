@@ -50,10 +50,10 @@ module ApplicationHelper
     end
   end
   
-  def field_wrapper(object, field, &block)
-    concat tag(:div, {:class => "field #{'hasErrors' if object.errors.on(field)}"}, true)
-    yield
-    concat('</div>')
-  end
+  # def field_wrapper(object, field, &block)
+  #   concat tag(:div, {:class => "field #{'hasErrors' if object.errors.on(field)}"}, true)
+  #   yield
+  #   concat('</div>')
+  # end
 
 end

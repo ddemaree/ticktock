@@ -1,5 +1,21 @@
 module CalendarHelper
   
+  def time_to_units(time)
+    return Ticktock::Durations.time_to_units(time)
+  end
+  
+  def duration_to_string(time, format=nil)
+    return Ticktock::Durations.duration_to_string(time,format)
+  end
+  
+  def duration_in_words(time,options={})
+    return Ticktock::Durations.duration_to_string(time,"{%H hours} {%M minutes}")
+  end
+  
+  def duration_in_billable_hours(time)
+    return Ticktock::Durations.duration_in_billable_hours(time)
+  end
+  
   def trackables_colors
     %w(ff0000 ffcc00 88aa00 0088dd 9900aa cccccc)
   end
@@ -44,65 +60,6 @@ module CalendarHelper
     content_tag(:span, relative_date(date), :class => "date")
   end
   
-  def time_to_units(time)
-    hours = (time / 3600).floor
-    minutes = ((time % 3600) / 60).floor
-    seconds = (time % 60).floor
-    
-    [hours, minutes, seconds]
-  end
-  
-  def duration_to_string(time, format=nil)
-    format ||= "{%Hh} {%Mm}"
-    hours, minutes, seconds = time_to_units(time)
-    
-    format.gsub!(/(\{)?\%(\w)(?:([\w ]+)\})?/) do |match|
-      optional = ($1 == "{")
-      
-      value =
-        case $2
-          when "H" then hours
-          when "M" then minutes
-          when "S" then seconds
-          when "B" then duration_in_billable_hours(time)
-          else $2
-        end
-        
-      if optional && value == 0
-        ""
-      elsif $3
-        value.to_s + $3.to_s
-      else
-        value
-      end
-    end
-    
-    format.strip
-  end
-  
-  def duration_in_words(time,options={})
-    hours, minutes, seconds = time_to_units(time)
-    
-    hr_string  = pluralize(hours,   "hour")
-    min_string = pluralize(minutes, "minute")
-    sec_string = pluralize(seconds, "second")
-    
-    case time
-      when (0..60)   then sec_string
-      when (0..3559) then min_string
-      else "#{hr_string} #{min_string if minutes > 0}".strip
-    end
-  end
-  
-  def duration_in_billable_hours(time)
-    hours = (time.to_f / 3600.0)
-    nearest = 0.25
-    
-    base_hours = (hours - (hours % nearest))
-    base_hours += nearest if ((hours % nearest) > (nearest / 2))
-    return base_hours
-  end
-  
   def relative_date(date)
     return "" if date.nil?
     
@@ -136,6 +93,8 @@ module CalendarHelper
     ""
   end
   
+  
+  # FIXME: Need tests for range_description*
   def range_description
     if respond_to?("range_description_for_#{time_frame}")
       return send("range_description_for_#{time_frame}")

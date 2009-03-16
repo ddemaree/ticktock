@@ -366,4 +366,47 @@ class EventTest < ActiveSupport::TestCase
     end
   end
   
+  context "Event quickbody" do
+    
+    context "with project" do
+      setup do
+        @subject = Factory(:trackable, :nickname => "fhqwhgads")
+        @account = @subject.account
+        @event = Factory(:event, :account => @account,
+                                 :subject => @subject,
+                                 :duration => 2.hours)
+      end
+    
+      should "include subject" do
+        assert_match /^(?:@fhqwhgads) /, @event.quick_body
+      end
+      
+      should "include date" do
+        assert_match /(?:02\/15\/2008)/, @event.quick_body
+      end
+      
+      should "include duration" do
+        assert_match /(?:2:00)/, @event.quick_body
+      end
+      
+      should "preserve attributes if re-saved from quickbody" do
+        @old_event = @event.dup
+        assert @event.update_attributes(:body => @event.quick_body)
+        assert_equal @old_event.date, @event.date
+        assert_equal @old_event.duration, @event.duration
+        assert_equal @old_event.subject, @event.subject
+        assert_equal @old_event.body, @event.body
+      end
+      
+      should "update attributes from quickbody" do
+        @old_event = @event.dup
+        @event.quick_body = @event.quick_body.gsub(/(?:02\/15\/2008)/, "03/19/2009")
+        assert @event.save
+        assert_equal "03/19/2009".to_date, @event.date
+        assert_equal @old_event.body, @event.body
+      end
+    end
+    
+  end
+  
 end
