@@ -1,5 +1,18 @@
 module EventsHelper
   
+  def index_description
+    returning("") do |output|
+      if params[:trackable_id]
+        @current_project = Trackable.find(params[:trackable_id])
+        output << "#{link_to(@current_project, @current_project)} &mdash; "
+      end
+      
+      output << "Events"
+      output << " tagged with &lsquo;#{params[:tags]}&rsquo;" if params[:tags]
+      
+    end
+  end
+  
   def event_message(message)
     message.gsub!(/\#(?:(\w+))\s*/) do |match|
       link_to_tag($1) + " "
