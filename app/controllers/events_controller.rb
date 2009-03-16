@@ -26,6 +26,10 @@ class EventsController < ApplicationController
     
     respond_to do |format|
       format.html
+      format.csv  {
+        #render :text => generate_csv(@events), :content_type => Mime::CSV 
+        send_data generate_csv(@events), :content_type => Mime::CSV, :filename => "#{current_subdomain}_ticktockapp_com-events-#{Time.zone.now.to_i}.csv"
+      }
       format.xml  { render :xml  => @events }
       format.json { render :json => @events }
     end
@@ -213,6 +217,23 @@ protected
       format.html { render :action => (object.new_record? ? "new" : "edit") }
       format.xml  { render :xml  =>  object.errors, :status => :unprocessable_entity }
       format.json { render :json =>  object.errors, :status => :unprocessable_entity }
+    end
+  end
+  
+  def generate_csv(events)
+    csv_string = FasterCSV.generate do |csv|
+      events.each do |event|
+        csv << [
+          event.id,
+          event.date.to_s(:db),
+          event.start, #.try(:to_s(:db),
+          event.stop, #.to_s(:db),
+          event.subject.try(:nickname),
+          event.body,
+          event.duration,
+          event.hours
+        ]
+      end
     end
   end
 

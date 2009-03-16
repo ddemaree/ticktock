@@ -95,6 +95,8 @@ protected
     end
     
     @current_account = Account.find_by_domain!(current_subdomain)
+    
+    Time.zone = @current_account.timezone
   rescue ActiveRecord::RecordNotFound => @e
     render "#{RAILS_ROOT}/public/404.html", :status => 404
   end
