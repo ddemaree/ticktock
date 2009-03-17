@@ -12,7 +12,7 @@ html {
 }
 
 body {
-	background: url(../images/header-bg.png) repeat-x;
+	background: url(../images/header-bg.png) repeat-x left -10px;
 }
 
 #container {
@@ -22,7 +22,7 @@ body {
 /* @group Header */
 
 #header {
-	height: 24px;
+	height: 28px;
 }
 
 #header .wrap {
@@ -32,7 +32,7 @@ body {
 
 #header .current_user {
 	position: absolute;
-	top: 6px;
+	top: 8px;
 	font-size: 11px;
 	right: 20px;
 	color: #666;
@@ -50,7 +50,7 @@ body {
 	color: #666;
 	position: absolute;
 	left: 10px;
-	top: 14px;
+	top: 10px;
 }
 
 #header ul {
