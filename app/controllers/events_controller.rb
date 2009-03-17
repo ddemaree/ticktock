@@ -66,7 +66,6 @@ class EventsController < ApplicationController
     # TODO: Better flash copy here
     respond_to do |format|
       format.html { 
-        flash[:notice] = 'Event added!'
         redirect_to(params[:return] == "yes" ? request.referrer : new_event_path)
       }
       format.js   {
