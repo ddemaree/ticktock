@@ -25,7 +25,7 @@ Rails::Initializer.run do |config|
  
   config.gem 'sprockets', :version => '~>1.0.2'
   
-  #config.gem 'fiveruns-dash-rails', :lib => "fiveruns_dash_rails", :source => 'http://gems.github.com'
+  config.gem 'fiveruns-dash-rails', :lib => "fiveruns_dash_rails", :source => 'http://gems.github.com'
   
   config.active_record.observers = :user_assignment_observer
   config.time_zone = 'UTC'
