@@ -1,0 +1,55 @@
+/* @override http://practical.tt.local.practical.cc:3000/stylesheets/reports.css */
+
+#reports.top_tags .bd {
+	padding: 10px;
+}
+
+.top-tags {
+	width: 100%;
+	border-spacing: 0;
+}
+
+.top-tags td,
+.top-tags th {
+	font-size: 17px;
+	border-bottom: 1px solid #d4d4d4;
+	padding: 10px;
+	white-space: nowrap;
+}
+
+.top-tags .odd th,
+.top-tags .odd td {
+	background: #fcfcfc;
+}
+
+.top-tags .headers.top th {
+	font-size: 11px;
+	padding-bottom: 4px;
+	padding-top: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.top-tags .stat {
+	text-align: right;
+}
+
+.top-tags td.tag {
+	font-size: 22px;
+}
+
+.top-tags th.ranking {
+	font-size: 22px;
+	text-align: right;
+	width: 20px;
+}
+
+.top-tags td.duration {
+	color: #070;
+	font-weight: bold;
+}
+
+.top-tags td.sparkline {
+	width: 60px;
+	padding-left: 0;
+}

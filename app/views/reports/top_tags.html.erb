@@ -1,0 +1,62 @@
+<div class="hd">
+	<h1><%= @page_title = "Top tags by #{params[:by]}" %></h1>
+</div>
+
+<div class="bd padded">
+	<p class="sort_by">
+		<em>Show top tags by:</em>
+
+		<%= link_to_unless((params[:by] == "frequency"), "Frequency", {:by => "frequency"}){ |t| "<strong>#{t}</strong>"  } %>
+
+		<span class="sep">|</span>
+
+		<%= link_to_unless((params[:by] == "duration"), "Time spent", {:by => "duration"}) { |t| "<strong>#{t}</strong>"  } %>
+	</p>
+	
+	<table class="top-tags">
+	<tr class="headers top">
+		<th class="ranking">&nbsp;</th>
+		<th class="tag">Tag</th>
+		<% if @sorting_by.frequency? %>
+		<th scope="col" class="frequency stat" colspan="2">Frequency</th>
+		<% elsif @sorting_by.duration? %>
+		<th scope="col" class="duration stat" colspan="2">Time spent</th>
+		<% end %>
+
+		<!-- <th class="sparkline">Graph</th> -->
+	</tr>
+	<% @tags.each_with_index do |tag, x| %>
+	<tr>
+		<th class="ranking" scope="row">
+			<strong><%= x + 1 %></strong>
+		</th>
+
+		<td class="tag">
+			<%= link_to tag.name, events_path(:tags => tag.name) %>
+		</td>
+
+		<% if @sorting_by.frequency? %>
+		<td class="frequency stat">
+			<%= tag.taggings_count %>
+		</td>
+		<td class="sparkline">
+		<%= data = tag.frequency[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => data.max}).to_url) %>
+		</td>
+		<% elsif @sorting_by.duration? %>
+		<td class="duration stat">
+			<%= duration_to_string tag.total_duration %>
+		</td>
+		<td class="sparkline">
+			<%= data = tag.duration_report[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => @tags.collect(&:total_duration).max}).to_url) %>
+		</td>
+		<% end %>
+
+		
+	</tr>
+	<% end %>	
+	</table>
+	
+</div>
+<script type="text/javascript" charset="utf-8">
+	//Ticktock.zebraStripe('.top-tags tr')
+</script>

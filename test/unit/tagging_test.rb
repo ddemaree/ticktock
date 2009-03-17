@@ -18,6 +18,13 @@ class TaggingTest < ActiveSupport::TestCase
     should "copy event duration to taggings" do
       assert_equal @event.duration, @event.taggings.first.duration
     end
+    
+    should "update total duration on tag" do
+      tagging = @event.taggings.first
+      tag     = tagging.label
+      
+      assert_equal tagging.duration, tag.total_duration
+    end
   
   end
   

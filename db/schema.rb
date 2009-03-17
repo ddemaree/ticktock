@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090316212638) do
+ActiveRecord::Schema.define(:version => 20090317183822) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20090316212638) do
     t.integer  "taggings_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "total_duration"
   end
 
   create_table "punches", :force => true do |t|
