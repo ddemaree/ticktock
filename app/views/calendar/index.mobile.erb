@@ -1,0 +1,32 @@
+<div class="hd">
+	<h1>Calendar</h1>
+</div>
+
+<div class="table-view">
+
+<div class="pagination">
+	<%= link_to "&lsaquo; Previous", params_for_previous, :class => "nav previous" %>
+	<span class="sep">|</span>
+	<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
+	<span class="sep">|</span>
+	<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
+</div>
+
+<% current_range.to_a.each do |date| %>
+	<% events_for_day(date) do |events| %>
+
+	<h3 class="date_header">
+		<span><%= date.strftime("%A, %b %e") %></span>
+	</h3>
+
+	<ul class="events-list">
+		<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
+		<li class="no-events">Nothing happened today</li>
+	</ul>	
+
+	<hr class="date-separator" style="clear:both">
+	<% end %>
+<% end %>
+
+
+</div>

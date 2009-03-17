@@ -1,0 +1,22 @@
+<h1>Log In</h1>
+
+<% form_tag session_path do -%>
+
+<%= flash_message %>
+
+<fieldset>
+	<p class="field">
+		<%= label_tag 'login' %>
+		<%= text_field_tag 'login', @login %>
+	</p>
+
+	<p class="field">
+		<%= label_tag 'password' %>
+		<%= password_field_tag 'password', nil %>
+	</p>
+</fieldset>
+
+<p class="actions form-action">
+<button type="submit"><span>Sign me in</span></button>
+</p>
+<% end -%>

@@ -1,0 +1,227 @@
+/* @override 
+	http://oscars.local.practical.cc/stylesheets/iphone.css
+	http://practical.tt.local.practical.cc:3000/stylesheets/mobile.css
+*/
+
+@import url(lib/reset.css);
+
+* { 
+  margin: 0; 
+  padding: 0;
+}
+
+html {
+	background: #e5e5e5 url(../images/bg-pattern.png);
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:16px;
+	line-height:18px;
+}
+
+body, td, th, button {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:16px;
+}
+
+body {
+	background: #e5e5e5 url(../images/bg-pattern.png);
+	color: #444;
+	margin: 0;
+	max-width: 320px;
+}
+
+.wrapper {
+	min-height: 480px;
+}
+
+a {
+	color: #c00;
+}
+
+.hd {
+	background: #b00;
+	text-align: center;
+	padding: 0;
+	border-top: 1px solid #ff8879;
+	border-bottom: 1px solid #650001;
+	-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.hd h1 {
+	text-align: center;
+	padding: 8px 0;
+	font-size: 19px;
+	color: #fff;
+	text-shadow: -1px -1px 1px rgba(0,0,0,0.6);
+	font-family: 'American Typewriter', Georgia;
+	font-weight: normal;
+}
+
+.hd a {
+	position: absolute;
+	left: 10px;
+	top: 7px;
+	font-size: 12px;
+	padding: 4px 6px;
+	background: #600;
+	text-decoration: none;
+	font-weight: bold;
+	color: #fff;
+}
+
+h1 a#logo_link {
+	background: url(../images/iphone/pmog_logo_header.png);
+	height: 46px;
+	display: block;
+	text-indent: -9999px;
+	outline: none;
+}
+
+
+.table-view {
+	background: #fff;
+	-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.table-view .pagination {
+	background: #def;
+	text-align: center;
+	font-size: 15px;
+	padding: 6px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.table-view li {
+	border-bottom: 1px solid #d4d4d4;
+	padding: 5px 10px;
+}
+
+.table-view hr {
+	display: none;
+}
+
+.table-view .date_header {
+	background: #d4d4d4;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 2px 10px;
+}
+
+.table-view .no-events {
+	display: none;
+}
+
+.table-view .empty .no-events {
+	display: block;
+	color: #ccc;
+	padding: 12px 10px;
+}
+
+
+.nolist, .nolist li {
+	list-style: none;
+}
+
+.iphone_navs {
+	margin: 10px 10px 20px;
+	-webkit-border-radius: 6px;
+}
+
+.iphone_navs li a {
+	display: block;
+	background: #444 url(../images/iphone/right-arrow.png) no-repeat 278px center;
+	padding: 8px 12px 12px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #666;
+	
+	border-bottom-width: 0;
+	font-size: 18px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.iphone_navs li.logout a {
+	background-color: #700;
+	background-image: none;
+	border-color: #a00;
+	font-size: 14px;
+	padding: 8px 12px;
+	text-align: center;
+	color: #fff;
+}
+
+.iphone_navs li:first-child a {
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+}
+
+.iphone_navs li.last a {
+	-webkit-border-bottom-left-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	border-bottom-width: 1px;
+}
+
+.iphone_form {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #666;
+	margin: 20px 10px;
+	-webkit-border-radius: 6px;
+	background: #444;
+	-webkit-box-shadow: 2px 2px 4px #000;
+}
+
+.iphone_form dl {
+	border: 1px solid #222;
+	border-bottom: 0;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	padding: 12px;
+}
+
+.iphone_form dl dt {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+.iphone_form dl dd + dt {
+	margin-top: 6px;
+}
+
+.iphone_form dl input {
+	width: 98%;
+	font-size: 16px;
+}
+
+.iphone_form input[type=submit] {
+	font-size: 16px;
+}
+
+.iphone_form .action {
+	border: 1px solid #222;
+	border-top: 0;
+	background: #3a3a3a;
+	padding: 8px 12px 10px;
+	-webkit-border-bottom-left-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+}
+
+h2 {
+	padding: 0 10px;
+	font-size: 16px;
+	margin: 12px 0 0;
+	font-weight: normal;
+	color: #a69a71;
+}
+
+p.info {
+	text-align: center;
+	font-size: 14px;
+	margin: 20px 20px;
+	color: #aaa;
+}
+
