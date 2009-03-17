@@ -9,7 +9,6 @@ module EventsHelper
       
       output << "Events"
       output << " tagged with &lsquo;#{params[:tags]}&rsquo;" if params[:tags]
-      
     end
   end
   
@@ -22,7 +21,7 @@ module EventsHelper
   end
   
   def link_to_tag(tag_name)
-    link_to(tag_name, "javascript:void%200", :title => "Events tagged with #{tag_name}", :class => 'tag', :rel => 'tag')
+    link_to(tag_name, events_path(:tags => tag_name), :title => "Events tagged with #{tag_name}", :class => 'tag', :rel => 'tag')
   end
   
   def event_tags(tags)

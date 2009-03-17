@@ -5,7 +5,7 @@ class EventsHelperTest < ActionView::TestCase
   context "Link to tag" do
     setup { @output = link_to_tag("pork")}
     should "return link with tag attributes" do
-      assert_dom_equal %{<a href="javascript:void%200" class="tag" title="Events tagged with pork" rel="tag">pork</a>}, @output
+      assert_dom_equal %{<a href="/events?tags=pork" class="tag" title="Events tagged with pork" rel="tag">pork</a>}, @output
     end
   end
   
