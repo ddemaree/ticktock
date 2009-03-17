@@ -40,14 +40,14 @@
 			<%= tag.taggings_count %>
 		</td>
 		<td class="sparkline">
-		<%= data = tag.frequency[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => data.max}).to_url) %>
+		&nbsp;<%# data = tag.frequency[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => data.max}).to_url) %>
 		</td>
 		<% elsif @sorting_by.duration? %>
 		<td class="duration stat">
 			<%= duration_to_string tag.total_duration %>
 		</td>
 		<td class="sparkline">
-			<%= data = tag.duration_report[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => @tags.collect(&:total_duration).max}).to_url) %>
+			&nbsp;<%# data = tag.duration_report[:data].collect {|d| d[:amount] }; image_tag(GChart::Sparkline.new({:data => data, :max => @tags.collect(&:total_duration).max}).to_url) %>
 		</td>
 		<% end %>
 
