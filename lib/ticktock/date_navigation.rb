@@ -24,7 +24,8 @@ module Ticktock::DateNavigation
       :month  => (new_start_date.month if %w(day month).include?(tf)),
       :week   => (new_start_date.cweek if tf == "week"),
       :day    => (new_start_date.day if tf == "day"),
-      :action => "index"
+      :action => "index",
+      :format => params[:format]
     }
   end
   
@@ -60,18 +61,18 @@ module Ticktock::DateNavigation
     params_for_date(start_date,tf)
   end
   
-  def params_for_previous
+  def params_for_previous(options={})
     new_start_date = start_date - 1.send(time_frame)
-    params_for_date(new_start_date)
+    params_for_date(new_start_date).merge(options)
   end
   
-  def params_for_next
+  def params_for_next(options={})
     new_start_date = start_date + 1.send(time_frame)
-    params_for_date(new_start_date)
+    params_for_date(new_start_date).merge(options)
   end
   
-  def params_for_today
-    params_for_date(Date.today)
+  def params_for_today(options={})
+    params_for_date(Date.today).merge(options)
   end
   
 end

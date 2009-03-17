@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   
+  before_filter :adjust_format_for_mobile
   before_filter :set_current_account
   before_filter :login_required
   before_filter :set_current_user
@@ -53,6 +54,13 @@ class ApplicationController < ActionController::Base
   helper_method :current_events_path, :current_events_path_for
 
 protected
+
+  # TODO: Add support for other mobile browsers
+  def adjust_format_for_mobile    
+    if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(iPhone|iPod)/]
+      request.format = :mobile
+    end
+  end
   
   def account_host(account_or_subdomain="www")
     subdomain =

@@ -13,6 +13,11 @@ class CalendarController < ApplicationController
     }
     
     @events = current_account.events.for_date_range(current_range).find_and_extend
+    
+    respond_to do |format|
+      format.html
+      format.mobile { render :layout => 'default' }
+    end
   end
   
   def current_view
