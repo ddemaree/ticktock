@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_events_path(options={})
-    url_for(session[:events_view].merge(options))
+    url_for((session[:events_view]||={}).merge(options))
   end
   
   def current_events_path_for(event)

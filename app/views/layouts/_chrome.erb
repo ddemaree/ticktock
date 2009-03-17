@@ -31,8 +31,10 @@
 	<h1><%= current_account.name %></h1>
 	
 	<p class="current_user">
-		<%= current_user %>
-		(<%= link_to "Sign out", logout_path %>)
+		<strong class="user_name"><%= current_user %></strong>
+		(<%= link_to "Sign out", logout_path, :class => "logout" %>)
+		&mdash;
+		<a href="http://support.ticktockapp.com/" target="_blank" class="help">Help</a>
 	</p>
 </div></div>
 
