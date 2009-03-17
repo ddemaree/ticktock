@@ -368,6 +368,21 @@ class EventTest < ActiveSupport::TestCase
   
   context "Event quickbody" do
     
+    context "with tags" do
+      setup do
+        @event = Factory(:event, :body => "03/19/2009 The quick brown #fox")
+        @event.body = "03/19/2009 The #quick brown #fox"
+        @event.save
+      end
+      
+      should "have 2 tags" do
+        assert_equal 2, @event.tags.length
+        assert_equal 2, @event.taggings.count
+      end
+      
+      
+    end
+    
     context "with project" do
       setup do
         @subject = Factory(:trackable, :nickname => "fhqwhgads")

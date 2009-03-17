@@ -31,7 +31,10 @@ class TaggingTest < ActiveSupport::TestCase
   context "When tagged event is updated" do
     setup do
       @event = Factory(:event, :body => "Hello #world #cool", :duration => 1.hour)
-      @event.update_attributes!({:date => "2009-03-19".to_date})
+      @event.update_attributes!({
+        :date => "2009-03-19".to_date,
+        :duration => 2.hours
+      })
     end
     
     should "update taggings with new date" do
@@ -39,7 +42,14 @@ class TaggingTest < ActiveSupport::TestCase
     end
     
     should "update taggings with new duration" do
-      assert_equal @event.duration, @event.taggings.first.duration
+      tagging = @event.taggings.first
+      assert_equal @event.duration, tagging.duration
+      assert_equal 2.hours, tagging.duration
+    end
+    
+    should "update tags with new total duration" do
+      tagging = @event.taggings.first
+      assert_equal 2.hours, tagging.label.total_duration
     end
   end
 

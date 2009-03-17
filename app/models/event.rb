@@ -123,7 +123,7 @@ class Event < ActiveRecord::Base
     params = MessageParser.parse(:body => message)
     logger.debug("\n\n#{params.inspect}\n\n")
     
-    self.tags      = params[:tags] if self.tags.empty?
+    self.tags = params[:tags] #if self.tags.empty?
     
     if self.new_record?
       self.subject ||= params[:subject]
