@@ -22,4 +22,22 @@ class ReportsController < ApplicationController
     @tags = current_account.labels.scoped(scope_options)
   end
   
+  def frequency
+    if params[:tag]
+      @tag = Label.find_by_name!(params[:tag])
+    else
+      raise Exception, "Only tags are supported"
+    end
+    
+    @data = @tag.frequency
+    respond_to do |format|
+      format.html {
+        render :text => @data.to_json, :layout => false
+      }
+      format.json {
+        render :json => @data.to_json
+      }
+    end
+  end
+  
 end
