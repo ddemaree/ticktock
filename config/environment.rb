@@ -8,25 +8,23 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   
-  # config.action_controller.session = {
-  #   :session_key => '_com_ticktockapp_session',
-  #   :secret      => 'bc25e97d55eb997a950f8fa780870044'
-  # }
-
-  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com', :version => '~> 2.2.3'
-
-  config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com', :version => '~> 2.0.2'
-  
-  config.gem 'gchart', :version => '~>0.5.0'
-  
+  config.gem 'gchart',    :version => '~>0.5.0'
   config.gem 'fastercsv', :version => '~>1.2.3'
-  
-  config.gem 'thoughtbot-paperclip', :lib => 'paperclip', :source => 'http://gems.github.com', :version => '~>2.2.6'
- 
   config.gem 'sprockets', :version => '~>1.0.2'
   
-  config.gem 'fiveruns-dash-rails', :lib => "fiveruns_dash_rails", :source => 'http://gems.github.com'
   
+  config.gem 'mislav-will_paginate', :lib => 'will_paginate',
+                              :source => 'http://gems.github.com',
+                              :version => '~> 2.2.3'
+
+  config.gem 'rubyist-aasm',  :lib => 'aasm', 
+                              :source => 'http://gems.github.com',
+                              :version => '~> 2.0.2'
+  
+  config.gem 'thoughtbot-paperclip', :lib => 'paperclip',
+                              :source => 'http://gems.github.com',
+                              :version => '~>2.2.6'
+ 
   config.active_record.observers = :user_assignment_observer
   config.time_zone = 'UTC'
  
