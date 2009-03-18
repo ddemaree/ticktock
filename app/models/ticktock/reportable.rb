@@ -10,20 +10,17 @@ module Ticktock::Reportable
   end
   
   module ClassMethods
-    def reporter
-      @@reporter ||= Ticktock::Reporter.new(self)
-    end
     
     def aggregate(column,options={})
+      reporter = Ticktock::Reporter.new(self)
+      
       options.reverse_merge!({
         :using  => :count,
-        :range  => ((Date.today - 8.weeks)..Date.today)
+        :range  => ((Date.today - 8.weeks)..Date.today),
+        :force_numeric => true
       })
       
       data = reporter.aggregate_data(column,options)
-        
-      #options[:range].inject(Ticktock::OrderedHash.new){ |h,d| h[d.strftime("%Y%W")] = 0; h}  
-      
       data
     end
   end

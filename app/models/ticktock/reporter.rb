@@ -1,20 +1,6 @@
 class Ticktock::Reporter
   attr_reader :klass
   
-  class ResultSet
-    attr_reader :data
-    
-    def initialize(data=[])
-      @data = conform(data)
-    end
-    
-    def conform(data)
-      data.inject(Ticktock::OrderedHash.new) do |cd, obj|
-        cd[obj._key] = obj._value; cd
-      end
-    end
-  end
-  
   def initialize(source, options={})
     @klass =
       case source
@@ -28,7 +14,18 @@ class Ticktock::Reporter
   end
   
   def aggregate_data(column,options={})
-    ResultSet.new klass.all(options_for_aggregate(column,options))  
+    data = klass.all(options_for_aggregate(column,options))
+    hashed_data = data.inject(Ticktock::OrderedHash.new) do |cd, obj|
+      cd[obj._key] = (options[:force_numeric] ? obj._value.to_i : obj._value); cd
+    end
+    
+    if options[:by] && [:week, :day].include?(options[:by])
+      weeks = options[:range].select { |d| (d.wday == 1) }
+      weeks = weeks.inject(Ticktock::OrderedHash.new) { |h,w| h[w.strftime("%Y%W")] = 0; h}
+      hashed_data = weeks.merge!(hashed_data)
+    end
+    
+    hashed_data
   end
   
   def options_for_aggregate(column, options={})
@@ -56,7 +53,11 @@ class Ticktock::Reporter
   
   # TODO: Make this work with MySQL, not just SQLite
   def interval_function(interval=:week)
-    "strftime('%Y%W',#{@date_column}) AS _key"
+    if Rails.env.development?
+      "strftime('%Y%W',#{@date_column}) AS _key"
+    else
+      "YEARWEEK(#{@date_column}) AS _key"
+    end
   end
   
 end

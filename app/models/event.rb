@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
   include Event::Importing
   include Event::Filtering
   
+  include Ticktock::Reportable
+  
   # #   S C O P E S   # #
   default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }

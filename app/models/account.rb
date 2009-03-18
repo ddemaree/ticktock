@@ -12,6 +12,8 @@ class Account < ActiveRecord::Base
   has_many :labels,     :dependent => :destroy
   has_many :event_imports, :dependent => :destroy
 
+  has_many :taggings, :through => :labels
+
   # #   V A L I D A T I O N S   # #
   validates_presence_of   :name, :domain, :timezone
   validates_uniqueness_of :domain

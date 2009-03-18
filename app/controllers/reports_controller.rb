@@ -24,12 +24,14 @@ class ReportsController < ApplicationController
   
   def frequency
     if params[:tag]
-      @tag = Label.find_by_name!(params[:tag])
+      @tag  = Label.find_by_name!(params[:tag])
+      @data = @tag.frequency
     else
-      raise Exception, "Only tags are supported"
+      #raise Exception, "Only tags are supported"
+      @data = current_account.events.aggregate :id, :by => :week
     end
     
-    @data = @tag.frequency
+    
     respond_to do |format|
       format.html {
         render :text => @data.to_json, :layout => false

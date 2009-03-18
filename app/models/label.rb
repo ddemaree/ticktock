@@ -9,47 +9,18 @@ class Label < ActiveRecord::Base
   belongs_to :account
   has_many :taggings, :dependent => :destroy
   
-  def frequency(range=nil)
-    range ||= ((Date.today - 8.weeks)..Date.today)
-    
-    
-    
-    counts = taggings.find_by_sql("SELECT COUNT(label_id) AS taggings_count, strftime('%Y%W',date) AS week FROM taggings WHERE taggings.label_id = '#{self.id}' AND taggings.date #{range.to_s(:db)} GROUP BY week")
-    
-
-    
-    {
-      :label  => {:name => name, :id => id},
-      :report => "frequency",
-      :data   => counts
-    }
-  end
-  
-  def duration_report(range=nil)
-    range ||= ((Date.today - 8.weeks)..Date.today)
-    
-    weeks  = range.collect { |d| d.strftime("%Y%W") }.uniq
-    logger.info(weeks.inspect)
-    
-    counts = taggings.find_by_sql("SELECT SUM(duration) AS duration, strftime('%Y%W',date) AS week FROM taggings WHERE taggings.label_id = '#{self.id}' AND taggings.date #{range.to_s(:db)} GROUP BY week")
-    
-    counts = weeks.inject([]) do |memo, week|
-      amount = counts.sum { |c| (c.week == week ? c.duration.to_i : 0) }
-      memo << {:week => week, :amount => amount}
-      memo
-    end
-    
-    {
-      :label  => {:name => name, :id => id},
-      :report => "duration",
-      :data   => counts
-    }
-  end
-  
   def update_stats!
     self.total_duration = self.taggings.sum(:duration)
     self.taggings_count = self.taggings.count
     self.save!
+  end
+  
+  def frequency
+    taggings.aggregate :id, :by => :week
+  end
+  
+  def time_spent
+    taggings.aggregate :duration, :by => :week, :using => :sum
   end
   
   def self.serialize(tags_as_array)
