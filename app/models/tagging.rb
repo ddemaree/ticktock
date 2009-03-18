@@ -1,4 +1,5 @@
 class Tagging < ActiveRecord::Base
+  include Ticktock::Reportable
   
   belongs_to :label
   belongs_to :event

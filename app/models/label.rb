@@ -1,4 +1,7 @@
 class Label < ActiveRecord::Base
+  include Ticktock::Reportable
+  
+  #provides_report :frequency, :aggregator => :count, :of => :taggings_count
   
   validates_presence_of :account, :name
   validates_format_of :name, :with => /[\w ]+/
@@ -9,16 +12,11 @@ class Label < ActiveRecord::Base
   def frequency(range=nil)
     range ||= ((Date.today - 8.weeks)..Date.today)
     
-    weeks  = range.collect { |d| d.strftime("%Y%W") }.uniq
-    logger.info(weeks.inspect)
+    
     
     counts = taggings.find_by_sql("SELECT COUNT(label_id) AS taggings_count, strftime('%Y%W',date) AS week FROM taggings WHERE taggings.label_id = '#{self.id}' AND taggings.date #{range.to_s(:db)} GROUP BY week")
     
-    counts = weeks.inject([]) do |memo, week|
-      amount = counts.sum { |c| (c.week == week ? c.taggings_count.to_i : 0) }
-      memo << {:week => week, :amount => amount}
-      memo
-    end
+
     
     {
       :label  => {:name => name, :id => id},
