@@ -3,10 +3,15 @@ require 'rubygems'
 require 'mocha'
 gem 'thoughtbot-shoulda', ">= 2.0.0"
 require 'shoulda'
-gem 'rails', "<= 2.2.2"
+require 'ginger'
+
 require 'action_controller'
 require 'action_controller/test_process'
 require 'active_record'
+require 'active_record/base'
+require 'active_support'
+require 'active_support/test_case'
+
 require File.join(File.dirname(__FILE__), "..", "lib", "hoptoad_notifier")
 
 RAILS_ROOT = File.join( File.dirname(__FILE__), "rails_root" )
@@ -51,11 +56,8 @@ class HoptoadController < ActionController::Base
 end
 
 def request(action = nil, method = :get, user_agent = nil)
-  @request = ActionController::TestRequest.new({
-    "controller" => "hoptoad",
-    "action"     => action ? action.to_s : "",
-    "_method"    => method.to_s
-  })
+  @request = ActionController::TestRequest.new
+  @request.action = action ? action.to_s : ""
   @request.user_agent = user_agent unless user_agent.nil?
   @response = ActionController::TestResponse.new
   @controller.process(@request, @response)

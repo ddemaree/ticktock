@@ -9,7 +9,8 @@ module HoptoadNotifier
   IGNORE_DEFAULT = ['ActiveRecord::RecordNotFound',
                     'ActionController::RoutingError',
                     'ActionController::InvalidAuthenticityToken',
-                    'CGI::Session::CookieStore::TamperedWithCookie']
+                    'CGI::Session::CookieStore::TamperedWithCookie',
+                    'ActionController::UnknownAction']
 
   # Some of these don't exist for Rails 1.2.*, so we have to consider that.
   IGNORE_DEFAULT.map!{|e| eval(e) rescue nil }.compact!
@@ -20,14 +21,17 @@ module HoptoadNotifier
   class << self
     attr_accessor :host, :port, :secure, :api_key, :http_open_timeout, :http_read_timeout,
                   :proxy_host, :proxy_port, :proxy_user, :proxy_pass
-    attr_reader   :backtrace_filters
+
+    def backtrace_filters
+      @backtrace_filters ||= []
+    end
 
     # Takes a block and adds it to the list of backtrace filters. When the filters
     # run, the block will be handed each line of the backtrace and can modify
     # it as necessary. For example, by default a path matching the RAILS_ROOT
     # constant will be transformed into "[RAILS_ROOT]"
     def filter_backtrace &block
-      (@backtrace_filters ||= []) << block
+      self.backtrace_filters << block
     end
 
     # The port on which your Hoptoad server runs.
@@ -95,6 +99,7 @@ module HoptoadNotifier
     #
     # NOTE: secure connections are not yet supported.
     def configure
+      add_default_filters
       yield self
       if defined?(ActionController::Base) && !ActionController::Base.include?(HoptoadNotifier::Catcher)
         ActionController::Base.send(:include, HoptoadNotifier::Catcher)
@@ -133,20 +138,28 @@ module HoptoadNotifier
     def notify notice = {}
       Sender.new.notify_hoptoad( notice )
     end
-  end
 
-  filter_backtrace do |line|
-    line.gsub(/#{RAILS_ROOT}/, "[RAILS_ROOT]")
-  end
+    def add_default_filters
+      self.backtrace_filters.clear
 
-  filter_backtrace do |line|
-    line.gsub(/^\.\//, "")
-  end
+      filter_backtrace do |line|
+        line.gsub(/#{RAILS_ROOT}/, "[RAILS_ROOT]")
+      end
 
-  filter_backtrace do |line|
-    if defined?(Gem)
-      Gem.path.inject(line) do |line, path|
-        line.gsub(/#{path}/, "[GEM_ROOT]")
+      filter_backtrace do |line|
+        line.gsub(/^\.\//, "")
+      end
+
+      filter_backtrace do |line|
+        if defined?(Gem)
+          Gem.path.inject(line) do |line, path|
+            line.gsub(/#{path}/, "[GEM_ROOT]")
+          end
+        end
+      end
+
+      filter_backtrace do |line|
+        line if line !~ /lib\/#{File.basename(__FILE__)}/
       end
     end
   end
@@ -274,15 +287,15 @@ module HoptoadNotifier
       response = begin
                    http.post(url.path, stringify_keys(data).to_yaml, headers)
                  rescue TimeoutError => e
-                   logger.error "Timeout while contacting the Hoptoad server."
+                   logger.error "Timeout while contacting the Hoptoad server." if logger
                    nil
                  end
 
       case response
       when Net::HTTPSuccess then
-        logger.info "Hoptoad Success: #{response.class}"
+        logger.info "Hoptoad Success: #{response.class}" if logger
       else
-        logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}"
+        logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}" if logger
       end
     end
 
@@ -291,11 +304,13 @@ module HoptoadNotifier
         backtrace = backtrace.to_a.first.split(/\n\s*/)
       end
 
-      backtrace.to_a.map do |line|
+      filtered = backtrace.to_a.map do |line|
         HoptoadNotifier.backtrace_filters.inject(line) do |line, proc|
           proc.call(line)
         end
       end
+
+      filtered.compact
     end
 
     def clean_hoptoad_params params #:nodoc:
