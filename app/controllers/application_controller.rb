@@ -2,16 +2,14 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  helper :all
+  protect_from_forgery
+  
   include AuthenticatedSystem
   include HoptoadNotifier::Catcher
   
   layout 'default'
 
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
-  
   before_filter :adjust_format_for_mobile
   before_filter :set_current_account
   before_filter :login_required
