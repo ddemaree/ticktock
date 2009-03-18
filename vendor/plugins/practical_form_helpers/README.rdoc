@@ -1,0 +1,73 @@
+= Practical Form Helpers
+
+A collection of ActionView extensions to make building forms the way _I_ want to build them easier and less repetitive.
+
+
+== Labeled form fields
+
+My convention these days is to construct most form fields to look like this:
+
+  <p class="field">
+    <label for="user_login">User name</label>
+	<input id="user_login" name="user_login" type="text" size="16" />
+  </p>
+
+When 95% of my form fields look like this, this HTML can get repetitive. This plugin, therefore, allows me to generate the above HTML with just one line of code:
+
+  <%= labeled_text_field :user, :login, :label => "User name", :size => 16 %>
+
+`labeled_text_field` is a wrapper around FormHelper's `text_field` method. All options except :label are simply passed through. The wrapper is provided via `method_missing`, and therefore works with any object field helper (such as `date_select` or `check_box`).
+
+=== Adding additional details
+
+Occasionally, I need to include some extra information, such as in-line help:
+
+  <div class="field">
+    <label for="user_login">User name</label>
+	<p><input id="user_login" name="user_login" type="text" /></p>
+	<p class="info">Usernames should only include letters, numbers,
+	the underscore (_) character or dashes (-).</p>
+  </div>
+
+For these cases, each labeled_* method can take a block argument:
+
+  <% labeled_text_field :user, :login, :label => "User name" do %>
+    <p class="info">Usernames should only include letters, numbers,
+	the underscore (_) character or dashes (-).</p>
+  <% end %>
+
+=== Really special cases
+
+But what about the small but thorny circumstances where the above structure is far too limiting? For cases where you want the basic .field > label structure, but need more control over how your form fields themselves are generated and laid out, there's a separate method for generating just the wrapper and label:
+
+  <% field_with_label :user, :login do %>
+  <!-- Your code here -->
+  <% end %>
+
+Which gives you:
+
+  <div class="field">
+    <label for="user_login">Login</label>
+    <!-- Your code here -->
+  </div>
+
+
+=== What about form_for?
+
+No problemo; all labeled_* methods work in form_for-generated forms as well:
+
+  <% form_for @user do |f| %>
+    <%= f.labeled_text_field :login %>
+    <p><%= submit_tag "Sign up" %></p>
+  <% end %>
+
+== TODO
+
+Right now, the unless a block is given the field tag(s) are not wrapped in anything, which can be a problem with methods like date_helper which return multiple HTML elements. This, obviously, is not good eats, and will be addressed.
+
+== Credits
+
+Author: {David Demaree}[http://github.com/ddemaree], {Practical Creative & Code}[http://practical.cc], Chicago, U.S.A.
+
+
+Copyright (c) 2009 David Demaree, released under the MIT license

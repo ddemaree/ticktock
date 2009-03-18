@@ -17,31 +17,27 @@
 		<p class="more"><em class="highlight">This is the master log-in for your account.</em> All fields are required. <!-- Once your TickTock account is created, you can create accounts for other people as well. --></p>
 
 		<% fields_for :user do |uf| %>
-		<div class="field <%= "hasErrors" if @user.errors.on(:name) %>">
+		<% uf.field_wrapper :name do %>
 			<%= uf.label :name, "Your name" %>
 			<div class="withExample">
 				<%= uf.text_field :name %>
 				<span class="example">John Q. Smith</span>
 			</div>
-			<%= error_messages @user, :name %>
-		</div>
+		<% end %>
 		
-		<div class="field <%= "hasErrors" if @user.errors.on(:email) %>">
+		<% uf.field_wrapper :email do %>
 			<%= uf.label :email, "E-mail address" %>
 			<div class="withExample">
 				<%= uf.text_field :email %>
 				<span class="example">john.smith@mailserver.com</span>
 			</div>
-			
-			<%= error_messages @user, :email %>
-		</div>
+		<% end %>
 		<hr>
 		
-		<div class="field <%= "hasErrors" if @user.errors.on(:login) %>">
+		<% uf.field_wrapper :login do %>
 			<%= uf.label :login, "Username" %>
 			<p><%= uf.text_field :login %></p>
-			<%= error_messages @user, :login %>
-		</div>
+		<% end %>
 		
 		<div class="field <%= "hasErrors" if @user.errors.on(:password) %>">
 			<%= uf.label :password %>
