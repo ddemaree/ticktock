@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TaggingTest < ActiveSupport::TestCase
+class TaggingTest < ActiveSupport::TestCase  
 
   context "When tagged event is created" do
     setup { 

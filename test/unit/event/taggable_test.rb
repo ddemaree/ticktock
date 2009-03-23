@@ -4,9 +4,9 @@ class Event::TaggableTest < ActiveSupport::TestCase
   
   context "Event tag filter" do
     setup do
-      Factory(:event, :tags => "hello,world")
-      Factory(:event, :tags => "hello,there", :body => "ladies and gentlemen")
-      Factory(:event, :tags => "ahoy,there")
+      Factory(:event, :body => "#hello #there boys and girls")
+      Factory(:event, :body => "#hello #there ladies and gentlemen")
+      Factory(:event, :tags => "#hello #there guys and dolls")
     end
     
     should "include all events filtered by one tag" do

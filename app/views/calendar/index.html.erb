@@ -6,10 +6,10 @@
 	<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
 <%- end -%>
 
-<div class="hd calendar-hd clearfix">
-	<h1><%= range_description %></h1>
-	
+<div class="hd calendar-hd cf">
 	<div class="pagination">
+		<h1><%= @page_title = "Diary for <strong>#{range_description}</strong>" %></h1>
+		
 		<%= link_to "&lsaquo; Previous", params_for_previous, :class => "nav previous" %>
 		<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
 	</div>
@@ -21,16 +21,17 @@
 
 <%= flash_message %>
 
-<table class="calendar frame <%= time_frame %>" width="100%" cellspacing="0" border="0"><tr valign="top">
-	<td class="seven calendar-main" rowspan="2">
+<div class="ws-frame">
+	<div class="ws-main" id="ws-main">
+		
 		<% current_range.to_a.each do |date| %>
 			<% events_for_day(date) do |events| %>
 
-			<h3 class="date_header">
-				<span><%= date.strftime("%A, %b %e") %></span>
+			<h3 class="date-header">
+				<%= date.strftime("<strong>%a</strong> <span>%b %e</span>") %>
 			</h3>
 
-			<ul class="events-list">
+			<ul class="events">
 				<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
 				<li class="no-events">Nothing happened today</li>
 			</ul>	
@@ -38,40 +39,43 @@
 			<hr class="date-separator" style="clear:both">
 			<% end %>
 		<% end %>
-
 		
-	</td>
-	
-	<td class="gutter" rowspan="2">&nbsp;</td>
-	
-	<td class="three calendar-sidebar">
-		<%- if @events.total_duration > 0 -%>
-		<p class="total_logged">
-			You logged
-			<strong><%= duration_to_string @events.total_duration %></strong>
-			this <%= time_frame %>
-		</p>
-		<%- end -%>
-	</td>
-
-</tr>
-<tr>
-	<td class="calendar-sidebar" valign="bottom">
 		
-	</td>
-</tr>
+		
+	</div>
+	<div class="ws-sidebar">
+		
+		&nbsp;
+		
+	</div>
+	
+</div>
 
-</table>
 <div class="pagination">
 	<%= pagination_links %>
 </div>
 
 <script type="text/javascript" charset="utf-8">
-	new HoverObserver('main')
+	new HoverObserver('ws-main')
+	Ticktock.zebraStripe("#ws-main .dated-events")
+	
+	
 	
 	Event.observe(window, 'load', function(){
+		
+		
+		$$('.event').each(function(row){
+			wrapper = new Element('div', {className:'ln'})
+			wrapper.update(row.innerHTML)
+			wrapper.insert({top:'<span class="trigger hover_target"> </span>'})
+			row.update(wrapper)
+		})
+		
 		$$('.event a.edit').each(function(link){
-			new InlineEventEditor(link)
+			link.observe('click', function(e){
+				console.log(this.positionedOffset())
+				e.stop()
+			}.bind(link))
 		})
 	})
 </script>

@@ -16,9 +16,7 @@ class Event < ActiveRecord::Base
   # #   S C O P E S   # #
   default_scope :order => "date DESC, start DESC, created_at DESC"
   named_scope   :active, :conditions => { :state => 'active' }
-  
-  # TODO: Need to filter out imported events
-  named_scope :recent, lambda {|num| {:limit => (num||20)} }
+  named_scope :recent, lambda {|num| {:limit => (num||20), :conditions => {:date_gte => 2.weeks.ago}} }
   
   named_scope :for_date_range, lambda { |range|
     raise ArgumentError, "Argument passed to Event.for_date_range must be range" unless range.is_a?(Range)

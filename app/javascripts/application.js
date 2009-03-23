@@ -25,57 +25,112 @@ if(!console){
 // 	
 // })
 
-var Quickbox = {
+Event.observe(window, 'load', function(){
+	QuickBox.setup()
+})
+
+var QuickBox = {
 	setup:function(){
-		if(!$('tt-quickbox')){
-			this.element = new Element('div', {id:'tt-quickbox'})
-			$(document.body).insert(this.element)
-		}
-		return this.element
+		if(!$('modals'))
+			$(document.body).insert({bottom:new Element('div',{id:'modals'})})
+			
+		$$('a.quickbox').each(function(link){
+			if(link.getAttribute('href').match(/^#/))
+				link.observe('click', QuickBox.invoke.bind(link))
+			else
+				link.observe('click', QuickBox.invokeRemote.bind(link))
+		})
 	},
-	update:function(content){
-		element = Quickbox.setup()
-		element.update(content)
+	hideAll:function(){
+		$('modals').hide()
+		$$('.modal').invoke('hide')
+		if($('overlay')){ $('overlay').remove() }
 	},
-	remote:function(link, options){
-		this.link = link
-		
-		ajax_options = {
-			asynchronous: true,
-			evalScripts:  true,
-			method: 'get',
-			onSuccess:function(){
-				this.element.show()
-				this.position(this.link)
-			}.bind(this)
-		}
-		Object.extend(ajax_options, (options || {}))
-		
-		element = Quickbox.setup()
-		//element.hide()
-		new Ajax.Updater(element, link.href, ajax_options)
+	invoke:function(event){
+		href = this.getAttribute('href')
+		new QuickBox.Base(href.gsub(/^#/,""))
+		event.stop()
 	},
-	teardown:function(){
-		if(!$('tt-quickbox')){
-			$('tt-quickbox').remove()
-		}
+	invokeRemote:function(event){
+		event.stop()
+	}
+}
+
+QuickBox.Base = Class.create({
+	initialize: function(element, options){
+		QuickBox.hideAll()
+		
+		this.element = $(element)
+		this.element.addClassName('modal')
+		
+		// Set up overlay
+		this.overlay = new Element('div',{id:'overlay',style:'display:none'})
+		this.element.insert({before:this.overlay})		
+		this.overlay.observe('click',this.hide.bind(this))
+		
+		this.show()
 	},
-	position:function(link, options){
-		topPos  = link.getHeight() + link.viewportOffset().top
-		leftPos = link.viewportOffset().left
+	show:function(){
+		this.overlay.show()
+		this.element.show()
+		this.center()
+		$('modals').show()
+	},
+	hide:function(){
+		this.element.removeClassName('modal')
+		this.element.hide()
+		this.overlay.remove()
+	},
+	center:function(){
+		this.overlay.setStyle('position:fixed;z-index:9998')
+		this.element.setStyle('position:fixed;z-index:9999')
 		
-		pos_options = {
-			position: 'auto',
-			top:       topPos,
-			left:      leftPos
-		}
-		Object.extend(pos_options, (options || {}))
+		windowDimensions  = document.viewport.getDimensions()
+		scrollOffsets     = document.viewport.getScrollOffsets()
+		elementDimensions = this.element.getDimensions()
 		
+		setX = Math.round((windowDimensions.width - elementDimensions.width) / 2);
+		setY = Math.round((windowDimensions.height - elementDimensions.height) / 2) + scrollOffsets.top;
+		
+		//console.log(setX + ' ' + setY)
 		this.element.setStyle({
-			position: 'absolute',
-			display:  'block',
-			top: 			 topPos + 'px',
-			left: 		 leftPos + 'px'
+			left: setX + 'px',
+			top:  setY + 'px'
+		})
+	}
+})
+
+var FrameMaker = {
+	setup:function(){
+		if(frame = $('workspace').down('.ws-frame')){
+			this.frame = frame
+			this.frame.insert({top:'<table><tr valign="top"><td><div class="f-spacer"> </div></td><td rowspan="2"><div class="f-gutter"> </div></td><td class="f-side" rowspan="2"></td></tr><tr><td class="f-main"></td></tr></table>'})
+			
+			this.mainContent = this.frame.down('.ws-main')
+			this.frame.down('.f-main').appendChild(this.mainContent)
+
+			this.sidebarContent = this.frame.down('.ws-sidebar')
+			this.frame.down('.f-side').appendChild(this.sidebarContent)
+			
+			this.gutter = this.frame.down('.f-gutter')
+			
+			this.setSpacerWidth()
+			Event.observe(window, 'resize', this.setSpacerWidth.bind(this))
+		}
+	},
+	onResize:function(){
+		
+	},
+	setSpacerWidth:function(){
+		frameWidth  = this.frame.getWidth()
+		gutterWidth = this.gutter.getWidth()
+		sideWidth   = this.sidebarContent.getWidth()
+		
+		this.mainWidth = (frameWidth - gutterWidth - sideWidth)
+		
+		this.frame.down('.f-spacer').setStyle({
+			width:this.mainWidth+'px'
 		})
 	}
 }
+

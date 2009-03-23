@@ -3,7 +3,7 @@ require 'test_helper'
 class AccountTest < ActiveSupport::TestCase
   
   should_validate_uniqueness_of :domain
-  should_validate_presence_of :name, :domain, :timezone
+  should_validate_presence_of :domain
   should_ensure_length_in_range :domain, 3..24
   
   should "exclude reserved domains" do

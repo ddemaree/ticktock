@@ -23,7 +23,7 @@
 .right  { float: right; }
 .clear  { clear: both;  }
 
-#workspace .gutter { width:  2.6%; }
+#workspace .gutter { width: 20px; }
 #workspace .seven  { width: 69.2%; }
 #workspace .three  { width: 28.2%; }
 
@@ -32,6 +32,18 @@
 
 #workspace .eight  { width: 79.5%; }
 #workspace .two    { width: 17.9%; }
+
+.ws-main.left {
+	float: none;
+	margin-right: 240px;
+	min-width: 540px;
+}
+
+.ws-sidebar {
+	float: right;
+	width: 220px;
+	background: #f0f;
+}
 
 /* @end */
 

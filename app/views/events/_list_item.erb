@@ -1,16 +1,20 @@
 <% content_tag_for :li, event, :class => "hover_container" do %>
-<div class="ln">
-	<span class="date hover_target"><%= relative_date event.date %></span>
-	<%- if event.duration && (event.duration > 0) -%>
-	<span class="duration hover_target"><%= duration_to_string event.duration %></span>
-	<%- end -%>
-	<p class="event_body"><span class="hover_target">
-		<%= event_subject(event.subject, trackable_events_path(event.subject)) unless event.subject.nil? %>
-		<%= event_message(event.body) %>
-	</span></p>
-	<p class="event_actions hover_target">
-		<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
-		<%= link_to "Edit", [:edit, event], :class => "edit" %>
-	</p>
+<div class="duration">
+	<%= duration_to_string(event.duration.to_i) %>&nbsp;
+</div>
+
+<div class="body">
+	<%= event_subject(event.subject, trackable_events_path(event.subject)) unless event.subject.nil? %>
+	
+	<%= event_message(event.body) %>
+	
+	<span class="date">
+		on <%= event.date %>
+	</span>
+</div>
+
+<div class="actions hover_target">
+	<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
+	<%= link_to "Edit", [:edit, event], :class => "edit" %>
 </div>
 <% end %>

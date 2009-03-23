@@ -1,5 +1,5 @@
 InlineEventEditor = Class.create({
-	template: new Template('<form action="/events/#{eventId}" method="post"><input type="hidden" name="_method" value="put"><h4>Edit event (<a href="#">cancel</a>)</h4><p><textarea name="event[body]">#{quickBody}</textarea> <button type="submit">Save changes</button></p></form>'),
+	template: new Template('<form action="/events/#{eventId}" method="post"><input type="hidden" name="_method" value="put"><h4>Edit event (<a href="#" class="cancel">cancel</a>)</h4><p><textarea name="event[body]">#{quickBody}</textarea> <button type="submit">Save changes</button></p></form>'),
 	initialize: function(link){
 		this.link = link
 		
@@ -45,6 +45,8 @@ InlineEventEditor = Class.create({
 		form = this.listItem.down('form')
 		field = form.down('textarea')
 		fieldHeight = Math.ceil($F(field).length / 36) * 22
+		
+		form.down('a.cancel').observe('click',this.teardown.bind(this))
 		
 		field.setStyle({
 			width:Math.floor(this.listItem.getWidth() - 70) + 'px',

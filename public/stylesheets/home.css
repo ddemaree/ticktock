@@ -1,0 +1,178 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/home.css */
+
+/*#home.index .f-side {
+	border-left: 1px solid #d4d4d4;
+}*/
+
+#home.index .ws-sidebar {
+	width: 279px;
+	padding-left: 8px;
+}
+
+#home.index #new_event {
+	padding: 8px;
+	background: #faf6d6;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+}
+
+#home.index #new_event .instructions {
+	font-size: 11px;
+	line-height: 15px;
+	color: #444;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	width: 78%;
+	max-width: 500px;
+	float: left;
+}
+
+#home.index #new_event .instructions strong {
+	font-weight: bold;
+}
+
+#home.index #new_event .event_body textarea {
+	width: 99.6%;
+}
+
+#home.index #new_event .event_body h4 {
+	font-size: 15px;
+	padding-bottom: 5px;
+	font-family: Georgia;
+	color: #000;
+}
+
+#home.index #new_event .form-action {
+	padding-bottom: 0;
+	float: right;
+}
+
+.ws-sidebar h2 {
+	font-family: Georgia;
+	padding: 16px 8px 4px;
+	font-size: 17px;
+	border-bottom: 1px solid #000;
+	margin-left: 8px;
+	margin-right: 8px;
+	color: #000;
+}
+
+.ws-sidebar h3 {
+	padding: 16px 8px 4px;
+	font-family: Georgia;
+	font-size: 15px;
+	margin: 0 8px;
+	color: #000;
+}
+
+.top_tags {
+	margin: 0 8px;
+	border-top: 1px solid #e7eef6;
+	margin-top: 4px;
+	font-size: 15px;
+}
+
+.top_tags .tag-row {
+	position: relative;
+	background: #fff;
+	border-bottom: 1px solid #e7eef6;
+	padding: 4px 8px;
+}
+
+.top_tags .tag-row strong,
+.top_tags .tag-row .count {
+	position: relative;
+	z-index: 99;
+}
+
+.top_tags .tag-row .count {
+	position: absolute;
+	right: 8px;
+	top: 6px;
+	font-weight: bold;
+	color: #4f8629;
+	font-size: 13px;
+}
+
+.t-gb {
+	background: #daefc6;
+	height: 24px;
+	position: absolute;
+	left: 0;
+	top: 1px;
+}
+
+.totals {
+	font-size: 13px;
+	line-height: 17px;
+	margin: 4px 8px;
+	padding: 4px 8px;
+}
+
+.totals strong {
+	font-weight: bold;
+	color: #000;
+	white-space: nowrap;
+}
+
+#overlay {
+	background: #ccc;
+	opacity: 0.3;
+}
+
+#instructions {
+	width: 500px;
+	background: #fff;
+	-webkit-box-shadow: 1px 1px 4px #888;
+	border: 1px solid #ccc;
+	border-right-color: #888;
+	border-bottom-color: #888;
+	padding: 10px 15px 15px;
+}
+
+#instructions .example {
+	padding-bottom: 10px;
+	padding-top: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+#instructions .example > strong {
+	float: left;
+	width: 70px;
+	font-weight: bold;
+}
+
+#instructions .example > div {
+	margin-left: 80px;
+}
+
+#instructions .example > div p {
+	line-height: 18px;
+	font-size: 13px;
+}
+
+#instructions .example pre {
+	background: #e9f6ff;
+	padding: 8px;
+	margin: 8px 0;
+}
+
+#instructions .close {
+	text-align: center;
+	padding-top: 10px;
+}
+
+
+#recent-events {
+	min-height: 300px;
+}
+
+#recent-events h2 {
+	padding: 16px 8px 8px;
+	margin: 0 8px;
+	font-size: 17px;
+	font-family: Georgia;
+	border-bottom: 1px solid #000;
+	color: #000;
+}
+

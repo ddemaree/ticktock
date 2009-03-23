@@ -3,8 +3,8 @@ module ApplicationHelper
 
   def page_title
     returning("") do |out|
-      out << "#{@section_title} &mdash; " if @section_title
-      out << "#{@page_title} &mdash; " if @page_title
+      out << "#{strip_tags @section_title} &mdash; " if @section_title
+      out << "#{strip_tags @page_title} &mdash; " if @page_title
       out << "TickTock"
     end
   end
@@ -26,6 +26,15 @@ module ApplicationHelper
   
   def section_name
     @section_name ||= body_id
+  end
+  
+  def link_to_section(section, name=nil, options = nil, html_options = {})
+    name ||= section.to_s.titleize
+    options ||= send("#{section}_path")
+    
+    link = link_to(name,options,html_options)
+    containerClass = "current" if (section_name == section)
+    content_tag(:li, link, :class => containerClass)
   end
   
   def link_to_unless(condition, name, options = {}, html_options = {}, &block)

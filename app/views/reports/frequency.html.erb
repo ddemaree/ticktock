@@ -1,0 +1,50 @@
+<canvas id="brains" width="600" height="200"></canvas>
+
+<%= javascript_tag "var data = #{@data.to_json}" %>
+<script type="text/javascript" charset="utf-8">
+
+keys     = Object.keys(data)
+values   = Object.values(data)
+maxValue = values.max()
+console.log(values)
+
+canvas  = $('brains')
+
+widthIncrement  = Math.floor((canvas.getWidth() - 2) / (values.length - 1))
+heightIncrement = Math.floor((canvas.getHeight() - 2) / maxValue)
+
+
+cx = canvas.getContext("2d")
+
+// cx.setFillColor("#cccccc")
+// cx.fillRect(0,0,600,300)
+
+cx.beginPath()
+cx.strokeStyle = "#d4d4d4"
+cx.lineWidth = 4
+cx.moveTo(0,0)
+cx.lineTo(0,canvas.getHeight())
+cx.lineTo(canvas.getWidth(),canvas.getHeight())
+cx.stroke()
+
+cx.beginPath()
+cx.setStrokeColor("#cc0000")
+cx.setLineWidth(2.0)
+
+for(x = 0; typeof(thisValue = values[x]) == 'number'; x++) {
+	thisY = Math.abs((canvas.getHeight() - 4) - (thisValue * heightIncrement)) + 1
+	thisX = (x * widthIncrement) + 1
+	
+	if(x == 0){
+		cx.moveTo(1,thisY)
+	}
+	else {
+		cx.lineTo(thisX,thisY)
+	}
+}
+
+cx.stroke()
+
+
+canvas.setStyle("width:200px")
+</script>

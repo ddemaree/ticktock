@@ -82,8 +82,8 @@ module CalendarHelper
     events ||= (@events_by_day[date] || [])
     
     wrapper_options = {
-      :class => "events_for_day #{'empty' if events.empty?}".strip,
-      :id => "events_for_#{date.strftime("%Y_%m_%d")}"
+      :class => "dated-events #{'empty' if events.empty?}".strip,
+      :id => "events_#{date.strftime("%Y%m%d")}"
     }
     
     concat(tag(:div, wrapper_options, true))

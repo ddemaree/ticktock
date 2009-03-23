@@ -66,7 +66,7 @@ class EventsController < ApplicationController
     # TODO: Better flash copy here
     respond_to do |format|
       format.html { 
-        redirect_to(params[:return] == "yes" ? request.referrer : new_event_path)
+        redirect_to(params[:return] == "yes" ? request.referrer : root_path)
       }
       format.js   {
         headers["X-JSON"] = @event.to_json

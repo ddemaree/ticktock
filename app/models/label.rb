@@ -15,6 +15,10 @@ class Label < ActiveRecord::Base
     self.save!
   end
   
+  def to_s
+    name
+  end
+  
   def frequency
     taggings.aggregate :id, :by => :week
   end

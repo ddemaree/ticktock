@@ -10,7 +10,7 @@ class Event::FilteringTest < ActiveSupport::TestCase
     2.times { @events << Factory(:event, :account => @account, :subject => @subject) }
     
     3.times do |x|
-      @events << Factory(:event, :account => @account, :tags => %w(alpha beta gaga))
+      @events << Factory(:event, :account => @account, :body => %(Hi #alpha #beta #gaga))
     end
   end
   

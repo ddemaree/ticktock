@@ -1,0 +1,135 @@
+<%- @page_title = "Welcome" -%>
+<div class="hd">
+	<h1>Welcome back!</h1>
+</div>
+
+<div class="ws-frame">
+	<div class="ws-main">
+		<% form_for @event, :html => {:class => "bd"} do |f| %>
+			<div class="event_body">
+				<h4><%= f.label :body, "Add an entry to your diary" %></h4>
+				<p><%= f.text_area :body, :cols => 60, :rows => 5, :class => 'f-width' %></p>
+			</div>
+
+			<a href="#instructions" class="quickbox">How do I&hellip;</a>
+
+			<p class="form-action">
+				<button type="submit"><span>Add to log</span></button>
+			</p>
+
+			<hr class="clear">
+			<input type="hidden" name="return" value="true">
+		<% end %>
+		
+		<div id="instructions" style="display:none">
+			<div class="example">
+				<strong>Dates</strong>
+				<div>
+					<p>
+						Use <code>MM/DD/YYYY</code> format:
+					</p>
+					<pre><code>03/09/2009 Cleaned the gutters</code></pre>
+				</div>
+			</div>
+
+			<div class="example">
+				<strong>Durations</strong>
+				<div>
+					<p>
+						Specified in hours and minutes, separated by a colon:
+					</p>
+					<pre><code>0:45 Cardio workout</code></pre>
+				</div>
+			</div>
+
+			<div class="example">
+				<strong>Tags</strong>
+				<div>
+					<p>
+						Tags are denoted by a pound sign (<code>#</code>), and should consist of letters, numbers, dashes and underscores only:
+					</p>
+					<pre><code>Had awesome #lunch with #Lauren, ate #lima-beans</code></pre>
+				</div>
+			</div>
+
+			<div class="example">
+				<strong>Projects</strong>
+				<div>
+					<p>
+						Projects are assigned using the project's nickname, starting with an <code>@</code> sign. For example, if you have a project named "Marathon Training" with the nickname <code>marathon</code>, you could assign an event to it like so:
+					</p>
+					<pre><code>@marathon 1:30 Running on lakefront trail</code></pre>
+				</div>
+			</div>
+
+			<p class="close"><a href="#" onclick="QuickBox.hideAll();return false;">close</a></p>
+		</div>
+
+		<div id="recent-events">
+		<h2>What you&rsquo;ve done recently</h2>
+
+		<%- if @recents.empty? -%>
+		<p>You haven't logged any events in the last two weeks.</p>
+		<%- end -%>
+
+		<ul class="events">
+			<%= render :partial => "/events/list_item", :as => :event, :collection => @recents, :locals => {:show_date => true} %>
+		</ul>
+
+		</div>
+	</div>
+	
+	<div class="ws-sidebar">
+		
+		<% if @recent_count > 0 %>
+		<h2>In the last 2 weeks</h2>
+		<div class="totals">
+			<p>You've logged <strong><%= pluralize @recent_count, "entries" %></strong>, totaling <strong><%= duration_to_string @recent_duration, "{%H hours} {%M minutes}" %></strong></p>
+		</div>
+		
+		<% if @top_tags.any? %>
+		<h3>Top tags</h3>
+		<div class="top_tags">
+		<% @top_tags.each do |tag| %>
+		<div class="tag-row">
+			<strong><%= link_to tag, "/events?tag=#{tag}", :rel => 'tag', :class => 'tag' %></strong>
+			<span class="count"><%= tag._count %></span>
+		</div>
+		<% end %>
+		</div>
+		<% end %>
+		
+		
+		
+		<% end %>
+	</div>
+	
+</div>
+<%= javascript_tag "var totalDuration = #{@recent_duration}" %>
+<script type="text/javascript" charset="utf-8">
+	Event.observe(window, 'load', function(){
+		Ticktock.zebraStripe('.events li')
+		Ticktock.zebraStripe('.top_tags .tag-row')
+		new HoverObserver('recent-events')
+		
+		$$('.events li a.edit').each(function(elem){
+			new InlineEventEditor(elem)
+		})
+	
+		$$('.top_tags .tag-row').each(function(elem){
+			count = Number(elem.down('.count').innerHTML)
+			total_count = totalDuration
+			elem.down('.count').update(Ticktock.timeToString(count))
+			barWidth = Math.ceil(elem.getWidth() * (count / total_count))
+			graphBar = new Element('div',{className:'t-gb'})
+			graphBar.setStyle({width:barWidth + 'px',height:(elem.getHeight() - 3)+'px'})
+			elem.insert({top:graphBar})
+		})
+	
+	})
+</script>
+
+
+
+
+

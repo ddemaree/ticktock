@@ -1,0 +1,165 @@
+/* @override http://practical.ticktock.local:3000/stylesheets/default2.css */
+
+@import url(lib/reset.css);
+@import url(lib/fonts.css);
+
+body, html {
+	background: #fff;
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:   13px;
+	color: #444;
+}
+
+a, a:link, a:visited {
+	color: #c30;
+}
+
+hr {
+	border: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.wr, .wr-c { margin: 0 auto; }
+.wr   { width: 960px; min-width: 860px; }
+.wr-c { width: 97.91%; }
+
+.left  { float: left;  }
+.right { float: right; }
+
+.cf:after {
+  content:".";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+.cf {display:inline-block;}
+/* Hide from IE Mac \*/
+.cf {display:block;}
+/* End hide from IE Mac */
+
+.ws-frame { padding: 8px 0; }
+.ws-frame table { height: 200px; width: 100%; }
+.ws-sidebar { width: 220px; }
+.f-gutter { width: 8px; }
+
+#overlay {
+	background: #000;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 990;
+	opacity: 0.2;
+}
+
+/* @group Header */
+
+#header {
+	background: #def;
+	margin-bottom: 8px;
+	border-bottom: 1px solid #999;
+}
+
+#header .left {
+	padding: 8px;
+}
+
+#header h1 {
+	font-weight: bold;
+	font-size: 15px;
+	text-shadow: 1px 1px 1px #fff;
+	color: #000;
+}
+
+/* @end */
+
+
+#footer {
+	border-top: 2px solid #ccc;
+	margin-top: 20px;
+}
+
+#left-sidebar {
+	width: 160px;
+	float: left;
+}
+
+#left-sidebar .nav {
+	background: #def;
+	
+	position: absolute;
+	left: 0;
+	width: 148px;
+	top: 80px;
+	padding: 8px 0;
+	border: 1px solid #ccc;
+	-webkit-border-top-right-radius: 8px;
+	-webkit-border-bottom-right-radius: 8px;
+}
+
+#left-sidebar .nav h2 {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #8db0d3;
+}
+
+#left-sidebar .nav h2 a {
+	color: #8db0d3;
+	padding-bottom: 12px;	
+}
+
+#left-sidebar .nav ul {
+	font-size: 15px;
+}
+
+#left-sidebar .nav li {
+	margin-bottom: 0px;
+}
+
+#left-sidebar .nav a {
+	display: block;
+	background: #def;
+	padding: 4px 16px 6px;
+	color: #666;
+	text-decoration: none;
+	margin-right: 0px;
+}
+
+#left-sidebar .nav .current {
+	margin-right: -6px;
+}
+
+#left-sidebar .nav .current a {
+	background: #8db0d3;
+	color: #fff;
+	border-color: #ccc;
+	font-weight: bold;
+	text-shadow: rgba(31,71,110,0.74) 1px 1px 1px;
+	border: 1px solid #fff;
+	border-left: 0;
+}
+
+#workspace {
+	margin-left: 160px;
+}
+
+#workspace .hd {
+	background: #fff;
+	border-bottom: 2px solid #000;
+	margin-bottom: 8px;
+	position: relative;
+}
+
+#workspace .hd h1 {
+	font-size: 19px;
+	color: #000;
+	padding: 8px;	
+	font-family: Georgia;
+}
+

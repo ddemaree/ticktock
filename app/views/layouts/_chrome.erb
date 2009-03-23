@@ -1,116 +1,75 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta charset="UTF-8" />
 	<title><%= page_title %></title>
 	<%= sprockets_include_tag %>
-	<%= stylesheet_link_tag "default" %>
+	<%= stylesheet_link_tag "default2" %>
 	<%= @content_for_head %>
+	<script type="text/javascript" charset="utf-8">
+		Event.observe(window,'load',function(){
+			$$('.wr').invoke('setStyle','width:100%')
+			FrameMaker.setup()			
+		})
+	</script>
 </head>
 
 <% content_tag :body, :id => body_id, :class => body_classes.join(" ") do %>
 	
-<div id="header"><div class="wrap clearfix">
-	
-	<div id="quick-entry" class="quick">
-		<a href="/events/new.quick" onclick="Quickbox.remote(this);return false;" class="add">Add an entry</a>
-	
-		<% form_for :event, :html => {:id => "tt-quick-entry"} do |f| %>
-		<div>
-			<p>Add an event to your log:</p>
-			<div class="field">
-				<%= f.text_field :body %>
-				<button type="submit">Add</button>
-			</div>
+<div id="header">
+<div class="wr">
+	<div class="wr-c cf">
+		<div class="left">
+			<h1><%= current_account.name %></h1>
 		</div>
-		<% end %>
-	</div>
-	
-	<h1><%= current_account.name %></h1>
-	
-	<p class="current_user">
-		<strong class="user_name"><%= current_user %></strong>
-		(<%= link_to "Sign out", logout_path, :class => "logout" %>)
-		&mdash;
-		<a href="http://support.ticktockapp.com/" target="_blank" class="help">Help</a>
-	</p>
-</div></div>
-
-<script type="text/javascript" charset="utf-8">
-	//$('tt-quick-entry').makePositioned()
-	
-	$('tt-quick-entry').down('button').remove()
-	$('tt-quick-entry').hide()
-	
-</script>
-
-<div id="container">
-<div id="main" class="workspace wrap">
-
-<table id="stretcher">
-	<tr valign="top">
 		
-		<td id="sidebar" class="sidebar">
-			<ul class="nav" id="add-event">
-				<li class="big"><%= link_to_unless (section_name == "new_event"), "Log stuff", new_event_path %></li>
-			</ul>
-			<hr>
-			<ul class="nav" id="main-navigation">
-				<li>
-					<%= link_to_unless (section_name == "events"), "Browse my log", current_events_path %>
-				</li>
-				<li><%= link_to_unless (section_name == "trackables"), "Projects", trackables_path %>	
-				</li>
-				<li><%= link_to_unless (section_name == "reports"), "Reports", reports_path %>	
-				</li>
-			</ul>
-			<hr>
-		</td>
-		
-		<td id="workspace">
-			<div class="workspace-content">
-				<%= yield %>
-			</div>
-		</td>
-		
-	</tr>
-</table>
+		<div class="right">
+			<%= link_to "My info", "javascript:void%200" %> |
+			<%= link_to "Sign out", logout_path, :class => "logout" %> |
+			<a href="http://support.ticktockapp.com/" target="_blank" class="help">Help</a>
+		</div>
 
-<div id="footer">
-	<div class="logo">
-		<h4>TickTock</h4>
-	</div>
-	<div class="copyright">
-		<p>&copy;2009 Practical Creative &amp; Code</p>
 	</div>
 </div>
+</div>
 
-</div>
-</div>
-<!-- <script type="text/javascript" charset="utf-8">
-	QuickEntry = {
-		open:function(){
-			$('quick-entry').show()
+<div class="wr">
+	<div class="wr-c cf">
+		<div id="left-sidebar">
 			
-			Overlay.invoke({
-				className:'green',
-				onClick:function(){
-					$('quick-entry').hide()
-				}
-			})
-		}
-	}
+			<div class="nav">
+				<h2><a href="/">TickTock</a></h2>
+				<ul>
+					<%= link_to_section "home", "Welcome", root_path %>
+					<%= link_to_section "events", "Diary", calendar_path %>
+					<%= link_to_section "reports" %>
+					<%= link_to_section 'trackables', "Projects" %>
+					<li>
+						<%= link_to_unless (section_name == "tags"), "Tags", nil %>	
+					</li>
+				</ul>
+			</div>
+			
+			
+		</div>
 
+		<div id="workspace" class="cf">
+			<%= yield %>
+		</div>
+	</div>
+</div>
 
-	Event.observe(window, 'load', function(){
-		$('add-event').down('.quick a').observe('click', function(e){
-			QuickEntry.open()
-			e.stop()
-		})
-	})
-</script> -->
+<div class="wr">
+	<div id="footer" class="wr-c">
+		<div class="logo left">
+			<h4>TickTock</h4>
+		</div>
+		<div class="copyright right">
+			<p>&copy;2009 Practical Creative &amp; Code</p>
+		</div>
+	</div>
+</div>
+
 
 <%= render :partial => "/layouts/google_analytics" if Rails.env.production? %>
 <% end %>
