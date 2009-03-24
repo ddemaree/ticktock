@@ -134,9 +134,11 @@ module CalendarHelper
     grid_range = (start_date_for_grid..end_date_for_grid)
     
     returning("") do |output|
+      output << content_tag(:div, grid_date.strftime('%B %Y'), :class => "month-grid-header")
+      
       output << tag(:table, {:class => "month_grid"}, true)
       
-      output << %{<tr class="month_name"><th colspan="7">#{grid_date.strftime('%B %Y')}</th></tr>}
+      #output << %{<tr class="month_name"><th colspan="7"></th></tr>}
       
       day_ths = %w(M T W T F S S).collect {|d| content_tag(:th, d) }.join("")
       output << content_tag(:tr, day_ths, :class => "header_row")
@@ -164,9 +166,12 @@ module CalendarHelper
             end
           
           output << tag(:td, {:id => "day_#{day.strftime("%Y%m%d")}", :class => classes_for_day.join(" ")}, true)
+          output << %{<a href="/calendar/#{day.year}/w/#{day.cweek}#events_#{day.strftime("%Y%m%d")}">}
+          
+          
           output << content_tag(:span, day.day, :class => 'day_of_month')
-          output << content_tag(:span, event_count, :class => 'event_count') if event_count > 0
-          output << '</td>'
+          output << content_tag(:span, "&nbsp;", :class => 'check') if event_count > 0
+          output << '</a></td>'
           
         end
         

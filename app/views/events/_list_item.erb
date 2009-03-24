@@ -1,6 +1,18 @@
 <% content_tag_for :li, event, :class => "hover_container" do %>
-<div class="duration">
-	<%= duration_to_string(event.duration.to_i) %>&nbsp;
+
+<div class="meta">
+	<div class="duration">
+		<% if event.duration.to_i > 0 %>
+		<span>Time spent:</span>
+		<%= duration_to_string(event.duration.to_i) %>
+		<% else %>
+		&nbsp;
+		<% end %>
+	</div>
+	<div class="actions hover_target">
+		<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
+		<%= link_to "Edit", [:edit, event], :class => "edit" %>
+	</div>
 </div>
 
 <div class="body">
@@ -13,8 +25,5 @@
 	</span>
 </div>
 
-<div class="actions hover_target">
-	<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
-	<%= link_to "Edit", [:edit, event], :class => "edit" %>
-</div>
+
 <% end %>

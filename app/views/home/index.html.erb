@@ -87,6 +87,8 @@
 			<p>You've logged <strong><%= pluralize @recent_count, "entries" %></strong>, totaling <strong><%= duration_to_string @recent_duration, "{%H hours} {%M minutes}" %></strong></p>
 		</div>
 		
+		<%= month_grid %>
+		
 		<% if @top_tags.any? %>
 		<h3>Top tags</h3>
 		<div class="top_tags">
@@ -108,13 +110,13 @@
 <%= javascript_tag "var totalDuration = #{@recent_duration}" %>
 <script type="text/javascript" charset="utf-8">
 	Event.observe(window, 'load', function(){
-		Ticktock.zebraStripe('.events li')
-		Ticktock.zebraStripe('.top_tags .tag-row')
-		new HoverObserver('recent-events')
-		
-		$$('.events li a.edit').each(function(elem){
-			new InlineEventEditor(elem)
-		})
+		// Ticktock.zebraStripe('.events li')
+		// Ticktock.zebraStripe('.top_tags .tag-row')
+		// new HoverObserver('recent-events')
+		// 
+		// $$('.events li a.edit').each(function(elem){
+		// 	new InlineEventEditor(elem)
+		// })
 	
 		$$('.top_tags .tag-row').each(function(elem){
 			count = Number(elem.down('.count').innerHTML)

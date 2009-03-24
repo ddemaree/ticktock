@@ -1,6 +1,11 @@
 class HomeController < ApplicationController
+  include Ticktock::DateNavigation
   
   def index
+    session[:events_view] = {
+      :controller => 'home'
+    }
+    
     @event = current_account.events.build
     
     @current_range = ((Time.now - 2.weeks).beginning_of_day..Time.now.end_of_day)

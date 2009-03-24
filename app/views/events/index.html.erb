@@ -4,47 +4,20 @@
 
 <%= flash_message %>
 
-<div class="bd">
-<table class="frame"><tr valign="top">
-	<td class="six" rowspan="2">
-		<%- @events.group_by(&:date).each do |date, events| -%>
-		<% events_for_day date, events do %>
-		<h3 class="date_header">
-			<span><%= date.strftime("%A, %b %e") %></span>
-		</h3>
+<%- @events.group_by(&:date).each do |date, events| -%>
+<% events_for_day date, events do %>
+<h3 class="date-header">
+	<span><%= date.strftime("%A, %b %e") %></span>
+</h3>
 
-		<ul class="events-list">
-			<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
-			<li class="no-events">Nothing happened today</li>
-		</ul>	
+<ul class="events">
+	<%= render :partial => '/events/list_item', :collection => events, :as => :event %>
+	<li class="no-events">Nothing happened today</li>
+</ul>	
 
 
-		<hr class="date-separator" style="clear:both">
-		<% end %>
-		<%- end -%>
-	</td>
-	<td class="gutter" rowspan="2">&nbsp;</td>
+<hr class="date-separator" style="clear:both">
+<% end %>
+<%- end -%>
 
-	<td class="four calendar-sidebar">
-		&nbsp;
-	</td>
-
-</tr>
-<tr>
-	<td class="calendar-sidebar" valign="bottom">
-		<div class="pagination">
-			<%# pagination_links %>
-		</div>
-	</td>
-</tr>
-</table>
-</div>
-
-<script type="text/javascript" charset="utf-8">
-	new HoverObserver('main')
-	Event.observe(window, 'load', function(){
-		$$('.event a.edit').each(function(link){
-			new InlineEventEditor(link)
-		})
-	})
-</script>
+<%= will_paginate @events %>

@@ -7,19 +7,14 @@
 <%- end -%>
 
 <div class="hd calendar-hd cf">
-	<div class="pagination">
-		<h1><%= @page_title = "Diary for <strong>#{range_description}</strong>" %></h1>
-		
-		<%= link_to "&lsaquo; Previous", params_for_previous, :class => "nav previous" %>
-		<%= link_to "Next &rsaquo;", params_for_next, :class => "nav next" %>
-	</div>
-	
-	<p class="jump_to_current">
-		<%= link_to "This #{time_frame}", params_for_today, :class => "nav current" %>
-	</p>
+	<h1><%= @page_title = "Diary for <strong>#{range_description}</strong>" %></h1>
 </div>
 
 <%= flash_message %>
+
+<p class="pagination top">
+	<%= pagination_links %>
+</p>
 
 <div class="ws-frame">
 	<div class="ws-main" id="ws-main">
@@ -40,12 +35,12 @@
 			<% end %>
 		<% end %>
 		
-		
-		
 	</div>
 	<div class="ws-sidebar">
 		
 		&nbsp;
+		<%= month_grid %>
+		
 		
 	</div>
 	

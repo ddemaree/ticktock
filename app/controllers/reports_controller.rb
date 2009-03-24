@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
   
   def top_tags
     unless %w(frequency duration).include?(params[:by])
-      params[:by] = "frequency"
+      params[:by] = "duration"
     end
     
     @sorting_by = ActiveSupport::StringInquirer.new(params[:by])

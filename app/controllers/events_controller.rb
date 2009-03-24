@@ -63,6 +63,7 @@ class EventsController < ApplicationController
     @event.update_attributes! params[:event]
     
     # TODO: Better flash copy here
+    # FIXME: current_events_path can't seem to set root as current
     respond_to do |format|
       format.html { 
         redirect_to(params[:return] == "yes" ? request.referrer : root_path)
@@ -144,7 +145,7 @@ class EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to(events_path) }
+      format.html { redirect_to(current_events_path) }
       format.xml  { head :ok }
       format.atom { head :ok }
     end

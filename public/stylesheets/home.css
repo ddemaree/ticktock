@@ -10,10 +10,8 @@
 }
 
 #home.index #new_event {
-	padding: 8px;
+	padding: 10px;
 	background: #faf6d6;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
 }
 
 #home.index #new_event .instructions {
@@ -38,7 +36,6 @@
 #home.index #new_event .event_body h4 {
 	font-size: 15px;
 	padding-bottom: 5px;
-	font-family: Georgia;
 	color: #000;
 }
 
@@ -47,26 +44,17 @@
 	float: right;
 }
 
-.ws-sidebar h2 {
-	font-family: Georgia;
-	padding: 16px 8px 4px;
+.ws-sidebar h2,
+.ws-sidebar h3 {
 	font-size: 17px;
-	border-bottom: 1px solid #000;
-	margin-left: 8px;
-	margin-right: 8px;
-	color: #000;
 }
 
 .ws-sidebar h3 {
-	padding: 16px 8px 4px;
-	font-family: Georgia;
-	font-size: 15px;
-	margin: 0 8px;
-	color: #000;
+	padding-top: 20px;
 }
 
 .top_tags {
-	margin: 0 8px;
+	margin: 20px 0;
 	border-top: 1px solid #e7eef6;
 	margin-top: 4px;
 	font-size: 15px;
@@ -105,8 +93,7 @@
 .totals {
 	font-size: 13px;
 	line-height: 17px;
-	margin: 4px 8px;
-	padding: 4px 8px;
+	margin: 5px 0 20px;
 }
 
 .totals strong {
@@ -167,11 +154,13 @@
 	min-height: 300px;
 }
 
+#recent-events .events {
+	padding: 10px 0;
+}
+
 #recent-events h2 {
-	padding: 16px 8px 8px;
-	margin: 0 8px;
+	padding: 20px 10px 10px;
 	font-size: 17px;
-	font-family: Georgia;
 	border-bottom: 1px solid #000;
 	color: #000;
 }
