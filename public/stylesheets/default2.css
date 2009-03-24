@@ -2,6 +2,7 @@
 
 @import url(lib/reset.css);
 @import url(lib/fonts.css);
+@import url(lib/forms.css);
 
 body, html {
 	background: #f;

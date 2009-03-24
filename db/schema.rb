@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090317183822) do
+ActiveRecord::Schema.define(:version => 20090324175929) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -104,7 +104,10 @@ ActiveRecord::Schema.define(:version => 20090317183822) do
     t.string   "nickname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state",      :default => "active"
   end
+
+  add_index "trackables", ["state"], :name => "index_trackables_on_state"
 
   create_table "users", :force => true do |t|
     t.string   "login",                     :limit => 40

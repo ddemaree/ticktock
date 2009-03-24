@@ -14,8 +14,11 @@ class Event < ActiveRecord::Base
   include Ticktock::Reportable
   
   # #   S C O P E S   # #
-  default_scope :order => "date DESC, start DESC, created_at DESC"
-  named_scope   :active, :conditions => { :state => 'active' }
+  default_scope :order => "events.date DESC, events.start DESC, events.created_at DESC"
+  
+  named_scope :active_projects, :joins => "LEFT OUTER JOIN trackables ON trackables.id = events.subject_id", :conditions => "trackables.id IS NULL OR trackables.state = 'active'"
+  
+  named_scope :active, :conditions => { :state => 'active' }
   named_scope :recent, lambda {|num| {:limit => (num||20), :conditions => {:date_gte => 2.weeks.ago}} }
   
   named_scope :for_date_range, lambda { |range|

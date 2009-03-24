@@ -90,8 +90,8 @@ class EventTest < ActiveSupport::TestCase
     
   end
   
+  # TODO: Should maybe expose some of these features maybe
   context "An extant Event instance" do
-    
     context "that is active" do
       setup do
         @active_event = Factory(:timed_event, :stop => nil)
@@ -109,9 +109,7 @@ class EventTest < ActiveSupport::TestCase
         assert @active_event.completed?
       end
     end
-    
   end
-  
   
   context "Event message parser" do
     setup do
@@ -215,13 +213,6 @@ class EventTest < ActiveSupport::TestCase
       assert_equal 0.75, @event.hours
     end
     
-    # FIXME: Why doesn't it think 0.7 is equal to 0.7?
-    # should "use precision setting from class" do
-    #   Event.options[:hours_to_nearest] = 0.10
-    #   @event.duration = 2700
-    #   assert_equal 0.70, @event.hours
-    # end
-    
     should "be gettable in hours with precision" do
       @event.duration = 2600
       assert_equal 0.72, @event.hours(:nearest => false)
@@ -239,91 +230,7 @@ class EventTest < ActiveSupport::TestCase
     end
   end
   
-  context "On Event state change" do
-    context "from active to completed" do
-      setup do
-        @event = Factory(:timed_event, :stop => nil)
-      end
-      
-      should "create a punch" do
-        assert_difference "@event.punches.count" do
-          @event.finish!
-        end
-      end
-      
-      should "set punch duration to event's duration" do
-        @event.finish!
-        punch = @event.punches.first
-        assert_equal @event.duration, punch.duration, "Punch duration should be #{@event.duration / 3600.0} hours, is #{punch.duration / 3600.0} hours (from #{punch.start} to #{punch.stop})"
-      end
-    end
-    
-    context "from active to sleeping" do
-      setup do
-        @event = Factory(:event, :stop => nil)
-      end
-      
-      should "create a punch" do
-        assert_difference "@event.punches.count" do
-          @event.sleep!
-        end
-      end
-      
-      should "set state_changed_at" do
-        @event.sleep!
-        assert_not_nil @event.state_changed_at
-      end
-      
-      should "set last_state_change_at" do
-        @event.sleep!
-        assert_not_nil @event.last_state_change_at
-      end
-      
-      should "set punch duration" do
-        @event.sleep!
-        assert_not_nil @event.punches.first
-        assert_not_nil @event.punches.first.duration
-      end
-      
-    end
-    
-    context "from sleeping to active" do
-      setup do
-        @event = Factory(:timed_event, :stop => nil)
-        @event.sleep!
-      
-        @punch = @event.punches.first
-      end
-      
-      should "have a duration already" do
-        assert_not_nil @event.duration
-      end
-      
-      should "have nonzero duration" do
-        assert @event.duration > 0, "Event started at #{@event.start}, paused at #{@event.state_changed_at} (#{(@event.start - @event.state_changed_at).abs.to_i} sec)"
-      end
-      
-      should "have same duration as punches" do
-        @duration_of_punches = @event.punches.sum(:duration)
-        assert_equal @duration_of_punches, @event.duration
-      end
-      
-      should "not update duration on wake" do
-        assert_no_difference "@event.duration" do
-          @event.wake!
-        end
-      end
-      
-      should "create a punch" do
-        assert_difference "@event.punches.count" do
-          @event.wake!
-        end
-      end
-      
-      
-    end
-
-  end
+  
   
   context "Event.find_and_extend" do
     setup do
@@ -378,9 +285,7 @@ class EventTest < ActiveSupport::TestCase
       should "have 2 tags" do
         assert_equal 2, @event.tags.length
         assert_equal 2, @event.taggings.count
-      end
-      
-      
+      end      
     end
     
     context "with project" do

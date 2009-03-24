@@ -33,31 +33,6 @@ p.checkbox {
 	padding: 10px;
 }
 
-.form-action {
-	padding-bottom: 20px;
-	padding-top: 10px;
-	text-align: right;
-}
-
-.form-action button {
-	background: #d4d4d4 url(../../images/bg-gray-gradient.png);
-	color: #666;
-	text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
-	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-	border: 1px solid #ccc;
-	padding: 0;
-	border-color: #e5e5e5 #888 #777 #d4d4d4;
-	font-size: 15px;
-	font-family: Helvetica, Arial, sans-serif;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-}
-
-.form-action button span {
-	padding: 4px 10px;
-	display: block;
-}
-
 /* @group Error Handling */
 
 .hasErrors label {

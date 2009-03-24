@@ -1,44 +1,19 @@
 <div class="hd calendar-hd">
 	<p class="back"><%= link_to "&lsaquo; Projects", trackables_path %></p>
-	<h1>Create new project</h1>
+	<h1><%= @page_title = "Edit project" %></h1>
 </div>
 
 <%= flash_message %>
 
-<div class="bd">
-<table class="frame"><tr valign="top">
-	<td class="seven">
-		<% form_for @trackable, :html => {:class => "bd"} do |f| %>
-		
-		<fieldset>
-			<% f.field_wrapper :name do %>
-				<%= f.label :name %>
-				<p><%= f.text_field :name %></p>
-				<p class="info examples">Examples: Spring Cleaning, Imperial Widgets Contract, Fitness</p>
-			<% end %>
-
-			<% f.field_wrapper :nickname do %>
-				<%= f.label :nickname %>
-				<p><%= f.text_field :nickname, :size => 12 %></p>
-				<p class="info">This is a short (3-12 characters) keyword you can use to identify projects in your log entries. If you have a project called "Marathon Training", a good nickname might be &lsquo;marathon.&rsquo;</p>
-				<p class="info">You can then associate an entry with this project by just starting it with <code>@marathon</code>.</p>
-			<% end %>
-		</fieldset>
-		<p class="form-action">
-			<button type="submit"><span>Add this project</span></button>
-		</p>
-
+<div class="ws-frame">
+	<div class="ws-main" id="ws-main">
+		<%= render :partial => 'edit' %>
+	</div>
+	
+	<div class="ws-sidebar">
+		<% form_tag trackable_path(@trackable), :method => :delete do %>
+		<%= submit_tag "Delete this project" %>
 		<% end %>
-	</td>
-	
-	
-	
-	<td class="sidebar three-plus">
-		<div class="guide">
-			<h2>What is a project?</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		</div>
-	</td>
-
-</tr></table>
+	</div>
+</div>
 

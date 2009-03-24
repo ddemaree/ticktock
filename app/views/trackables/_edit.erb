@@ -1,0 +1,39 @@
+<% form_for @trackable, :html => {:class => "trackable-editor"} do |f| %>
+
+<fieldset>
+	<% f.field_wrapper :name do %>
+		<%= f.label :name %>
+		<p><%= f.text_field :name %></p>
+		<p class="info examples">Examples: Spring Cleaning, Imperial Widgets Contract, Fitness</p>
+	<% end %>
+
+	<% f.field_wrapper :nickname do %>
+		<%= f.label :nickname %>
+		<p><%= f.text_field :nickname, :size => 12 %></p>
+		<p class="info">This is a short (3-12 characters) keyword you can use to identify projects in your log entries. If you have a project called "Marathon Training", a good nickname might be &lsquo;marathon.&rsquo;</p>
+		<p class="info">You can then associate an entry with this project by just starting it with <code>@marathon</code>.</p>
+	<% end %>
+</fieldset>
+
+<fieldset class="state_chooser">
+	<div class="state">
+		<p class="top">
+			<span><%= f.radio_button :state, "active" %></span>
+			<strong>Active</strong>
+		</p>
+		<p class="caption">Fully functional project</p>
+	</div>
+	
+	<div class="state">
+		<p class="top">
+			<span><%= f.radio_button :state, "archived" %></span>
+			<strong>Archived</strong>
+		</p>
+		<p class="caption">Entries for archived projects <em>do not</em> appear in your Diary.</p>
+	</div>
+</fieldset>
+<p class="form-action">
+	<button type="submit"><span><%= @trackable.new_record? ? "Add" : "Save changes to" %> this project</span></button>
+</p>
+
+<% end %>

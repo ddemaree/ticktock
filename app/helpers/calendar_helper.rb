@@ -147,7 +147,7 @@ module CalendarHelper
         output << tag(:tr, {:class => 'week'}, true)
         
         week_row.each do |day|
-          event_count = current_account.events.count :conditions => {:date => day}
+          event_count = current_account.events.active_projects.count :conditions => {:date => day}
           
           classes_for_day = ['day']
           classes_for_day << day.strftime("%a").downcase

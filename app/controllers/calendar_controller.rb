@@ -12,7 +12,10 @@ class CalendarController < ApplicationController
       :month => params[:month]
     }
     
-    @events = current_account.events.for_date_range(current_range).find_and_extend
+    scope = current_account.events.for_date_range(current_range)
+    scope = scope.active_projects unless params[:trackable_id]
+    
+    @events = scope.find_and_extend
     
     respond_to do |format|
       format.html
