@@ -23,6 +23,8 @@ hr {
 	height: 1px;
 }
 
+/* @group Core Layout */
+
 .wr, .wr-c { margin: 0 auto; }
 .wr   { width: 960px; min-width: 860px; }
 .wr-c { width: 97.91%; }
@@ -42,10 +44,30 @@ hr {
 .cf {display:block;}
 /* End hide from IE Mac */
 
+/* @group FrameMaker */
+
 .ws-frame { padding: 8px 0; }
 .ws-frame table { height: 200px; width: 100%; }
 .ws-sidebar { width: 220px; }
 .f-gutter { width: 8px; }
+
+.ws-sidebar {
+	float: right;
+}
+
+.ws-main {
+	float: left;
+	width: 480px;
+}
+
+.f-main .ws-main {
+	float: none;
+	width: auto;
+}
+
+/* @end */
+
+/* @end */
 
 #overlay {
 	background: #000;
