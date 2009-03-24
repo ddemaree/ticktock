@@ -11,7 +11,7 @@
 
 #home.index #new_event {
 	padding: 10px;
-	background: #faf6d6;
+	background: #e5e5e5;
 }
 
 #home.index #new_event .instructions {
@@ -63,7 +63,7 @@
 .top_tags .tag-row {
 	position: relative;
 	background: #fff;
-	border-bottom: 1px solid #e7eef6;
+	border-bottom: 1px solid #e5e5e5;
 	padding: 4px 8px;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .t-gb {
-	background: #daefc6;
+	background: #fcfcfc;
 	height: 24px;
 	position: absolute;
 	left: 0;

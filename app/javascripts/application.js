@@ -104,7 +104,7 @@ var FrameMaker = {
 	setup:function(){
 		if(frame = $('workspace').down('.ws-frame')){
 			this.frame = frame
-			this.frame.insert({top:'<table><tr valign="top"><td><div class="f-spacer"> </div></td><td rowspan="2"><div class="f-gutter"> </div></td><td class="f-side" rowspan="2"></td></tr><tr><td class="f-main"></td></tr></table>'})
+			this.frame.insert({top:'<table><tr valign="top"><td class="f-main"></td><td rowspan="2"><div class="f-gutter"> </div></td><td class="f-side" rowspan="2"></td></tr><tr><td><div class="f-spacer"> </div></td></tr></table>'})
 			
 			this.mainContent = this.frame.down('.ws-main')
 			this.frame.down('.f-main').appendChild(this.mainContent)

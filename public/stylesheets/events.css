@@ -5,7 +5,7 @@ ul.events {
 }
 
 ul.events li.event {
-	background: #fcfcbb;
+	background: #f5f5f5;
 	overflow: auto;
 	padding: 10px;
 	margin-bottom: 4px;
@@ -79,7 +79,6 @@ table.month_grid td {
 
 table.month_grid th {
 	text-align: center;
-	border-bottom: 1px solid #ccc;
 	height: 16px;
 	width: 20px;
 	vertical-align: middle;
@@ -89,12 +88,29 @@ table.month_grid th {
 table.month_grid td {
 	text-align: right;
 	height: 30px;
-	border: 1px solid #ccc;
+	border: 1px solid #fff;
 	position: relative;
+	background: #fcfcfc;
+}
+
+table.month_grid td.currentmonth {
+	background: #fff;
+}
+
+table.month_grid td.currentmonth a {
+	border-color: #d8bebb;
 }
 
 table.month_grid td.in_range {
 	background: #def;
+}
+
+table.month_grid td.today {
+	background: #ffa;
+}
+
+table.month_grid td.today a {
+	border-color: #ec0;
 }
 
 table.month_grid td a {
@@ -103,6 +119,7 @@ table.month_grid td a {
 	width: 28px;
 	position: relative;
 	text-decoration: none;
+	border: 1px solid #e2e2e2;
 }
 
 table.month_grid td a:hover {
@@ -117,8 +134,12 @@ table.month_grid .day_of_month {
 	display: block;
 	font-size: 11px;
 	padding: 2px;
+	color: #bbb;
+}
+
+table.month_grid .currentmonth .day_of_month {
+	color: #666;
 	font-weight: bold;
-	color: #999;
 }
 
 table.month_grid .check {

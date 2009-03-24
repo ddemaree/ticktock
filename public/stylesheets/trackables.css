@@ -1,9 +1,5 @@
 /* @override http://practical.ticktock.local:3000/stylesheets/trackables.css */
 
-#trackables .ws-main {
-	min-height: 300px;
-}
-
 #trackables.index .trackable {
 	padding: 10px;
 	background: #f5f5f5;
@@ -17,7 +13,7 @@
 
 .trackable-editor fieldset {
 	background: #f5f5f5;
-	margin-bottom: 10px;
+	margin: 0 0 10px;
 	padding: 10px;
 	border: 0;
 }
@@ -32,12 +28,21 @@
 
 .trackable-editor label {
 	font-weight: bold;
-	width: 80px;
+	width: 100px;
 	color: #000;
 }
 
 .trackable-editor .field p {
-	margin-left: 80px;
+	margin-left: 100px;
+}
+
+.state_chooser label {
+	float: left;
+	width: 100px;
+}
+
+.state_chooser .state {
+	margin-left: 100px;
 }
 
 .state_chooser .state + .state {
@@ -45,7 +50,7 @@
 }
 
 .state_chooser .state p {
-	margin-left: 30px;
+	margin-left: 20px;
 }
 
 .state_chooser .state p.top {
@@ -54,8 +59,7 @@
 
 .state_chooser .state span {
 	float: left;
-	width: 30px;
-	text-align: center;
+	width: 20px;
 }
 
 .state_chooser .state strong {
