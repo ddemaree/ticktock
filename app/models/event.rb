@@ -67,6 +67,12 @@ class Event < ActiveRecord::Base
     self.class.options
   end
   
+  def permalink
+    "/calendar/#{date.year}/w/#{date.cweek}#event_#{id}"
+  end
+  
+  
+  # OPTIMIZE: Do we still need these methods? I don't think we do.
   def duration_in_hours(options={})
     return nil if duration.nil?
     
@@ -94,6 +100,14 @@ class Event < ActiveRecord::Base
     self.duration = hours.to_f.hours.to_i
   end
   alias_method :hours=, :duration_in_hours=
+  
+  def duration_as_string
+    Ticktock::Durations.duration_to_string(duration)
+  end
+  
+  def duration_as_string=(time)
+    self.duration = time
+  end
   
   def duration
     if active? && !read_attribute(:duration)

@@ -9,9 +9,9 @@
 	<p><%= f.text_area :body, :cols => 60, :rows => 5 %></p>
 <% end %>
 
-<% f.field_wrapper :duration do %>
-	<%= f.label :duration %>
-	<p><%= f.text_field :duration %></p>
+<% f.field_wrapper :duration_as_string do %>
+	<%= f.label :duration_as_string, "Time spent" %>
+	<p><%= f.text_field :duration_as_string %></p>
 <% end %>
 
 <% f.field_wrapper :date do %>

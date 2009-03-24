@@ -27,7 +27,6 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv  {
-        #render :text => generate_csv(@events), :content_type => Mime::CSV 
         send_data generate_csv(@events), :content_type => Mime::CSV, :filename => "#{current_subdomain}_ticktockapp_com-events-#{Time.zone.now.to_i}.csv"
       }
       format.xml  { render :xml  => @events }
@@ -127,7 +126,7 @@ class EventsController < ApplicationController
     @event.update_attributes!(params[:event])
     
     respond_to do |format|
-      format.html { redirect_to events_path }
+      format.html { redirect_to @event.permalink }
       format.xml  { head :ok }
       format.json { head :ok }
       format.js {

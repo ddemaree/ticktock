@@ -9,6 +9,8 @@ class Ticktock::Durations
   end
   
   def self.duration_to_string(time, format=nil)
+    return "" if time.to_i == 0
+    
     format ||= "{%Hh} {%Mm}"
     hours, minutes, seconds = time_to_units(time)
     

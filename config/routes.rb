@@ -34,6 +34,10 @@ ActionController::Routing::Routes.draw do |map|
                     :conditions => {:method => :post}
   end
   
+  map.namespace :account do |account|
+    map.resource :theme
+  end
+  
   map.resource :session, :account
   map.signup '/signup', :controller => 'accounts', :action => 'new'
 
