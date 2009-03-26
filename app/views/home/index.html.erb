@@ -94,7 +94,7 @@
 		<div class="top_tags">
 		<% @top_tags.each do |tag| %>
 		<div class="tag-row">
-			<strong><%= link_to tag, "/events?tag=#{tag}", :rel => 'tag', :class => 'tag' %></strong>
+			<strong><%= link_to tag, "/events?tags=#{tag}", :rel => 'tag', :class => 'tag' %></strong>
 			<span class="count"><%= tag._count %></span>
 		</div>
 		<% end %>
