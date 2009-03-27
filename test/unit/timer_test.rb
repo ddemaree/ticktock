@@ -24,7 +24,7 @@ class TimerTest < ActiveSupport::TestCase
     end
     
     should "set initial start time" do
-      @timer.valid?
+      @timer.save
       assert_not_nil @timer.start
     end
     
