@@ -10,6 +10,7 @@ class Account < ActiveRecord::Base
   has_one  :account_owner, :class_name => 'User',
                            :conditions => {:account_owner => true}
   has_many :trackables,    :dependent => :destroy
+  has_many :timers,        :dependent => :destroy
   has_many :events,        :dependent => :destroy
   has_many :labels,        :dependent => :destroy
   has_many :event_imports, :dependent => :destroy

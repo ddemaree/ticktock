@@ -7,7 +7,9 @@ class AccountTest < ActiveSupport::TestCase
   should_ensure_length_in_range :domain, 3..24
   
   should_have_many :users
-  should_have_one :account_owner
+  should_have_many :trackables
+  should_have_many :timers
+  should_have_one  :account_owner
   
   def setup
     Ticktock.beta = false
@@ -23,9 +25,6 @@ class AccountTest < ActiveSupport::TestCase
     context "while in beta" do
       setup { Ticktock.beta = true }
       should_validate_presence_of :invite_code
-      
-      
-      
     end
     
     should "exclude reserved domains" do

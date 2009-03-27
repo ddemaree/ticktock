@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   include Event::Filtering
   
   include Ticktock::Reportable
+  include Ticktock::Subjects
   
   # #   S C O P E S   # #
   default_scope :order => "events.date DESC, events.start DESC, events.created_at DESC"
@@ -28,7 +29,6 @@ class Event < ActiveRecord::Base
   
   # #   A S S O C I A T I O N S   # #
   belongs_to :account
-  belongs_to :subject, :class_name => "Trackable"
   belongs_to :user
   belongs_to :created_by, :class_name => "User"
   #has_many   :punches, :dependent => :destroy
@@ -169,20 +169,7 @@ class Event < ActiveRecord::Base
     end
   end
   
-  alias_method :subject_from_object=, :subject=
-  def subject=(object_or_name)
-    if object_or_name.is_a?(String)
-      if obj = self.account.trackables.find_by_name(object_or_name) ||
-               self.account.trackables.find_by_nickname(object_or_name)
-        
-        self.subject_from_object = obj
-      else
-        self.subject_from_object = self.account.trackables.build(:nickname => object_or_name)
-      end
-    else
-      self.subject_from_object = object_or_name
-    end
-  end
+
   
 protected
 

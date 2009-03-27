@@ -1,3 +1,3 @@
 class Punch < ActiveRecord::Base
-  belongs_to :event
+  belongs_to :timer
 end

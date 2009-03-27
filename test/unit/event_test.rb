@@ -65,14 +65,6 @@ class EventTest < ActiveSupport::TestCase
       assert_equal "event", event.kind
     end
     
-    should "not create a punch on wake" do
-      event = Factory.build(:event, :stop => nil)
-      
-      assert_no_difference "event.punches.count" do
-        event.wake!
-      end
-    end
-    
     should "provide import signature" do
       event = Event.new({
         :body => "Hello world",
@@ -201,32 +193,6 @@ class EventTest < ActiveSupport::TestCase
     should "be settable via string" do
       @event.duration = "2 hours"
       assert_equal (3600 * 2), @event.duration
-    end
-    
-    should "be gettable in hours" do
-      @event.duration = 1800
-      assert_equal 0.5, @event.hours
-    end
-    
-    should "be gettable in hours rounded to nearest 15m" do
-      @event.duration = 2700
-      assert_equal 0.75, @event.hours
-    end
-    
-    should "be gettable in hours with precision" do
-      @event.duration = 2600
-      assert_equal 0.72, @event.hours(:nearest => false)
-    end
-    
-    should "be settable in hours" do
-      @event.hours = "3"
-      assert_equal 3.hours, @event.duration
-    end
-    
-    should "be settable to blank value" do
-      @event.hours = ""
-      assert @event.valid?
-      assert_equal 0, @event.duration
     end
   end
   
