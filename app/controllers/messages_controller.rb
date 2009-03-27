@@ -3,8 +3,10 @@ class MessagesController < ApplicationController
   def create
     @result = Ticktock(params[:message])
     
+    params[:return] = root_path if params[:return].blank?
+    
     respond_to do |format|
-      format.html { redirect_to(params[:return] || root_path) }
+      format.html { redirect_to(params[:return]) }
       format.json { render :json => @result.to_json, :status => :created, :location => @result }
       format.xml  { render :xml  => @result.to_xml, :status => :created, :location => @result}
     end
