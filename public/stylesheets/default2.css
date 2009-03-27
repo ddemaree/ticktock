@@ -24,6 +24,32 @@ hr {
 	height: 1px;
 }
 
+
+
+#flash {
+	padding: 11px 9px 12px 45px;
+	background: #def url(../images/check-24-blue.png) no-repeat 10px center;
+	margin: 10px;
+	border: 1px solid #a0c2d6;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	font-size: 15px;
+	color: #20668e;
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+#flash > p {
+	max-width: 500px;
+	line-height: 18px;
+}
+
+#flash.error {
+	background-color: #ffedc0;
+	background-image: url(../images/!-24-orange.png);
+	border-color: #ff9245;
+	color: #be342a;
+}
+
 /* @group Core Layout */
 
 .wr, .wr-c { margin: 0 auto; }

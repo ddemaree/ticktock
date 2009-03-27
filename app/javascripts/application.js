@@ -134,3 +134,42 @@ var FrameMaker = {
 	}
 }
 
+var SelectionManager = {
+	selectedRows: [],
+	update:function(){
+		$$('.event').invoke('removeClassName', 'selected')
+		
+		this.selectedRows = 
+			$$('.checkbox input').select(function(cb){
+				return cb.checked
+			}).collect(function(cb){
+				cb.up('.event').addClassName('selected')
+				return cb.value
+			})
+		
+		console.log(this.selectedRows)
+	},
+	onRowClick: function(e){
+		elem    = e.findElement()
+		checker = this.down('.checkbox input')
+		
+		try {
+			if(elem.href){
+				console.log("Is link")
+				return false
+			}
+			
+			if(e.shiftKey){
+				console.log("SHIFT CLICK")
+			}
+			
+			checker.checked = !checker.checked
+			SelectionManager.update()
+			e.stop()
+		}
+		catch(e){
+			console.log("CLICKED ROW via " + elem)
+			e.stop()
+		}
+	}
+}

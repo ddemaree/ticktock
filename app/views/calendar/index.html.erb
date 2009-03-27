@@ -49,17 +49,3 @@
 <div class="pagination">
 	<%= pagination_links %>
 </div>
-
-<script type="text/javascript" charset="utf-8">
-	new HoverObserver('ws-main')
-	Ticktock.zebraStripe("#ws-main .dated-events")
-	
-	Event.observe(window, 'load', function(){
-		$$('.event').each(function(row){
-			wrapper = new Element('div', {className:'ln'})
-			wrapper.update(row.innerHTML)
-			wrapper.insert({top:'<span class="trigger hover_target"> </span>'})
-			row.update(wrapper)
-		})
-	})
-</script>

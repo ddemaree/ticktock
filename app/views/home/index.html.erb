@@ -3,12 +3,15 @@
 	<h1>Welcome back!</h1>
 </div>
 
+<%= flash_message %>
+
 <div class="ws-frame">
 	<div class="ws-main">
-		<% form_for @event, :html => {:class => "bd"} do |f| %>
+		<%# form_for @event, :html => {:class => "bd"} do |f| %>
+		<% form_tag "/messages", :class => 'bd', :id => "new_event" do %>
 			<div class="event_body">
-				<h4><%= f.label :body, "Add an entry to your diary" %></h4>
-				<p><%= f.text_area :body, :cols => 60, :rows => 5, :class => 'f-width' %></p>
+				<h4><label for="event_body">Add an entry to your diary</label></h4>
+				<p><textarea name="message" id="event_body" class="event_body f-width" rows="5" cols="60"></textarea></p>
 			</div>
 
 			<a href="#instructions" class="quickbox">How do I&hellip;</a>

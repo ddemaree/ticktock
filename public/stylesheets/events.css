@@ -7,35 +7,162 @@ ul.events {
 ul.events li.event {
 	background: #f5f5f5;
 	overflow: auto;
-	padding: 10px;
-	margin-bottom: 4px;
+	padding: 9px;
+	margin-bottom: 3px;
+	border: 1px solid #e5e5e5;
+	border-bottom-color: #ccc;
+	border-right-color: #ccc;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	position: relative;
+}
+
+ul.events li.event.selected {
+	background: rgb(251,238,153);
+}
+
+ul.events li.event.hover {
+	background: #ececec;
+}
+
+ul.events li.event.editing {
+	background: #def;
+}
+
+ul.events li.event .catcher {
+	background: transparent;
+	height: 38px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+
+ul.events li.event a {
+	position: relative;
+	z-index: 3;
+}
+
+
+ul.events li.event form,
+ul.events li.event .date,
+ul.events .duration span {
+	display: none;
+}
+
+ul.events li.event.editing .body,
+ul.events li.event.editing .duration,
+ul.events li.event.editing .checkbox {
+	display: none;
+}
+
+ul.events li.event.editing form {
+	display: block;
+	margin-left: 64px;
+}
+
+ul.events li.event.editing .save {
+	padding: 6px 0 0;
+}
+
+ul.events li.event textarea {
+	height: 100px;
+	width: 90%;
+	max-width: 540px;
+	min-width: 400px;
+}
+
+ul.events li.event .delete {
+	position: absolute;
+	right: 5px;
+	top: 20px;
+	white-space: nowrap;
+}
+
+ul.events li.event .body {
+	line-height: 17px;
+}
+
+ul.events li.event .tag {
+	color: inherit;
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+
+ul.events li.event .tag:hover {
+	background: #c00;
+	color: #fff;
+	border: 0;
+}
+
+ul.events li.event .event_subject a {
+	font-size: 13px;
+	font-weight: bold;
+	color: #999;
+	padding-right: 2px;
+	text-decoration: none;
+}
+
+ul.events li.event .event_subject a:hover {
+	background: #000;
+	color: #fff;
+}
+
+/* Oh yes, I have plans for this */
+ul.events .checkbox {
+	float: left;
+	padding-right: 10px;
+	display: none;
 }
 
 ul.events .body {
-	margin-right: 130px;
-	font-size: 15px;
-	line-height: 19px;
 	max-width: 540px;
+	margin-left: 64px;
+	margin-right: 60px;
 }
 
-ul.events .meta {
+ul.events .actions {
 	float: right;
-	width: 110px;
+}
+
+ul.events .duration {
+	float: left;
+	padding-right: 10px;
+	width: 54px;
 	text-align: right;
-}
-
-ul.events .meta .actions {
-	padding-top: 5px;
-}
-
-ul.events .date {
-	font-size: 75%;
-	color: #999;
 }
 
 ul.events .duration {
 	font-weight: bold;
 }
+
+
+
+ul.events a.edit,
+ul.events a.delete {
+	float: right;
+	background: url(../images/edit-silver-mini.gif) no-repeat center center;
+	width: 16px;
+	height: 16px;
+	outline: none;
+	text-indent: -9999px;
+}
+
+ul.events .hover a.edit {
+	display: block;
+}
+
+ul.events a.delete {
+	background-image: url(../images/black/trash.gif);
+}
+
+ul.events .editing a.edit {
+	background-image: url(../images/black/edit.gif);
+	display: block;
+}
+
 
 hr.date-separator {
 	border: 1px solid #d4d4d4;
@@ -58,6 +185,7 @@ hr.date-separator {
 .dated-events .date-header {
 	font-size: 15px;
 	padding: 5px 10px;
+	text-align: ;
 }
 
 .pagination {

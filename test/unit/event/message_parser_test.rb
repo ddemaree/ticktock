@@ -14,6 +14,25 @@ class Event::MessageParserTest < ActiveSupport::TestCase
     end
   end
   
+  context "Messages containing action" do
+    setup do
+      @message = "start @GWOD Something #neat 0:15"
+      @params  = Event::MessageParser.parse(:body => @message)
+    end
+    
+    should "extract action" do
+      assert_equal "start", @params[:action]
+    end
+    
+    should "preserve message" do
+      assert_equal "Something #neat", @params[:body]
+    end
+    
+    should "extract duration" do
+      assert_equal 15.minutes, @params[:duration]
+    end
+  end
+  
   context "Messages containing tags" do
     setup do
       @message = "Hello world #taggable #shizzle #shizzle"

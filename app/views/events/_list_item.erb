@@ -1,5 +1,7 @@
-<% content_tag_for :li, event, :class => "hover_container" do %>
-
+<% content_tag_for :li, event, :class => "hover_container hover_target" do %>
+<div class="checkbox">
+	<%= check_box_tag "events[]", event.id %>
+</div>
 <div class="meta">
 	<div class="duration">
 		<% if event.duration.to_i > 0 %>
@@ -10,7 +12,6 @@
 		<% end %>
 	</div>
 	<div class="actions hover_target">
-		<%= link_to "Delete", event, :method => :delete, :class => "delete" %>
 		<%= link_to "Edit", [:edit, event], :class => "edit" %>
 	</div>
 </div>
@@ -23,6 +24,18 @@
 	<span class="date">
 		on <%= event.date %>
 	</span>
+</div>
+
+<div id="quick_editor_for_<%= dom_id(event) %>" class="inline-event-editor">
+<% form_for event do |f| %>
+<%= f.text_area :quick_body, :rows => 1, :cols => 60 %>
+<p class="save">
+	<button type="submit">Save changes</button> or <a href="#" class="cancel">cancel</a>
+</p>
+<p class="delete">
+	<%= link_to "Delete this entry", event, :method => :delete, :class => "delete" %>
+</p>
+<% end %>
 </div>
 
 

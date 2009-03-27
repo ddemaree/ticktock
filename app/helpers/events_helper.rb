@@ -13,11 +13,14 @@ module EventsHelper
   end
   
   def event_message(message)
-    message.gsub!(/\#(?:(\w+))\s*/) do |match|
+    output = ""
+    output << message
+    
+    output.gsub!(/\#(?:(\w+))\s*/) do |match|
       link_to_tag($1) + " "
     end
     
-    message.strip
+    output.strip
   end
   
   def link_to_tag(tag_name)

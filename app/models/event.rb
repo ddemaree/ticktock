@@ -31,7 +31,7 @@ class Event < ActiveRecord::Base
   belongs_to :subject, :class_name => "Trackable"
   belongs_to :user
   belongs_to :created_by, :class_name => "User"
-  has_many   :punches, :dependent => :destroy
+  #has_many   :punches, :dependent => :destroy
   
   # #   C A L L B A C K S   # #
   before_validation_on_create :set_date_from_start_if_blank
@@ -73,36 +73,6 @@ class Event < ActiveRecord::Base
   def permalink
     "/calendar/#{date.year}/w/#{date.cweek}#event_#{id}"
   end
-  
-  
-  # OPTIMIZE: Do we still need these methods? I don't think we do.
-  def duration_in_hours(options={})
-    return nil if duration.nil?
-    
-    options.reverse_merge!({
-      :precision => 2,
-      :raw => nil,
-      :nearest => (class_options[:hours_to_nearest])
-    })
-    
-    hours = (duration.to_f / 3600.0)
-    return hours if options[:raw]
-    
-    if nearest = options[:nearest]
-      base_hours = (hours - (hours % nearest))
-      base_hours += nearest if ((hours % nearest) > (nearest / 2))
-      return base_hours
-    end
-    
-    precision = options[:precision]
-    (Float(hours) * (10 ** precision)).round.to_f / 10 ** precision
-  end
-  alias_method :hours, :duration_in_hours
-  
-  def duration_in_hours=(hours)
-    self.duration = hours.to_f.hours.to_i
-  end
-  alias_method :hours=, :duration_in_hours=
   
   def duration_as_string
     Ticktock::Durations.duration_to_string(duration)
@@ -217,17 +187,12 @@ class Event < ActiveRecord::Base
 protected
 
   def set_date_from_start_if_blank
-    self.date ||= self.start.try(:to_date) || Date.today
+    self.date ||= self.start.try(:to_date) || Time.zone.now.to_date
   end
   
   def set_duration_if_available
-    if self.punches.count > 0
-      logger.debug("Setting event duration from punches")
-      self.duration = self.punches.sum(:duration)
-    else
-      return if (start.blank? or stop.blank?)
-      self.duration = (start - stop).abs.to_i
-    end
+    return if (start.blank? or stop.blank?)
+    self.duration = (start - stop).abs.to_i
   end
   
   def set_kind_if_blank

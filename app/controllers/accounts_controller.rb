@@ -39,6 +39,7 @@ protected
     @account = Account.new(params[:account])
     @user    = @account.users.build(params[:user])
     @user.account = @account
+    @user.account_owner = true
   end
   
   def choose_layout

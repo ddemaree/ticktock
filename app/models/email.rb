@@ -27,7 +27,8 @@ class Email < ActiveRecord::Base
   def accept!
     Event.transaction do
       self.update_attributes!(:accepted => true)
-      self.to_event!
+      #self.to_event!
+      Ticktock(self.body)
     end
   end
   

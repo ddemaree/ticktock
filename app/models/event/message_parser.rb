@@ -8,13 +8,24 @@ class Event::MessageParser
       :tags => Array(params[:tags]),
       :subject => nil,
       :user_name => nil,
-      :date => nil
+      :date => nil,
+      :action => 'create'
     })
     
     returning(params) do |output|
       output[:source] = params[:body]
       
       return params if params[:body].nil?
+      
+      params[:body].sub!(/^(\w+)\b/) do |match|
+        case match
+          when 'start', 'stop', 'pause'
+            params[:action] = $1
+            ""
+          else
+            match
+        end
+      end
       
       # Unquoted tags without white space
       params[:body].scan(/\#(?:(\w+))\s*/) do |match|

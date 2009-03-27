@@ -101,6 +101,7 @@ protected
     end
     
     @current_account = Account.find_by_domain!(current_subdomain)
+    Ticktock.account = @current_account
     
     Time.zone = @current_account.timezone
   rescue ActiveRecord::RecordNotFound => @e
@@ -109,7 +110,7 @@ protected
   
   def set_current_user
     return unless logged_in?
-    UserAssignmentObserver.current_user = current_user
+    Ticktock.user = current_user
     
     session[:events_view] = {
       :controller => 'calendar'

@@ -31,3 +31,5 @@ config.gem 'thoughtbot-shoulda', :lib => 'shoulda', :source => 'http://gems.gith
 config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl', :source => 'http://gems.github.com', :version => "~>1.2.0"
 
 config.gem 'faker', :version => "~>0.3.1"
+
+Ticktock.beta = false

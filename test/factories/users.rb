@@ -2,7 +2,7 @@ Factory.define :account do |a|
   a.sequence(:domain) { |x| "test#{x}"  }
   a.name     "Test Account"
   a.timezone "Central Time (US & Canada)"
-  a.invite_code "BLAHBLAH"
+  a.invite_code "TESTMENOW"
 end
 
 Factory.sequence :login do |n|
