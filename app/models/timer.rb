@@ -1,19 +1,35 @@
 class Timer < ActiveRecord::Base
   States = %w(active paused completed)
   
-  include Ticktock::Subjects
+  # #   S C O P E S   # #
+  default_scope :order => "status ASC"
+  named_scope   :open, :conditions => "status < 2"
   
+  States.each_with_index do |state, x|
+    named_scope state.to_sym, :conditions => "status = #{x}"
+  end
+  
+  # #  A S S O C I A T I O N S  # #
+  include Ticktock::Subjects
+  belongs_to :event
   belongs_to :account
   belongs_to :user
   belongs_to :created_by, :class_name => "User"
+  has_many   :punches, :dependent => :destroy
   
+  # #   C A L L B A C K S   # #
   before_save :handle_state_change
   
+  # #   S T A T E S   # #
   include AASM
   aasm_initial_state :active
   aasm_state         :active
   aasm_state         :paused
   aasm_state         :completed
+  
+  def self.current
+    active.first
+  end
   
   def state
     States[(self.status ||= 0)]
@@ -28,8 +44,61 @@ class Timer < ActiveRecord::Base
       end
   end
   
+  def finish
+    self.state = 'completed'
+    self.stop  = Time.now
+  end
+
+  def finish!
+    self.class.transaction do
+      self.finish
+      self.create_event!
+      save!
+    end
+  end
+  
+  def sleep
+    self.state = 'paused'
+  end
+  
+  def sleep!
+    self.sleep && self.save!
+  end
+  
+  def wake
+    self.state   = 'active'
+    self.start ||= Time.now
+  end
+
+  def wake!
+    self.class.transaction do
+      self.wake
+      self.class.active.each do |timer|
+        timer.sleep!
+      end
+      
+      self.save!
+    end
+  end
+  
   alias_method :aasm_state, :state
   alias_method :aasm_state=, :state=
+  
+  def duration
+    self.punches.sum(:duration)
+  end
+  
+  def elapsed
+    if self.active?
+      duration + (self.state_changed_at - Time.now).abs
+    else
+      duration
+    end
+  end
+  
+  def last_state_change_at
+    @last_state_change_at ||= (self.state_changed_at || self.start)
+  end
   
 protected
 
@@ -44,10 +113,10 @@ protected
     @last_state_change_at = (self.state_changed_at || self.start)
     self.state_changed_at = Time.zone.now
     
-    old_state, new_state = self.state_change
+    old_state, new_state = self.status_change
     logger.debug("State has changed from #{old_state} to #{new_state}")
     
-    if self.state_was == 0
+    if self.status_was == 0
       punch_duration = (@last_state_change_at - self.state_changed_at).abs
     else
       punch_duration = 0
@@ -69,6 +138,21 @@ protected
     })
     
     @last_state_change_at = nil
+  end
+  
+  def create_event!
+    @event = self.account.events.build
+    @event.attributes = {
+      :user       => self.user,
+      :created_by => self.created_by,
+      :body       => self.body,
+      :subject    => self.subject,
+      :duration   => self.duration,
+      :date       => self.start.to_date
+    }
+    
+    @event.save!
+    self.event = @event
   end
   
 end

@@ -10,8 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :event_imports, :member => {:mapping => :get}, :except => [:index, :show, :edit]
   
-  map.connect '/events/add_multiple', :controller => 'events', :action => 'add_multiple'
-  map.resources :events, :users
+  map.resources :users
   
   map.resources :trackables, :has_many => [:events, :duplicates]
   
@@ -24,15 +23,22 @@ ActionController::Routing::Routes.draw do |map|
     calendar.calendar_day   '/calendar/:year/:month/:day', :year => /\d{4}/, :month => /\d+/, :day => /\d+/
   end
   
+  map.with_options :controller => 'timers' do |timers|
+    timers.resources :timers, :member => {
+            :sleep => :post, :wake => :post, :finish => :post}
+    
+    timers.start '/start', :action => 'start', 
+                    :conditions => {:method => :post}                        
+    timers.stop  '/stop',  :action => 'stop', 
+                    :conditions => {:method => :post}             
+    timers.stop  '/pause', :action => 'pause', 
+                    :conditions => {:method => :post}
+  end
   
   map.with_options :controller => 'events' do |events|
+    events.resources :events
     events.connect '/:year/w/:week/events', :action => 'index'
     events.connect '/:year/w/:week/events.:format', :action => 'index'
-    
-    events.start '/start', :action => 'start', 
-                    :conditions => {:method => :post}                        
-    events.stop  '/stop',  :action => 'stop', 
-                    :conditions => {:method => :post}
   end
   
   map.namespace :account do |account|

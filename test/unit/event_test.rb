@@ -24,6 +24,7 @@ class EventTest < ActiveSupport::TestCase
   context "A new Event instance" do
     should_belong_to :account
     should_belong_to :user, :created_by
+    should_have_one  :timer
     should_validate_presence_of :body, :account
     
     should "require stop to be later than start" do
@@ -50,16 +51,6 @@ class EventTest < ActiveSupport::TestCase
       assert_equal 3.hours, event.duration
     end
     
-    should "be active if start is blank but stop is not" do
-      event = Factory(:timed_event, :stop => nil)
-      assert event.active?
-    end
-    
-    should "be completed if both timestamps are not blank" do
-      event = Factory(:timed_event)
-      assert event.completed?
-    end
-    
     should "have #kind set to event" do
       event = Factory(:event)
       assert_equal "event", event.kind
@@ -80,27 +71,6 @@ class EventTest < ActiveSupport::TestCase
       assert_equal "1bcaf55e80d0c3cd58a3c8c02571ecea78a9d9ea", event.import_token
     end
     
-  end
-  
-  # TODO: Should maybe expose some of these features maybe
-  context "An extant Event instance" do
-    context "that is active" do
-      setup do
-        @active_event = Factory(:timed_event, :stop => nil)
-      end
-    
-      should "complete when stop time is set" do
-        @active_event.stop = @active_event.start + 4.hours
-        assert @active_event.save
-        assert @active_event.completed?
-      end
-      
-      should "set stop time on #finish!" do
-        @active_event.finish!
-        assert_not_nil @active_event.stop
-        assert @active_event.completed?
-      end
-    end
   end
   
   context "Event message parser" do
@@ -151,15 +121,21 @@ class EventTest < ActiveSupport::TestCase
   
   context "Event subject" do
     setup do
-      @account = accounts(:test_account)
-      @user    = users(:quentin)
-      @event   = Factory.build(:event, :user => nil, :account => @account)
+      Ticktock.account = @account = accounts(:test_account)
+      Ticktock.user    = @user    = users(:quentin)
+      
+      @event = Factory.build(:event, :user => nil)
     end
     
     should "be settable via text" do
       @event.subject = "Yoga"
       assert_not_nil @event.subject
       assert @event.subject.is_a?(Trackable)
+    end
+    
+    should "be settable via attribute in combo with body" do
+      @event = Factory.build(:event, :subject => "Yoga", :account => @account)
+      assert_not_nil @event.subject
     end
   end
   
@@ -260,7 +236,12 @@ class EventTest < ActiveSupport::TestCase
         @account = @subject.account
         @event = Factory(:event, :account => @account,
                                  :subject => @subject,
-                                 :duration => 2.hours)
+                                 :duration => 2.hours,
+                                 :body => "@fhqwhgads 2:00 Awesomeness")
+      end
+      
+      should "have a subject" do
+        assert_not_nil @event.subject, @event.parsed_params.inspect
       end
     
       should "include subject" do

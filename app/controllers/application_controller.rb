@@ -50,6 +50,15 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :current_events_path, :current_events_path_for
+  
+  def redirect_to_param_or_default(default=root_path)
+    redirect_to(params[:return] || params[:return_to] || default)
+  end
+  
+  def current_timer
+    @current_timer ||= current_account.timers.current
+  end
+  helper_method :current_timer
 
 protected
 
@@ -116,10 +125,5 @@ protected
       :controller => 'calendar'
     }
   end
-  
-  def current_event
-    @current_event ||= current_account.events.active.first
-  end 
-  helper_method :current_event
   
 end

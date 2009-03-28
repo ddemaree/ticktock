@@ -6,7 +6,6 @@ class Event::MessageParser
     params.reverse_merge!({
       :body => "",
       :tags => Array(params[:tags]),
-      :subject => nil,
       :user_name => nil,
       :date => nil,
       :action => 'create'

@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
     :hours_to_nearest => 0.25
   }
   
-  include Event::Statefulness
+  #include Event::Statefulness
   include Event::Taggable
   include Event::Importing
   include Event::Filtering
@@ -31,7 +31,7 @@ class Event < ActiveRecord::Base
   belongs_to :account
   belongs_to :user
   belongs_to :created_by, :class_name => "User"
-  #has_many   :punches, :dependent => :destroy
+  has_one    :timer, :dependent => :destroy
   
   # #   C A L L B A C K S   # #
   before_validation_on_create :set_date_from_start_if_blank
@@ -82,14 +82,6 @@ class Event < ActiveRecord::Base
     self.duration = time
   end
   
-  def duration
-    if active? && !read_attribute(:duration)
-      Time.now - (self.start|| 0)
-    else
-      read_attribute(:duration)
-    end
-  end
-  
   def duration=(int_or_string)
     return @duration_set_via_body if @duration_set_via_body
     
@@ -106,34 +98,41 @@ class Event < ActiveRecord::Base
     write_attribute(:date, date_or_string)
   end
   
+  attr_reader :parsed_params
   def body=(message)
-    params = MessageParser.parse(:body => message)
-    logger.debug("\n\n#{params.inspect}\n\n")
+    @parsed_params = MessageParser.parse(:body => message)
+    logger.debug("\n\n#{@parsed_params.inspect}\n\n")
     
-    self.tags = params[:tags] #if self.tags.empty?
+    self.tags = @parsed_params[:tags] #if self.tags.empty?
     
-    if self.new_record?
-      self.subject ||= params[:subject]
-    elsif params[:subject]
-      self.subject = params[:subject]
-    elsif self.subject && (!params[:subject] || params[:subject].blank?)
-      self.subject = nil
+    # Subject has been changed this session; if this has happened prior to
+    # this setter being called, that means the user has set the subject
+    # separately from the body so that setting should be honored.
+    # Using an ivar because this may have happened for a new record, therefore
+    # self.subject_id_changed? would not return true
+    unless @subject_changed
+      if self.subject && (!@parsed_params[:subject] || @parsed_params[:subject].blank?)
+        logger.debug("Nullifying #{self.subject.inspect}")
+        self.subject = nil
+      else
+        self.subject = @parsed_params[:subject]
+      end
     end
     
-    if params[:duration]
-      self.duration  = params[:duration]
-      @duration_set_via_body = params[:duration]
+    if @parsed_params[:duration]
+      self.duration  = @parsed_params[:duration]
+      @duration_set_via_body = @parsed_params[:duration]
     end
     
-    if params[:date]
-      self.date = params[:date]
-      @date_set_via_body = params[:date]
+    if @parsed_params[:date]
+      self.date = @parsed_params[:date]
+      @date_set_via_body = @parsed_params[:date]
     end
     
       #self.duration.blank?
-    write_attribute :body, params[:body]
+    write_attribute :body, @parsed_params[:body]
     
-    params[:body]
+    @parsed_params[:body]
   end
   
   def quick_body
