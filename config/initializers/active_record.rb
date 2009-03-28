@@ -4,7 +4,6 @@ ActionView::Base.field_error_proc = lambda { |html, instance| html }
 
 # Serialization defaults
 class ActiveRecord::Base
-  
   class << self
     def serialization_defaults
       {}
@@ -30,5 +29,16 @@ class ActiveRecord::Base
   def to_xml(options={})
     options.reverse_merge!(serialization_defaults)
     super(options)
+  end
+end
+
+module ActiveRecord
+  class RecordInvalid
+    def to_json(options={})
+      {
+        :record => @record,
+        :error  => self.to_s
+      }.to_json
+    end
   end
 end

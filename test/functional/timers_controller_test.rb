@@ -67,6 +67,15 @@ class TimersControllerTest < ActionController::TestCase
         assert_equal assigns(:timer), @controller.current_timer
       end
     end
+    
+    # context "in JSON format" do
+    #   setup { 
+    #     #@request.headers["Accept"] = "application/x-json"
+    #     post :create, {:timer => {:body => "Hello world"}}, :format => "json"
+    #   }
+    #   
+    #   should_respond_with :success
+    # end
   end
   
   context "POST to :sleep" do

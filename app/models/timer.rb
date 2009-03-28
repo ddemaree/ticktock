@@ -3,9 +3,11 @@ class Timer < ActiveRecord::Base
 
   serialize_with({
     :include => {:user => User.serialization_defaults},
-    :methods => [:elapsed, :state, :last_state_change_at],
+    :methods => [:elapsed, :state, :last_state_change_at, :errors],
     :only    => [:id, :body, :status, :start, :stop]
   })
+  
+  validates_presence_of :body
   
   # #   S C O P E S   # #
   default_scope :order => "status ASC"
@@ -77,10 +79,13 @@ class Timer < ActiveRecord::Base
   end
 
   def wake!
+    
     self.class.transaction do
       self.wake
+      
       self.class.active.each do |timer|
-        timer.sleep!
+        logger.info(timer.inspect)
+        timer.sleep! unless timer.new_record?
       end
       
       self.save!

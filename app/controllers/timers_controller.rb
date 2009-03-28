@@ -1,21 +1,22 @@
 class TimersController < ApplicationController
+  skip_before_filter :verify_authenticity_token
 
   class AlreadyHasActiveEvent < Exception; end
   class NoActiveEvent < Exception; end
 
-  rescue_from AlreadyHasActiveEvent, :with => :respond_on_extant_event
-  rescue_from NoActiveEvent,         :with => :respond_on_no_active_event
+  rescue_from ActiveRecord::RecordInvalid, :with => :respond_on_invalid_timer
 
   def create
     @timer = current_account.timers.build(params[:timer])
+    @timer.body = params[:timer][:body]
     @timer.wake!
-    redirect_to_param_or_default
+    respond_on_success
   end
   
   def wake
     @timer = current_account.timers.paused.find(params[:id])
     @timer.wake!
-    redirect_to_param_or_default
+    respond_on_success
   end
   
   def sleep
@@ -23,7 +24,7 @@ class TimersController < ApplicationController
              current_timer
     
     @timer.sleep! if @timer
-    redirect_to_param_or_default
+    respond_on_success
   end
   
   def finish
@@ -31,7 +32,7 @@ class TimersController < ApplicationController
              current_timer
     
     @timer.finish! if @timer
-    redirect_to_param_or_default
+    respond_on_success
   end
   
   def destroy
@@ -39,10 +40,25 @@ class TimersController < ApplicationController
              current_timer
   
     @timer.destroy
-    redirect_to_param_or_default
+    respond_on_success
   end
   
 protected
+
+  def respond_on_success(timer=@timer)
+    respond_to do |format|
+      format.html { redirect_to_param_or_default }
+      format.json { render :json => timer.to_json }
+      format.xml  { render :xml  => timer.to_xml }
+    end
+  end
+  
+  def respond_on_invalid_timer(exception)
+    respond_to do |format|
+      format.json { render :json => exception, :status => :unprocessable_entity }
+      format.xml  { render :xml  => exception, :status => :unprocessable_entity }
+    end
+  end
 
   def respond_on_extant_event
     respond_to do |format|
