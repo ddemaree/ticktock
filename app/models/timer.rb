@@ -1,5 +1,11 @@
 class Timer < ActiveRecord::Base
   States = %w(active paused completed)
+
+  serialize_with({
+    :include => {:user => User.serialization_defaults},
+    :methods => [:elapsed, :state, :last_state_change_at],
+    :only    => [:id, :body, :status, :start, :stop]
+  })
   
   # #   S C O P E S   # #
   default_scope :order => "status ASC"
@@ -85,20 +91,41 @@ class Timer < ActiveRecord::Base
   alias_method :aasm_state=, :state=
   
   def duration
-    self.punches.sum(:duration)
+    self.punches.sum(:duration).to_i
   end
   
   def elapsed
     if self.active?
-      duration + (self.state_changed_at - Time.now).abs
+      (duration + (self.last_state_change_at - Time.now).abs).to_i
     else
-      duration
+      duration.to_i
     end
   end
   
   def last_state_change_at
     @last_state_change_at ||= (self.state_changed_at || self.start)
   end
+  
+  # cattr_accessor :serialization_defaults
+  #   @@serialization_defaults = {
+  #     :include => {:user => User.serialization_defaults},
+  #     :methods => [:elapsed, :state, :last_state_change_at],
+  #     :only    => [:id, :body, :status, :start, :stop]
+  #   }
+  #   
+  #   def serialization_defaults
+  #     self.class.serialization_defaults
+  #   end
+  #   
+  #   def to_json(options={})
+  #     options.reverse_merge!(serialization_defaults)
+  #     super(options)
+  #   end
+  #   
+  #   def to_xml(options={})
+  #     options.reverse_merge!(serialization_defaults)
+  #     super(options)
+  #   end
   
 protected
 

@@ -5,6 +5,12 @@ class User < ActiveRecord::Base
   include Authentication::ByPassword
   include Authentication::ByCookieToken
   
+  serialize_with :only => [:id, :login, :email, :name, :account_owner]
+  
+  # def self.serialization_defaults
+  #   {:only => [:id, :login, :email, :name, :account_owner]}
+  # end
+  
   belongs_to :account
   validates_presence_of :account_id, :unless => :account_is_new_record?
 

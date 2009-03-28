@@ -27,12 +27,12 @@ ActionController::Routing::Routes.draw do |map|
     timers.resources :timers, :member => {
             :sleep => :post, :wake => :post, :finish => :post}
     
-    timers.start '/start', :action => 'start', 
-                    :conditions => {:method => :post}                        
-    timers.stop  '/stop',  :action => 'stop', 
-                    :conditions => {:method => :post}             
-    timers.stop  '/pause', :action => 'pause', 
-                    :conditions => {:method => :post}
+    # timers.start '/start', :action => 'start', 
+    #                 :conditions => {:method => :post}                        
+    # timers.stop  '/stop',  :action => 'stop', 
+    #                 :conditions => {:method => :post}             
+    # timers.stop  '/pause', :action => 'pause', 
+    #                 :conditions => {:method => :post}
   end
   
   map.with_options :controller => 'events' do |events|
