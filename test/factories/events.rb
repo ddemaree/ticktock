@@ -1,8 +1,11 @@
 Factory.define :event do |e|
   e.association :account
-  e.association :subject, :factory => :trackable
   e.body  { Faker::Lorem.sentence }
   e.date  { Date.today }
+end
+
+Factory.define :event_with_subject, :parent => :event do |e|
+  e.association :subject, :factory => :trackable
 end
 
 Factory.define :timed_event, :parent => :event do |e|

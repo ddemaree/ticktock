@@ -2,7 +2,7 @@
 
 self_trackable:
   account: test_account
-  name: Practical Creative & Code
+  name: "Practical Creative & Code"
   nickname: PCC
 
 client_trackable:
