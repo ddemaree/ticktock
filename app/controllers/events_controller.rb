@@ -9,12 +9,14 @@ class EventsController < ApplicationController
       :page => params[:page],
       :per_page => params[:per_page],
       :tags => params[:tags],
-      :trackable_id => params[:trackable_id]
+      :trackable_id => params[:trackable_id],
+      :starred => !!params[:starred]
     }
     
     scoped_events = current_account.events.filtered({
       :trackable => params[:trackable_id],
-      :tag => params[:tags]
+      :tag => params[:tags],
+      :starred => !!params[:starred]
     })
     
     @events = scoped_events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])

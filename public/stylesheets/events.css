@@ -1,4 +1,4 @@
-/* @override http://practical.ticktock.local:3000/stylesheets/events.css */
+/* @override http://practical.ticktock.local/stylesheets/events.css */
 
 ul.events {
 	padding: 10px 0;
@@ -139,9 +139,14 @@ ul.events .duration {
 }
 
 
+ul.events .actions a {
+	margin-left: 3px;
+}
+
 
 ul.events a.edit,
-ul.events a.delete {
+ul.events a.delete,
+ul.events a.star {
 	float: right;
 	background: url(../images/edit-silver-mini.gif) no-repeat center center;
 	width: 16px;
@@ -156,6 +161,15 @@ ul.events .hover a.edit {
 
 ul.events a.delete {
 	background-image: url(../images/black/trash.gif);
+}
+
+ul.events a.star {
+	background-image: url(../images/star-sprite.png);
+	background-position: -16px center;
+}
+
+ul.events a.star.starred {
+	background-position: 0 center;
 }
 
 ul.events .editing a.edit {

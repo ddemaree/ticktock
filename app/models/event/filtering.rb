@@ -1,3 +1,5 @@
+require 'keyword_search'
+
 module Event::Filtering
   
   def self.included(base)
@@ -10,17 +12,19 @@ module Event::Filtering
 
   module ClassMethods
     
+    def keywords_to_options(string)
+      Event::Params.from_string(string)
+    end
+    
     def conditions_for_trackable(value)
-      trackable_id =
-        case value
-          when Trackable then value.id
-          else value
-        end
-        
-      {:subject_id => trackable_id}
+      {:subject_id => Event::Params.param_for_trackable(value)}
     end
     
     def options_for_filter(options={})
+      if options.is_a?(String)
+        return {:conditions => Event::Params.from_string(options)}
+      end
+      
       options.symbolize_keys!
       
       filter_keys = %w(tag tags tagged_with subject trackable)

@@ -13,6 +13,7 @@
 		<% end %>
 	</div>
 	<div class="actions hover_target">
+		<%= link_to "#{event.starred ? "Un-star" : "Star"} this entry", event_path(:id => event, :event => {:starred => !event.starred}, :return_to => return_to), :method => :put, :class => "star #{event.starred ? "starred" : "unstarred"}" %>
 		<%= link_to "Edit", [:edit, event], :class => "edit" %>
 	</div>
 </div>

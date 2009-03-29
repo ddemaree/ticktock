@@ -23,6 +23,12 @@ class Event::FilteringTest < ActiveSupport::TestCase
     end
   end
   
+  
+  context "using KeywordSearch" do
+  
+  end
+  
+  
   # Starred is a searchlogic condition, doesn't need special handling
   should "filter by :starred" do
     starred_events = Event.filtered(:starred => true)
