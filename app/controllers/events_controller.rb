@@ -61,7 +61,7 @@ class EventsController < ApplicationController
     # FIXME: current_events_path can't seem to set root as current
     respond_to do |format|
       format.html { 
-        redirect_to(params[:return] == "yes" ? request.referrer : root_path)
+        redirect_to_param_or_default
       }
       format.js   {
         headers["X-JSON"] = @event.to_json
@@ -122,7 +122,7 @@ class EventsController < ApplicationController
     @event.update_attributes!(params[:event])
     
     respond_to do |format|
-      format.html { redirect_to @event.permalink }
+      format.html { redirect_to_param_or_default @event.permalink }
       format.xml  { head :ok }
       format.json { head :ok }
       format.js {

@@ -1,3 +1,4 @@
+<%- return_to ||= nil -%>
 <% content_tag_for :li, event, :class => "hover_container hover_target" do %>
 <div class="checkbox">
 	<%= check_box_tag "events[]", event.id %>
@@ -35,7 +36,12 @@
 <p class="delete">
 	<%= link_to "Delete this entry", event, :method => :delete, :class => "delete" %>
 </p>
-<% end %>
+
+<%- if return_to -%>
+<input type="hidden" name="return_to" value="<%= return_to %>">
+<%- end -%>
+
+<%- end -%>
 </div>
 
 

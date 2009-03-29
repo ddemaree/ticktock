@@ -74,7 +74,7 @@
 		<%- end -%>
 
 		<ul class="events">
-			<%= render :partial => "/events/list_item", :as => :event, :collection => @recents, :locals => {:show_date => true} %>
+			<%= render :partial => "/events/list_item", :as => :event, :collection => @recents, :locals => {:show_date => true, :return_to => request.request_uri} %>
 		</ul>
 
 		</div>
