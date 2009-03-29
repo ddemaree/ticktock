@@ -1,8 +1,13 @@
 class Event::TimeParser
   
   def self.from_string(string)
+    string = string.to_s
+    
     hours, minutes, seconds =    
       case string
+        when /^(\d{4,})$/
+          # Integer longer than 4 digits is seconds
+          [0,0,$1.to_i]
         when /^(\d+)$/
           # Just integer...handle as seconds?
           [$1.to_i, 0, 0]

@@ -37,17 +37,26 @@ class Event::ParamsTest < ActiveSupport::TestCase
   # fields: tagged, date, duration, starred, project, body
   # modifiers: (is), not|is_not, includes, excludes, before|lt, after|gt, on_or_before|lte, on_or_after|gte, has, does_not_have
   
-  
-  
-  # def setup
-  #   @params = {
-  #     :tagged     => ["hello", "world"]
-  #     :date_after => "2009-03-01"
-  #   }
-  # end
-  
-  def test_parse_for_modifiers
-    flunk "Whoa, dude what are you doing here?"
+  def test_handle_gt
+    # Should compile to 'duration > 3600'
+    #operators = %w(has is not before less_than after greater_than on_or_before lte on_or_after gte)
+    
+    params = {
+      :duration_from => "1 hour",
+      :duration_to => 7200,
+      :date_before  => "yesterday",
+      :tagged => "blah",
+      :not_tagged => "yada",
+      :keywords => "blah blah",
+      :not_keywords => "blah yada",
+      :project => "",
+      :created_before => "1 hour ago",
+      :starred => true
+    }
+    
+    o_params = Event::Params.new(params)
+    
+    flunk o_params.conditions.inspect
   end
   
 end

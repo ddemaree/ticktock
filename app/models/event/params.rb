@@ -1,34 +1,120 @@
+require 'chronic'
+
 class Event::Params
-  attr_reader :params, :search_string
+  attr_reader :params, :conditions
   
-  def initialize(params={})
-    @search_string = params.is_a?(String) ? params : params.delete(:search)
+  def initialize(new_params={})
     @params = {}
+    @query_options = {}
     
-    if @search_string
-      @params.merge! klass.from_string(@search_string)
+    @conditions = []
+    
+    new_params.stringify_keys!
+    new_params.each do |k,v|
+      next if v.blank?
+      
+      field = k.gsub(klass.operators_regexp, "")
+      @params[field] ||= {}
+      
+      operator = $1.to_s.gsub(/_$/,"")
+      
+      @params[field][operator] = v
+      
+      @conditions <<
+        case field.to_s
+          when /created|updated/
+            condition_for_timestamp(field,v,operator) 
+          else
+            send("condition_for_#{field}", v, operator) if respond_to?("condition_for_#{field}")
+        end
+      
+      
+      
     end
     
-    klass.from_hash(params).each do |key, value|
-      if @params[key]
-        @params[key] += value
-      end
-    end
+    self
   end
   
   def [](key)
     @params[key]
   end
   
-  def []=(key,value)
-    @params.merge!(klass.from_hash({key => value}))
-  end
+  # def []=(key,value)
+  #   @params.merge!(klass.from_hash({key => value}))
+  # end
   
   def klass
     self.class
   end
   
+  def condition_for_timestamp(field,value,operator="")
+    field = "#{field}_at" unless field =~ /_at$/
+    operator = string_to_comparison_operator(operator)
+    time = Chronic.parse(value)
+  
+    "#{field} #{operator} #{Event.connection.quote time.to_s(:db)}"
+  end
+  
+  def condition_for_duration(value,operator="")
+    numeric_value = Event::TimeParser.from_string(value)
+    operator = string_to_comparison_operator(operator)
+    "duration #{operator} #{numeric_value}"
+  end
+  
+  def condition_for_keywords(value,operator="")
+    kc = []
+    
+    blacklisted_words = ('a'..'z').to_a + ["about", "an", "are", "as", "at", "be", "by", "com", "de", "en", "for", "from", "how", "in", "is", "it", "la", "of", "on", "or", "that", "the", "the", "this", "to", "und", "was", "what", "when", "where", "who", "will", "with", "www"]
+    allowed_characters = 'àáâãäåßéèêëìíîïñòóôõöùúûüýÿ\-_\.@'
+    
+    values = value.to_s.gsub(/,;/, " ").split(/ /).uniq
+    values.delete_if { |word| word.blank? || blacklisted_words.include?(word.downcase) }
+    values.each do |v|
+      kc << "body #{operator == "not" ? "NOT LIKE" : "LIKE"} #{Event.connection.quote("%#{v}%")}"
+    end
+    
+    "(#{kc.join(" AND ")})"
+  end
+  
+  def condition_for_tagged(value,operator="")
+    tc = []
+    Label.parse(value).each do |tag|
+      tc << "tag #{operator == "not" ? "NOT LIKE" : "LIKE"} #{Event.connection.quote("%[#{tag}]%")}"
+    end
+    
+    "(#{tc.join(" AND ")})"
+  end
+  
+  def condition_for_date(value,operator="")
+    date = Chronic.parse(value).to_date
+    operator = string_to_comparison_operator(operator)
+    "date #{operator} #{Event.connection.quote date.to_s(:db)}"
+  end
+  
+  def condition_for_starred(value,operator=nil)
+    "starred = #{Event.connection.quote !!value}"
+  end
+  
+  def string_to_comparison_operator(operator)
+    case operator.to_s
+      when "after", "over" then ">"
+      when "before", "under"   then "<"
+      when "from" then ">="
+      when "to" then "<="
+      when "not" then "!="
+      else "="
+    end
+  end
+  
   class << self
+    
+    def operators
+      %w(from to before after not over under)
+    end
+    
+    def operators_regexp
+      %r{(?:_*(#{operators.collect {|o| "(?:#{o})[_$]*"}.join("|")}))}
+    end
   
     def from_hash(params={})
       conditions = {}
