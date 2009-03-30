@@ -2,9 +2,8 @@ module EventsHelper
   
   def index_description
     returning("") do |output|
-      if params[:trackable_id]
-        @current_project = Trackable.find(params[:trackable_id])
-        output << "#{link_to(@current_project, @current_project)} &mdash; "
+      if current_project
+        output << "#{link_to(current_project, current_project)} &mdash; "
       end
       
       output << "Events"

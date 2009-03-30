@@ -4,21 +4,16 @@ class EventsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, :with => :respond_on_invalid_event
   
   def index
-    session[:events_view] = {
-      :controller => 'events',
-      :page => params[:page],
-      :per_page => params[:per_page],
-      :tags => params[:tags],
-      :trackable_id => params[:trackable_id],
-      :starred => !!params[:starred]
-    }
+    # session[:events_view] = {
+    #   :controller => 'events',
+    #   :page => params[:page],
+    #   :per_page => params[:per_page],
+    #   :tags => params[:tags],
+    #   :trackable_id => params[:trackable_id],
+    #   :starred => !!params[:starred]
+    # }
     
-    scoped_events = current_account.events.filtered({
-      :trackable => params[:trackable_id],
-      :tag => params[:tags],
-      :starred => !!params[:starred]
-    })
-    
+    scoped_events = current_account.events.filtered(event_params)    
     @events = scoped_events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
     
     respond_to do |format|

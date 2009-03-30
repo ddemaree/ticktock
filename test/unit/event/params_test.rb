@@ -1,62 +1,123 @@
 require 'test_helper'
 
-# class Event::Params
-#   
-#   class Modifier
-#     cattr_accessor :modifiers
-#     @@modifiers = []
-#     
-#     attr_reader :name, :aliases
-#     
-#     def initialize(name,*aliases)
-#       @name = name
-#       @aliases = aliases
-#       
-#       self.class.modifiers << self
-#     end
-#   
-#   end
-#   
-# end
-
 class Event::ParamsTest < ActiveSupport::TestCase
   
-  # supported params:
-  # tagged, not_tagged
-  # date, date_before, date_after
-  # duration, duration_gte, duration_lte, duration_lt, duration_gt
-  # is:starred, not:starred
-  # has:project, no:project
-  # has:tags, no:tags
-  # has:duration, no:duration
-  # project:, not_project:
-  # body_includes, body_excludes
-  
-  # modifiers: has, no, is, not, before|lt, after|gt, on_or_before|lte, on_or_after|gte
-  
-  # fields: tagged, date, duration, starred, project, body
-  # modifiers: (is), not|is_not, includes, excludes, before|lt, after|gt, on_or_before|lte, on_or_after|gte, has, does_not_have
-  
-  def test_handle_gt
-    # Should compile to 'duration > 3600'
-    #operators = %w(has is not before less_than after greater_than on_or_before lte on_or_after gte)
+  context "converting params to search string" do
+    setup do
+      @query_params = {
+        :keywords => '"Yada yada" pork',
+        :tagged   => "hello",
+        :project  => "GWOD",
+        :date_after => "yesterday"
+      }
+      
+      @params = Event::Params.new(@query_params)
+    end
     
-    params = {
-      :duration_from => "1 hour",
-      :duration_to => 7200,
-      :date_before  => "yesterday",
-      :tagged => "blah",
-      :not_tagged => "yada",
-      :keywords => "blah blah",
-      :not_keywords => "blah yada",
-      :project => "",
-      :created_before => "1 hour ago",
-      :starred => true
+    should "return in proper format" do
+      assert_equal "\"Yada yada\" pork project:GWOD date_after:yesterday tagged:hello", @params.to_s
+    end
+    
+    # should "be convertable back to params" do
+    #   new_params = Event::Params.from_string(@params.to_s)
+    #   assert_equal @query_params, new_params
+    # end
+  end
+  
+  context "When handling keyword params" do
+    setup {
+      @params = Event::Params.new({ :keywords => "Yada yada" })
     }
     
-    o_params = Event::Params.new(params)
+    should "respond to hash-like [] accessor" do
+      assert_equal @params[:keywords], "Yada yada"
+    end
     
-    flunk o_params.conditions.inspect
+    should "respond to accessor method" do
+      assert_equal @params.keywords, "Yada yada"
+    end
+    
+    should "return conditions" do
+      assert_equal "(events.body LIKE '%Yada%' AND events.body LIKE '%yada%')", @params.to_conditions
+    end
+    
+    context "containing multiple words" do
+      setup { @params = Event::Params.new({ :keywords => '"Yada yada"' }) }
+    
+      should "return conditions" do
+        assert_equal "(events.body LIKE '%Yada yada%')", @params.to_conditions
+      end
+    end
+    
+    context "containing multiple words and single words" do
+      setup { @params = Event::Params.new({ :keywords => '"Yada yada" pork' }) }
+      
+      should "return conditions" do
+        assert_equal "(events.body LIKE '%Yada yada%' AND events.body LIKE '%pork%')", @params.to_conditions
+      end
+    end
+    
+    context "excluding words" do
+      setup { @params = Event::Params.new({ :not_keywords => 'beans' }) }
+      
+      should "return conditions" do
+        assert_equal "(events.body NOT LIKE '%beans%')", @params.to_conditions
+      end
+    end
+    
+    context "excluding some words but including others" do
+      setup { @params = Event::Params.new({ :not_keywords => 'beans', :keywords => 'pork' }) }
+      
+      should "return conditions" do
+        assert_equal "(events.body NOT LIKE '%beans%') AND (events.body LIKE '%pork%')", @params.to_conditions
+      end
+    end
+  end
+  
+  context "params containing :starred" do
+    context "set to numeric value" do
+      setup { @params = Event::Params.new({ :starred => "1" }) }
+
+      should "return conditions where starred is true" do
+        assert_equal "events.starred = 't'", @params.to_conditions
+      end
+
+      should "return conditions where starred is false" do
+        @params.starred = "0"
+        assert_equal "events.starred = 'f'", @params.to_conditions
+      end
+    end
+    
+    context "set to 'true' or 'false'" do
+      setup { @params = Event::Params.new({ :starred => "true" }) }
+      
+      should "return conditions where starred is true" do
+        assert_equal "events.starred = 't'", @params.to_conditions
+      end
+      
+      should "return conditions where starred is false" do
+        @params.starred = "false"
+        assert_equal "events.starred = 'f'", @params.to_conditions
+      end
+    end
+  end
+  
+  context "params containing :not_starred" do
+    setup { @params = Event::Params.new({ :not_starred => "1" }) }
+    
+    should "return conditions where starred is false" do
+      assert_equal "events.starred = 'f'", @params.to_conditions
+    end
+    
+    should "return conditions where starred is true" do
+      @params.not_starred = "0"
+      assert_equal "events.starred = 't'", @params.to_conditions
+    end
+    
+    should "not return duplicate conditions" do
+      @params.starred = "0"
+      assert_equal "events.starred = 'f'", @params.to_conditions
+    end
   end
   
 end

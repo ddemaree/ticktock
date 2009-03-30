@@ -5,6 +5,8 @@
 
 <%= flash_message %>
 
+<%= event_params.to_s %>
+
 <div class="ws-frame">
 	<div class="ws-main">
 		<% form_tag "/messages", :class => 'bd', :id => "new_event" do %>

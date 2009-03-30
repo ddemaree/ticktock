@@ -34,9 +34,9 @@
 </div>
 
 <div class="wr">
+	
 	<div class="wr-c cf">
 		<div id="left-sidebar">
-			
 			<div class="nav">
 				<h2><a href="/">TickTock</a></h2>
 				<ul>
@@ -49,11 +49,17 @@
 					</li> -->
 				</ul>
 			</div>
-			
-			
 		</div>
 
 		<div id="workspace" class="cf">
+			<div id="search">
+				<form action="/events" method="get">
+					<label>Search your log</label>
+					<input type="text" name="search" value="<%= event_params.to_s %>" />
+					<button type="submit">Search</button>
+				</form>
+			</div>
+			
 			<%= yield %>
 		</div>
 	</div>

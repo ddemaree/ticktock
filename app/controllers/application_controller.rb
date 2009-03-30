@@ -59,6 +59,19 @@ class ApplicationController < ActionController::Base
     @current_timer ||= current_account.timers.current
   end
   helper_method :current_timer
+  
+  def event_params
+    params[:tagged] ||= (params[:tag] || params[:tags])
+    @event_params ||= Event::Params.new(params)
+  end
+  helper_method :event_params
+  
+  def current_project
+    @current_project = current_account.trackables.find_by_id(event_params[:project]) ||
+                       current_account.trackables.find_by_nickname(event_params[:project]) ||
+                       current_account.trackables.find_by_name(event_params[:project])
+  end
+  helper_method :current_project
 
 protected
 

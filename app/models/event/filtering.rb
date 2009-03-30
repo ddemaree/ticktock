@@ -6,11 +6,16 @@ module Event::Filtering
     base.send(:extend, ClassMethods)
     
     base.class_eval do
-      named_scope :filtered, lambda { |options| Event.options_for_filter(options) }
+      named_scope :filtered, lambda { |options| Event.filter(options) }
     end
   end
 
   module ClassMethods
+    
+    def filter(options)
+      options = options.is_a?(Event::Params) ? options : Event::Params.new(options)
+      options.to_finder_options
+    end
     
     def keywords_to_options(string)
       Event::Params.from_string(string)
