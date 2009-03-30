@@ -1,7 +1,12 @@
 class Trackable < ActiveRecord::Base
   
+  serialize_with({
+    :only => [:id, :name, :nickname]
+  })
+  
   # #   S C O P E S   # #
   default_scope :order => "name ASC"
+  named_scope :active, :conditions => "state = 'active'"
   
   # #   A S S O C I A T I O N S   # #
   belongs_to :account

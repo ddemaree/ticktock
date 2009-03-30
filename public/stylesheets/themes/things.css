@@ -1,0 +1,35 @@
+/* @override http://practical.ticktock.local/stylesheets/themes/things.css */
+
+
+
+
+
+.wr, .wr-c { margin: 0 auto; }
+.wr   { width: 960px; min-width: 860px; }
+.wr-c { width: auto; margin: 0 20px 0 0; }
+
+body, html {
+	background: #fff url(../../images/sidebar-bg.png) repeat-y -10px 0;
+}
+
+/*body, html {
+	background: #aaaeb8 url(../../images/sidebar-bg.png) repeat-y -20px 0;
+}*/
+
+#header {
+	position: fixed;
+	width: 100%;
+	z-index: 9999;
+}
+
+#left-sidebar {
+	width: 180px;
+	background: #f0f;
+	position: fixed;
+}
+
+#workspace {
+	margin-left: 190px;
+	min-height: 300px;
+	padding-top: 70px;
+}

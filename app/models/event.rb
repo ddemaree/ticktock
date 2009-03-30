@@ -6,6 +6,12 @@ class Event < ActiveRecord::Base
     :hours_to_nearest => 0.25
   }
   
+  serialize_with({
+    :include => {:user => User.serialization_defaults, :subject => Trackable.serialization_defaults},
+    :methods => [:tags, :errors],
+    :only    => [:id, :body, :date, :start, :stop, :duration, :subject_id]
+  })
+  
   #include Event::Statefulness
   include Event::Taggable
   include Event::Importing
