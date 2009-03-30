@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
   
   serialize_with({
     :include => {:user => User.serialization_defaults, :subject => Trackable.serialization_defaults},
-    :methods => [:tags, :errors],
+    :methods => [:tags, :errors, :quick_body],
     :only    => [:id, :body, :date, :start, :stop, :duration, :subject_id]
   })
   

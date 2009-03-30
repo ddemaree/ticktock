@@ -46,7 +46,7 @@ class Event::Params
     params_for_search.except!(:keywords, :starred)
     
     params_for_search.each do |key, value|
-      value = %{"#{value}"} if value =~ / /
+      value = %{\"#{value}\"} if value =~ / /
       search_components << "#{key}:#{value}"
     end
     
@@ -122,9 +122,14 @@ class Event::Params
   
   def condition_for_timestamp(field,value,operator="")
     field = "#{field}_at" unless field =~ /_at$/
-    operator = string_to_comparison_operator(operator)
     time = Chronic.parse(value)
-  
+    
+    if operator == "on"
+      time_range = (time.beginning_of_day..time.end_of_day)
+      return "#{table_name}.#{field} #{time_range.to_s(:db)}"
+    end
+    
+    operator = string_to_comparison_operator(operator)
     "#{table_name}.#{field} #{operator} #{quote time.to_s(:db)}"
   end
   

@@ -27,7 +27,8 @@
 		
 		<div id="search">
 			<form action="/events" method="get">
-				<input type="text" name="search" value="<%= event_params.to_s %>" />
+				<!-- <input type="text" name="search" value="<%= event_params.to_s %>" /> -->
+				<%= text_field_tag "search", event_params.to_s %>
 				<button type="submit">Search my log</button>
 			</form>
 		</div>

@@ -18,10 +18,10 @@ class Event::ParamsTest < ActiveSupport::TestCase
       assert_equal "\"Yada yada\" pork project:GWOD date_after:yesterday tagged:hello", @params.to_s
     end
     
-    # should "be convertable back to params" do
-    #   new_params = Event::Params.from_string(@params.to_s)
-    #   assert_equal @query_params, new_params
-    # end
+    should "return params that include spaces" do
+      @params = Event::Params.new({:date => "March 29"})
+      flunk @params.to_s
+    end
   end
   
   context "When handling keyword params" do
