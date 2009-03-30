@@ -28,6 +28,8 @@ class Event::Params
   end
   
   def to_s
+    return @search_string if @search_string
+    
     params_for_search = @params.dup
     params_for_search.symbolize_keys!
     
