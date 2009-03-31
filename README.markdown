@@ -17,6 +17,10 @@ Ticktock can be accessed through an elegant, powerful browser-based UI, as well 
 
 * TT's JavaScript code is managed using [Sprockets](http://github.com/sstephenson/sprockets), served up using the sprockets-rails plugin. Unless a particular bit of JS code needs to be used on only one/a few screens, it should be placed in the `/app/javascripts` directory and included into `application.js`.
 
+* Layouts are all wrapped in a partial called `chrome` which includes headers and most of the common UI. This allows us to place section-specific CSS/JS includes into the individual layouts (e.g., `events.html.erb`). The chrome partial is in `/app/views/layouts/_chrome.erb`.
+
+* TT uses Shoulda and Factory Girl for its tests. The test suite is a little bit stale (as of 3/31/09) but there's currently roughly 1:1 coverage and I'd like to keep it that way.
+
 
 ## Setting up Ticktock locally ##
 

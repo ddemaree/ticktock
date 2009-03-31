@@ -5,6 +5,9 @@
 	<title><%= page_title %></title>
 	<%= sprockets_include_tag %>
 	<%= stylesheet_link_tag "default2" %>
+	<!--[if IE]>
+	<%= stylesheet_link_tag "extras/exploder7" %>
+	<![endif]-->
 	<%= @content_for_head %>
 	
 	<%# stylesheet_link_tag "themes/things" %>

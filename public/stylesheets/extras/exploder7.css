@@ -1,0 +1,7 @@
+/* I hate IE 7 */
+
+/* Fix for issue where event bodies were scrunching up to the left */
+ul.events .body {
+	min-width: 300px;
+	margin-top: -1.2em;
+}
