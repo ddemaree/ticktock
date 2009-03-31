@@ -4,10 +4,8 @@ set :deploy_to, "/var/www/apps/#{application}"
 
 default_run_options[:pty] = true
 set :scm, "git"
-#set :repository, "git@github.com:ddemaree/ticktock.git"
-#set :scm_passphrase, "tt_red5BULL"
-
-set :repository, "git://localhost/tt_gamma"
+set :repository, "git@github.com:ddemaree/ticktock.git"
+set :scm_passphrase, "tt_red5BULL"
 set :branch, "master"
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
