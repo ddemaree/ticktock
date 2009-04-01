@@ -6,20 +6,10 @@ class MessagesControllerTest < ActionController::TestCase
   should_route :post, "/messages", :action => :create
   should_route :post, "/emails",   :action => :create_from_email
   
-  def setup
-    @account   = accounts(:test_account)
-    @user      = @account.users.first
-    @trackable = @account.trackables.first
-    
-    # All requests are at account domain with logged-in user unless
-    # otherwise specified in the test method
-    @request.host    = "#{@account.domain}.ticktockapp.com"
-    @request.session = {:user_id => @user.id}
-  end
-  
   context "POST to :create" do
     context "with default after action" do
       setup {
+        setup_session
         post :create, :message => "Hello world"
       }
 
@@ -30,6 +20,7 @@ class MessagesControllerTest < ActionController::TestCase
     
     context "with return param" do
       setup {
+        setup_session
         post :create, :message => "Hello world", :return => "/calendar"
       }
       
@@ -63,6 +54,17 @@ class MessagesControllerTest < ActionController::TestCase
   
 protected
 
+  def setup_session
+    @account   = accounts(:test_account)
+    @user      = @account.users.first
+    @trackable = @account.trackables.first
+    
+    # All requests are at account domain with logged-in user unless
+    # otherwise specified in the test method
+    @request.host    = "#{@account.domain}.ticktockapp.com"
+    @request.session = {:user_id => @user.id}
+  end
+
   def email_message
     @email_message ||= File.read("#{RAILS_ROOT}/test/fixtures/email.txt")
   end
@@ -71,8 +73,4 @@ protected
     @bad_msg ||= File.read("#{RAILS_ROOT}/test/fixtures/bad_email.txt")
   end
   
-  # # Replace this with your real tests.
-  #   test "the truth" do
-  #     assert true
-  #   end
 end

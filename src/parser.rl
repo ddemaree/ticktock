@@ -172,12 +172,8 @@ class Ticktock::Parser
 				unless quotes.zero?
 					raise ParseError, "Unclosed quotes"
 				end
-		
-				# Do some very minor normalization #
-				results["body"] = body.strip.gsub(/ +/," ")
-				#results["date"] = Date.today if results["date"] == {}
-				#results["duration"] = nil if results["duration"] == 0
-						
+				
+				results["body"] = body.gsub(/ +/," ")
 				results
 			end
 

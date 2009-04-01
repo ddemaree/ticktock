@@ -44,6 +44,7 @@ class Ticktock
     
     def create(params)
       event = account.events.build
+      
       event.attributes = {
         :body => params[:body],
         :subject => params[:subject],
