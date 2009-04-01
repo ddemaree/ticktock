@@ -51,7 +51,7 @@ class Event::MessageParserTest < ActiveSupport::TestCase
     context "Messages containing trackable" do
       context "using @ syntax" do
         setup do
-          @message = "Hello world @Practical"
+          @message = "@practical Hello world"
           @params  = Event::MessageParser.parse(@message)
         end
         
@@ -59,7 +59,7 @@ class Event::MessageParserTest < ActiveSupport::TestCase
         should_preserve_message_source
   
         should "extract trackable" do
-          assert_equal "Practical", @params[:subject]
+          assert_equal "practical", @params[:subject]
         end
       end
     end
