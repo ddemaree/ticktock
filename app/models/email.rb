@@ -27,9 +27,16 @@ class Email < ActiveRecord::Base
   def accept!
     Event.transaction do
       self.update_attributes!(:accepted => true)
-      #self.to_event!
+      
+      # Set system account/user and pass it to the message handler
+      Ticktock.account = @current_account
+      Ticktock.user    = @current_user
       Ticktock(self.body)
     end
+  end
+  
+  def message_body
+    self.body
   end
   
   def reject!
