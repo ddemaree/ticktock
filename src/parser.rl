@@ -83,6 +83,7 @@ class Ticktock::Parser
 							(date["year"] || Date.today.year).to_i
 
 	  results["date"] = Date.civil(y,m,d)
+		word = ""
 	}
 	
 	datekw = 'd:' | 'date:' ;
@@ -173,7 +174,7 @@ class Ticktock::Parser
 					raise ParseError, "Unclosed quotes"
 				end
 				
-				results["body"] = body.gsub(/ +/," ")
+				results["body"] = body.gsub(/ +/," ").strip
 				results
 			end
 

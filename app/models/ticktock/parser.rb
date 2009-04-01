@@ -18,7 +18,7 @@ class Ticktock::Parser
 		class << self
 
 
-# line 148 "src/parser.rl"
+# line 149 "src/parser.rl"
 
     
 			def _parse(input) #:nodoc:
@@ -451,7 +451,7 @@ end
 self.hello_en_main = 1;
 
 
-# line 153 "src/parser.rl"
+# line 154 "src/parser.rl"
 				p = 0
 				eof = nil
 				word = nil
@@ -477,7 +477,7 @@ begin
 	cs = hello_start
 end
 
-# line 171 "src/parser.rl"
+# line 172 "src/parser.rl"
 				
 # line 483 "app/models/ticktock/parser.rb"
 begin
@@ -658,30 +658,31 @@ when 14 then
 							(date["year"] || Date.today.year).to_i
 
 	  results["date"] = Date.civil(y,m,d)
+		word = ""
 			end
 # line 78 "src/parser.rl"
 when 15 then
-# line 103 "src/parser.rl"
+# line 104 "src/parser.rl"
 		begin
  dur = {} unless dur.is_a?(Hash) 		end
-# line 103 "src/parser.rl"
-when 16 then
 # line 104 "src/parser.rl"
+when 16 then
+# line 105 "src/parser.rl"
 		begin
  dur["h"] = data[tokstart..p-1] 		end
-# line 104 "src/parser.rl"
-when 17 then
 # line 105 "src/parser.rl"
+when 17 then
+# line 106 "src/parser.rl"
 		begin
  dur["m"] = data[tokstart..p-1] 		end
-# line 105 "src/parser.rl"
-when 18 then
 # line 106 "src/parser.rl"
+when 18 then
+# line 107 "src/parser.rl"
 		begin
  dur["s"] = data[tokstart..p-1] 		end
-# line 106 "src/parser.rl"
+# line 107 "src/parser.rl"
 when 19 then
-# line 108 "src/parser.rl"
+# line 109 "src/parser.rl"
 		begin
 
 		begin
@@ -697,13 +698,13 @@ when 19 then
 			results["duration"] = dur.inspect
 		end
 			end
-# line 108 "src/parser.rl"
+# line 109 "src/parser.rl"
 when 20 then
-# line 146 "src/parser.rl"
+# line 147 "src/parser.rl"
 		begin
  raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
-# line 146 "src/parser.rl"
-# line 707 "app/models/ticktock/parser.rb"
+# line 147 "src/parser.rl"
+# line 708 "app/models/ticktock/parser.rb"
 			end # action switch
 		end
 	end
@@ -732,11 +733,11 @@ when 20 then
 		__acts += 1
 		case _hello_actions[__acts - 1]
 when 20 then
-# line 146 "src/parser.rl"
+# line 147 "src/parser.rl"
 		begin
  raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
-# line 146 "src/parser.rl"
-# line 740 "app/models/ticktock/parser.rb"
+# line 147 "src/parser.rl"
+# line 741 "app/models/ticktock/parser.rb"
 		end # eof action switch
 	end
 	if _trigger_goto
@@ -750,12 +751,12 @@ end
 	end
 	end
 
-# line 172 "src/parser.rl"
+# line 173 "src/parser.rl"
 				unless quotes.zero?
 					raise ParseError, "Unclosed quotes"
 				end
-		
-				results["body"] = body.gsub(/ +/," ")
+				
+				results["body"] = body.gsub(/ +/," ").strip
 				results
 			end
 
