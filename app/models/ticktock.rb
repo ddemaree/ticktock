@@ -11,7 +11,7 @@ class Ticktock
     end
     
     def account=(acct)
-      raise ArgumentError, "Must be an Account" unless acct.is_a?(Account)
+      raise ArgumentError, "Must be an Account, was #{acct.class.to_s}" unless acct.is_a?(Account)
       @@current_account = acct
     end
     

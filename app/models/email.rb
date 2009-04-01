@@ -29,8 +29,8 @@ class Email < ActiveRecord::Base
       self.update_attributes!(:accepted => true)
       
       # Set system account/user and pass it to the message handler
-      Ticktock.account = @current_account
-      Ticktock.user    = @current_user
+      Ticktock.account = account
+      Ticktock.user    = user
       Ticktock(self.body)
     end
   end
