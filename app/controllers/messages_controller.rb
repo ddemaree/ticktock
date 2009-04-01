@@ -1,4 +1,6 @@
 class MessagesController < ApplicationController
+  skip_before_filter :login_required, :only => [:create_from_email]
+  skip_before_filter :set_current_account, :only => [:create_from_email]
   
   def create
     @result = Ticktock(params[:message])
