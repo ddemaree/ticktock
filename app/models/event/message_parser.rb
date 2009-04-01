@@ -17,7 +17,8 @@ class Event::MessageParser
 		parser_results["date"] = nil if parser_results["date"] == {}
 		
 		# Combine provided params with the parsed results
-		params.merge!(parser_results)
+		params = parser_results
+    
     params.symbolize_keys!
     params.reverse_merge!({
       :tags => Array(params[:tags]),
