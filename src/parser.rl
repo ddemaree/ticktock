@@ -100,14 +100,13 @@ class Ticktock::Parser
 													
 	datestring = datestring_s | datestring_h ;
 
-	action inittime { results["duration"] ||= {} }
-	action sethours   { results["duration"]["h"] = data[tokstart..p-1] }
-	action setminutes { results["duration"]["m"] = data[tokstart..p-1] }
-	action setseconds { results["duration"]["s"] = data[tokstart..p-1] }
+	action inittime   { dur = {} unless dur.is_a?(Hash) }
+	action sethours   { dur["h"] = data[tokstart..p-1] }
+	action setminutes { dur["m"] = data[tokstart..p-1] }
+	action setseconds { dur["s"] = data[tokstart..p-1] }
 
 	action compiletime {
 		begin
-			dur = results["duration"]
 			h, m, s = (dur["h"]||0).to_i, (dur["m"]||0).to_i, (dur["s"]||0).to_i
 
 			ts = 0
@@ -162,6 +161,8 @@ class Ticktock::Parser
 				quotes = 0
 		
 				date = {}
+				dur = {}
+				
 				dt_comps = []
 		
 				body = ""

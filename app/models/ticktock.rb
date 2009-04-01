@@ -24,6 +24,11 @@ class Ticktock
       @@current_user = u
       UserAssignmentObserver.current_user = u
     end
+    
+    def reset!
+      @@current_user = nil
+      @@current_account = nil
+    end
   
     def beta?
       !!@@beta

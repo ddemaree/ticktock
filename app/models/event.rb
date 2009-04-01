@@ -106,6 +106,8 @@ class Event < ActiveRecord::Base
   
   attr_reader :parsed_params
   def body=(message)
+    return nil if message.nil?
+    
     @parsed_params = MessageParser.parse(:body => message)
     logger.debug("\n\n#{@parsed_params.inspect}\n\n")
     
@@ -130,7 +132,7 @@ class Event < ActiveRecord::Base
       @duration_set_via_body = @parsed_params[:duration]
     end
     
-    if @parsed_params[:date]
+    if @parsed_params[:date] && !@parsed_params[:date].blank?
       self.date = @parsed_params[:date]
       @date_set_via_body = @parsed_params[:date]
     end
@@ -179,7 +181,7 @@ class Event < ActiveRecord::Base
 protected
 
   def set_date_from_start_if_blank
-    self.date ||= self.start.try(:to_date) || Time.zone.now.to_date
+    self.date ||= (self.start.try(:to_date) || Time.zone.now.to_date || Date.today)
   end
   
   def set_duration_if_available
