@@ -40,6 +40,8 @@
 
 <%- if return_to -%>
 <input type="hidden" name="return_to" value="<%= return_to %>">
+<%- else -%>
+<input type="hidden" name="return_to" value="<%= request.request_uri %>">
 <%- end -%>
 
 <%- end -%>
