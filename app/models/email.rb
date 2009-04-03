@@ -31,12 +31,14 @@ class Email < ActiveRecord::Base
       # Set system account/user and pass it to the message handler
       Ticktock.account = account
       Ticktock.user    = user
-      Ticktock(self.body)
+      Ticktock(self.message_body)
     end
   end
   
+  # Returns only first line of body, with extra linebreaks stripped out
+  # so as not to offend Ticktock::Parser._parse 
   def message_body
-    self.body
+    self.body.strip.split($/).first
   end
   
   def reject!

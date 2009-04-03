@@ -45,14 +45,27 @@ class MessagesControllerTest < ActionController::TestCase
     
     context "with bad message" do
       setup {
-        post :create_from_email, :email => bad_email_message
+        post :create_from_email, :email => email_message(:invalid)
       }
       
       should_respond_with 422
     end
+    
+    context "with lots of linebreaks" do
+      setup {
+        post :create_from_email, :email => email_message(:linebreaks)
+      }
+      
+      should_assign_to :message
+      should_respond_with 201
+    end
   end
   
 protected
+
+  def email_message(name=:valid)
+    File.read("#{RAILS_ROOT}/test/fixtures/emails/#{name.to_s}.txt")
+  end
 
   def setup_session
     @account   = accounts(:test_account)
@@ -65,12 +78,8 @@ protected
     @request.session = {:user_id => @user.id}
   end
 
-  def email_message
-    @email_message ||= File.read("#{RAILS_ROOT}/test/fixtures/email.txt")
-  end
-  
   def bad_email_message
-    @bad_msg ||= File.read("#{RAILS_ROOT}/test/fixtures/bad_email.txt")
+    email_message(:invalid)
   end
   
 end
