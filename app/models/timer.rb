@@ -10,7 +10,7 @@ class Timer < ActiveRecord::Base
   validates_presence_of :body
   
   # #   S C O P E S   # #
-  default_scope :order => "status ASC"
+  default_scope :order => "status ASC, start DESC"
   named_scope   :open, :conditions => "status < 2"
   
   States.each_with_index do |state, x|
@@ -79,7 +79,6 @@ class Timer < ActiveRecord::Base
   end
 
   def wake!
-    
     self.class.transaction do
       self.wake
       
@@ -110,27 +109,6 @@ class Timer < ActiveRecord::Base
   def last_state_change_at
     @last_state_change_at ||= (self.state_changed_at || self.start)
   end
-  
-  # cattr_accessor :serialization_defaults
-  #   @@serialization_defaults = {
-  #     :include => {:user => User.serialization_defaults},
-  #     :methods => [:elapsed, :state, :last_state_change_at],
-  #     :only    => [:id, :body, :status, :start, :stop]
-  #   }
-  #   
-  #   def serialization_defaults
-  #     self.class.serialization_defaults
-  #   end
-  #   
-  #   def to_json(options={})
-  #     options.reverse_merge!(serialization_defaults)
-  #     super(options)
-  #   end
-  #   
-  #   def to_xml(options={})
-  #     options.reverse_merge!(serialization_defaults)
-  #     super(options)
-  #   end
   
 protected
 

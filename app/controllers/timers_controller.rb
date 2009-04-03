@@ -6,6 +6,12 @@ class TimersController < ApplicationController
 
   rescue_from ActiveRecord::RecordInvalid, :with => :respond_on_invalid_timer
 
+  def index
+    @timers = current_user.timers.all
+    
+    @paused_timers = current_user.timers.paused
+  end
+
   def create
     @timer = current_account.timers.build(params[:timer])
     @timer.body = params[:timer][:body]
@@ -47,7 +53,7 @@ protected
 
   def respond_on_success(timer=@timer)
     respond_to do |format|
-      format.html { redirect_to_param_or_default }
+      format.html { redirect_to_param_or_default("/timers") }
       format.json { render :json => timer.to_json }
       format.xml  { render :xml  => timer.to_xml }
     end

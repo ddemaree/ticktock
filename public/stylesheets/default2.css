@@ -1,4 +1,7 @@
-/* @override http://practical.ticktock.local:3000/stylesheets/default2.css */
+/* @override 
+	http://practical.ticktock.local:3000/stylesheets/default2.css
+	http://practical.ticktock.local/stylesheets/default2.css
+*/
 
 @import url(lib/reset.css);
 @import url(lib/fonts.css);
@@ -192,3 +195,58 @@ hr {
 	padding: 10px;
 }
 
+
+
+#current_timer .current {
+	background: #def;
+	padding: 10px;
+	position: relative;
+	min-height: 70px;
+}
+
+#current_timer h4 {
+	text-transform: uppercase;
+	font-weight: bold;
+	padding-bottom: 4px;
+}
+
+#current_timer h2 {
+	font-size: 19px;
+	line-height: 24px;
+	margin-right: 200px;
+}
+
+#current_timer .elapsed {
+	font-size: 24px;
+	padding: 8px;
+	background: #000;
+	color: #fff;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+#current_timer .actions {
+	background: #fff;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+#current_timer form,
+#inactive_timers form {
+	display: inline;
+}
+
+#inactive_timers h2 {
+	background: #fff;
+	padding: 10px 10px 4px;
+	text-transform: uppercase;
+	font-weight: bold;
+	border-bottom: 1px solid #d4d4d4;
+}
+
+#inactive_timers .timer {
+	padding: 10px;
+	border-bottom: 1px solid #d4d4d4;
+}
