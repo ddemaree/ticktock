@@ -7,24 +7,27 @@ class EventTest < ActiveSupport::TestCase
     Time.stubs(:now).returns Time.utc(2008,2,15,12,0,0)
   end
   
-  should_have_named_scope :active
-  
-  context "Event import token generator" do
-    should "generate signature from date and body" do
-      today = Date.new(2009,2,15)
-      expected_signature = "Hello world:2009-02-15:::"
-      assert_equal expected_signature, Event.signature("Hello world", today)
+  context "Around midnight UTC" do
+    setup {
+      Time.stubs(:now).returns Time.utc(2008,2,15,0,0,0)
+      Time.zone = "Central Time (US & Canada)"
+    }
+    
+    context "a new Event instance" do
+      setup {
+        @event = Factory(:event, :date => nil, :start => nil, :stop => nil, :duration => nil, :body => "Working on a dream")
+      }
+      
+      should "return date in local time zone" do
+        assert_equal "2008-02-14".to_date, @event.date
+      end
     end
     
-    should "generate token from date and body" do
-      expected_digest = "b03a7a3ddd2d4529995f6cf5ff8ea4d6a3a24b4e"
-    end
   end
   
   context "A new Event instance" do
     should_belong_to :account
-    should_belong_to :user, :created_by
-    should_have_one  :timer
+    should_belong_to :user
     should_validate_presence_of :body, :account
     
     should "require stop to be later than start" do
@@ -32,248 +35,297 @@ class EventTest < ActiveSupport::TestCase
       assert !event.valid?
       assert event.errors.on(:stop)
     end
-
-    should "auto populate date to today" do
-      event = Factory.build(:event, :start => nil, :stop => nil, :date => nil)
-      assert event.valid?
-      assert_equal Date.today, event.date
-    end
-
-    should "auto populate date from start if blank" do
-      event = Factory.build(:timed_event, :date => nil)
-      assert event.valid?
-      assert_equal event.start.to_date, event.date
-    end
-
-    should "populate duration from start and stop" do
-      event = Factory(:timed_event)
-      assert_not_nil event.duration
-      assert_equal 3.hours, event.duration
-    end
     
-    should "have #kind set to event" do
-      event = Factory(:event)
-      assert_equal "event", event.kind
-    end
-    
-    should "provide import signature" do
-      event = Event.new({
-        :body => "Hello world",
-        :date => Date.today
-      })
+    context "with no date/time params" do
+      setup { @event = Factory.build(:event, :start => nil, :stop => nil, :date => nil, :duration => nil) }
       
-      assert_not_nil event.signature
-      assert_equal "Hello world:2008-02-15:::", event.signature
+      should "be considered unsaved" do
+        assert @event.unsaved?, @event.state
+      end
+      
+      context "on save" do
+        setup { assert @event.save, @event.errors.full_messages }
+        
+        should "be considered active" do
+          assert @event.active?, @event.state
+        end
+      
+        should "set start time to now" do
+          assert_not_nil @event.start
+          assert_equal Time.now, @event.start
+        end
+        
+        should "set date to today" do
+          assert_equal Date.today, @event.date
+        end
+        
+        should "set state_changed_at to now" do
+          assert_not_nil @event.state_changed_at
+          assert_equal Time.now, @event.state_changed_at
+        end
+        
+        should "have zero duration" do
+          assert_equal 0, @event.duration
+        end
+      end # context: on save
+      
+    end # context: with no d/t params
+    
+    context "with duration" do
+      
+      context "only" do
+        setup { @event = Factory.build(:event, :start => nil, :stop => nil, :date => nil, :duration => 4.hours) }
+
+        context "on save" do
+          setup { assert @event.save, @event.errors.full_messages }
+
+          should "be considered completed" do
+            assert @event.completed?, @event.state
+          end
+
+          should "set date to today" do
+            assert_equal Date.today, @event.date
+          end
+
+        end # on save : context
+      end # only : context
+      
+      context "and start time" do
+        setup { @event = Factory.build(:event, :start => (Time.now - 6.hours), :stop => nil, :date => nil, :duration => 4.hours) }
+
+        context "on save" do
+          setup { assert @event.save, @event.errors.full_messages }
+
+          should "be considered completed" do
+            assert @event.completed?, @event.state
+          end
+
+          should "set stop time" do
+            assert_equal((Time.now - 2.hours), @event.stop)
+          end
+
+        end # on save
+      end # and start time
+      
+    end # with duration: context
+
+  end # A new Event instance (context)
+  
+  context "An active Event" do
+    setup { @event = Factory(:active_event) }
+  
+    should "be active" do
+      assert @event.active?, @event.state
     end
     
-    should "set import token" do
-      event = Factory(:timed_event, :body => "Hello world")
-      assert_equal "1bcaf55e80d0c3cd58a3c8c02571ecea78a9d9ea", event.import_token
+    context "duration on save" do
+    
+      should "not be zero" do
+        assert @event.duration > 0
+      end
+
+      should "be equal to the difference between start and now" do
+        assert_equal 1.5.hours, @event.duration
+      end
+    
+    end # duration context
+    
+    context "duration after save" do
+      setup { Time.stubs(:now).returns Time.utc(2008,2,15,16,0,0) }
+    
+      should "be higher than at save" do
+        assert @event.duration > 1.5.hours
+      end
+    
+      should "return elapsed time" do
+        assert_equal 5.5.hours, @event.duration
+      end
+    
+    end
+  
+    context "on sleep" do
+      setup { 
+        Time.stubs(:now).returns Time.utc(2008,2,15,16,0,0)
+        @event.sleep!
+      }
+      
+      should "be sleeping" do
+        assert @event.sleeping?
+      end
+      
+      should "have updated duration" do
+        assert_equal 5.5.hours, @event.duration
+      end
+      
+      should "have updated state_changed_at" do
+        assert_equal Time.now, @event.state_changed_at
+      end
+    end
+  
+  end # An active Event (context)
+  
+  context "A sleeping Event" do
+    setup { @event = Factory(:sleeping_event) }
+    
+    should "be sleeping" do
+      assert @event.sleeping?, @event.state
     end
     
+    context "on wake" do
+      setup { @event.wake! }
+      
+      should "not change duration" do
+        assert_equal 1.hour, @event.duration
+      end
+      
+      should "set state_changed_at" do
+        assert_equal Time.now, @event.state_changed_at
+      end
+    end
+  
+    context "after wake" do
+      setup {
+        @event.wake!
+        Time.stubs(:now).returns Time.utc(2008,2,15,14,0,0)
+      }
+      
+      should "return elapsed time" do
+        assert_equal 3.hours, @event.duration
+      end
+    
+    end
   end
-  
-  context "Event message parser" do
+
+  context "Event subject/project" do
     setup do
-      @account = Factory(:account)
-      @user    = Factory(:user, :account => @account)
+      @event   = Factory.build(:event)
+      @project = Factory(:trackable)
     end
     
-    should "allow setting of tags" do
-      message = "Hello world #tag1 #tag2"
-      event   = @account.events.create(:body => message)
-      assert_not_nil event.tags
-      
-      assert_equal message, event.body
-      assert_equal 2, event.tags.length
-    end
-    
-    should "allow setting of duration" do
-      message = "Hello world 1:45"
-      event   = @account.events.create(:body => message)
-      assert_not_nil event.duration
-      assert_not_nil 1.75.hours, event.duration
-    end
-    
-    should "take duration from body when duration is provided separately" do
-      message = "Hello world 1:45"
-      event   = @account.events.create(:duration => "", :body => message)
-      
-      assert_not_nil event.duration
-      assert_not_nil 1.75.hours, event.duration
-    end
-    
-    should "allow setting of date" do
-      message = "Hello world 12/3/1980"
-      event   = @account.events.create(:body => message)
-      assert_not_nil event.date
-      assert_not_nil "1980-12-03".to_date, event.date
-    end
-    
-    should "set date from body when provided separately" do
-      message = "Hello world 12/3/1980"
-      event   = @account.events.create(:date => "2009-01-01", :body => message)
-      assert_not_nil event.date
-      assert_not_nil "1980-12-03".to_date, event.date
-    end
-  end
-  
-  
-  context "Event subject" do
-    setup do
-      Ticktock.account = @account = accounts(:test_account)
-      Ticktock.user    = @user    = users(:quentin)
-      
-      @event = Factory.build(:event, :user => nil)
-    end
-    
-    should "be settable via text" do
-      @event.subject = "Yoga"
+    should "be assignable via trackable object" do
+      @event.subject = @project
       assert_not_nil @event.subject
-      assert @event.subject.is_a?(Trackable)
+      assert_equal   @project, @event.subject
     end
     
-    should "be settable via attribute in combo with body" do
-      @event = Factory.build(:event, :subject => "Yoga", :account => @account)
+    should "be assignable via trackable name" do
+      @event.subject = @project.name
       assert_not_nil @event.subject
+      assert_equal   @project, @event.subject
+    end
+    
+    should "be assignable via trackable nickname" do
+      @event.subject = @project.nickname
+      assert_not_nil @event.subject
+      assert_equal   @project, @event.subject
+    end
+    
+    context "from different accounts" do
+      setup {
+        @project.account = accounts(:test_account)
+      }
+      
+      should "quietly fail during assignment" do
+        @event.subject = @project
+        assert_nil @event.subject
+      end
     end
   end
   
-  context "Event user" do
-    setup do
-      @account = accounts(:test_account)
-      @user    = users(:quentin)
-      @event   = Factory.build(:event, :user => nil, :account => @account)
-    end
-    
-    should "be settable via username" do
-      @event.user = "quentin"
-      assert_not_nil @event.user
-      assert_equal   @user, @event.user
-      assert_equal   @user.name, @event.user_name
-    end
-    
-    should "require user to be from same account" do
-      @event.user = "caddy" 
-      assert_nil     @event.user
-      assert_not_nil @event.user_name
-      assert_equal   "caddy", @event.user_name
-    end
-  end
-  
-  context "Event duration" do
-    setup do
-      @event = Factory.build(:event, :date => "2009-01-20")
-    end
-    
-    should "be settable via string" do
-      @event.duration = "2 hours"
-      assert_equal (3600 * 2), @event.duration
-    end
-  end
-  
-  
-  
-  context "Event.find_and_extend" do
-    setup do
-      @account = Factory(:account)
-      @events  = []
-      @tags    = %w(alpha beta gamma beta alpha)
+  context "Event#message" do
+    context "for a completed Event" do
+      setup { @event = Factory(:event, :body => "Working on a #dream", :duration => 1.5.hours) }
       
-      4.times do |x|
-        @events << Factory(:event, :account => @account, :duration => 5.hours, :body => "Blah blah ##{@tags[x]}")
-      end
-      
-      @events << Factory(:event, :account => @account, :duration => 5.hours, :date => (Date.today - 2.weeks))
-    end
-    
-    should "return 5 events" do
-      assert_equal 5, @account.events.count
-    end
-    
-    should "return EventSet#total_duration" do
-      assert_not_nil @seconds = @account.events.find_and_extend.total_duration
-      assert_equal   25.hours, @seconds
-    end
-    
-    should "return EventSet#count" do
-      assert_equal 5, @account.events.find_and_extend.count
-    end
-    
-    should "return EventSet#tags" do
-      assert_not_nil tags = @account.events.find_and_extend.tags
-      assert_equal   3, tags.length, tags.inspect
-    end
-    
-    should "work in combination with scopes" do
-      range = (Date.today.beginning_of_week..Date.today.end_of_week)
-      assert_nothing_raised do
-        @ranged_events = @account.events.for_date_range(range).find_and_extend
-      end
-      
-      assert_equal 4, @ranged_events.count
-    end
-  end
-  
-  context "Event quickbody" do
-    
-    context "with tags" do
-      setup do
-        @event = Factory(:event, :body => "03/19/2009 The quick brown #fox")
-        @event.body = "03/19/2009 The #quick brown #fox"
-        @event.save
-      end
-      
-      should "have 2 tags" do
-        assert_equal 2, @event.tags.length
-        assert_equal 2, @event.taggings.count
-      end      
-    end
-    
-    context "with project" do
-      setup do
-        @subject = Factory(:trackable, :nickname => "fhqwhgads")
-        @account = @subject.account
-        @event = Factory(:event, :account => @account,
-                                 :subject => @subject,
-                                 :duration => 2.hours,
-                                 :body => "@fhqwhgads 2:00 Awesomeness")
-      end
-      
-      should "have a subject" do
-        assert_not_nil @event.subject, @event.parsed_params.inspect
-      end
-    
-      should "include subject" do
-        assert_match /^(?:@fhqwhgads) /, @event.quick_body
+      should "include message with tags" do
+        assert_match /Working on a \#dream/, @event.message
       end
       
       should "include date" do
-        assert_match /(?:02\/15\/2008)/, @event.quick_body
+        assert_match /\d+\/\d+\/\d{4} /, @event.message
       end
       
-      should "include duration" do
-        assert_match /(?:2:00)/, @event.quick_body
-      end
-      
-      should "preserve attributes if re-saved from quickbody" do
-        @old_event = @event.dup
-        assert @event.update_attributes(:body => @event.quick_body)
-        assert_equal @old_event.date, @event.date
-        assert_equal @old_event.duration, @event.duration
-        assert_equal @old_event.subject, @event.subject
-        assert_equal @old_event.body, @event.body
-      end
-      
-      should "update attributes from quickbody" do
-        @old_event = @event.dup
-        @event.quick_body = @event.quick_body.gsub(/(?:02\/15\/2008)/, "03/19/2009")
-        assert @event.save
-        assert_equal "03/19/2009".to_date, @event.date
-        assert_equal @old_event.body, @event.body
+      should "not include duration" do
+        assert_match /1\:30 /, @event.message
       end
     end
     
+    context "for an active Event" do
+      setup { @event = Factory(:active_event, :body => "Working on a #dream") }
+      
+      should "include message with tags" do
+        assert_match /Working on a \#dream/, @event.message
+      end
+      
+      should "not include date" do
+        assert_no_match /\d+\/\d+\/\d{4} /, @event.message
+      end
+      
+      should "not include duration" do
+        assert_no_match /1\:30 /, @event.message
+      end
+    end
+    
+    context "for a starred Event" do
+      setup { @event = Factory(:event, :body => "Working on a #dream", :duration => 1.5.hours, :starred => true) }
+      
+      should "include message with !starred flag" do
+        assert_match /Working on a \#dream \!starred/, @event.message
+      end
+    end
   end
+  
+  context "Setting Event message" do
+    context "with !starred flag" do
+      setup {
+        @event = Factory(:event, :body => "Working on a #dream", :duration => 1.5.hours)
+        @event.message = "#{@event.message} !starred"
+      }
+      
+      should "star the message" do
+        assert @event.starred
+      end
+    end
+    
+    context "for a completed Event with no start time" do
+      setup {
+        @event = Factory(:event, :body => "Working on a #dream", :duration => 1.5.hours)
+        @event.message = "3/22/09 0:30 Working on a #dream"
+      }
+      
+      should "change date" do
+        assert @event.date_changed?
+        assert_equal Date.new(2009,3,22), @event.date
+      end
+      
+      should "change duration" do
+        assert @event.duration_changed?
+        assert_equal 30.minutes, @event.duration
+      end
+    end
+    
+    context "for a completed Event with start time" do
+      setup {
+        @event = Factory(:event, :body => "Working on a #dream", :duration => 1.5.hours, :start => (Time.now - 2.hours))
+        @event.message = "3/22/09 0:30 Working on a #dream"
+        assert_not_nil @event.stop
+      }
+      
+      should "change date" do
+        assert @event.date_changed?
+        assert_equal Date.new(2009,3,22), @event.date
+      end
+      
+      should "change duration" do
+        assert @event.duration_changed?
+        assert_equal 30.minutes, @event.duration
+      end
+      
+      should "change stop time" do
+        assert @event.stop_changed?
+      end
+    end
+  end
+  
+  
   
 end

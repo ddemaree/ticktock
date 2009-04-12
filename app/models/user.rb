@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
   #   {:only => [:id, :login, :email, :name, :account_owner]}
   # end
   
-  has_many :timers
+  has_many :events do
+    def current
+      active.first
+    end
+  end
   
   belongs_to :account
   validates_presence_of :account_id, :unless => :account_is_new_record?

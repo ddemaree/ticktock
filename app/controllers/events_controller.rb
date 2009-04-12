@@ -119,7 +119,7 @@ class EventsController < ApplicationController
     @event.update_attributes!(params[:event])
     
     respond_to do |format|
-      format.html { redirect_to_param_or_default @event.permalink }
+      format.html { redirect_to_param_or_default }
       format.xml  { head :ok }
       format.json { head :ok }
       format.js {

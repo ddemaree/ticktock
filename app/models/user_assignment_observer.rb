@@ -1,7 +1,8 @@
 class UserAssignmentObserver < ActiveRecord::Observer
   
   cattr_accessor :current_user
-  observe Event, Timer
+  #observe Event, Timer
+  observe Timer
   
   # def before_validation(model)
   #   return unless current_user

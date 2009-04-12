@@ -23,6 +23,10 @@ class Trackable < ActiveRecord::Base
   def to_s
     name || nickname || "NO NAME"
   end
+  
+  def self.find_by_string(name_or_nickname)
+    self.find(:first, :conditions => ["nickname = ? OR name = ?", name_or_nickname, name_or_nickname])
+  end
 
 protected
 

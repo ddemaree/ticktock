@@ -14,10 +14,11 @@ Factory.sequence :domain do |n|
 end
 
 Factory.define :user do |u|
-  u.association :account
-  u.name  { Faker::Name.name }
-  u.login { Factory.next(:login) }
+  #u.association :account
+  u.account  { (Ticktock.account ||= Factory(:account)) }
+  u.name     { Faker::Name.name }
+  u.login    { Factory.next(:login) }
   u.password { "blahblah" }
   u.password_confirmation { |u| u.password }
-  u.email { Faker::Internet.email }
+  u.email    { Faker::Internet.email }
 end

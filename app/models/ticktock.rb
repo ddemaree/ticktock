@@ -3,11 +3,12 @@ class Ticktock
   @@beta = true
   
   class Fuckup < Exception; end
+  class Confrused < Exception; end
   
   class << self
   
     def account
-      @@current_account ||= false
+      @@current_account ||= nil
     end
     
     def account=(acct)
@@ -16,7 +17,7 @@ class Ticktock
     end
     
     def user
-      @@current_user ||= false
+      @@current_user ||= nil
     end
     
     def user=(u)
@@ -38,35 +39,28 @@ class Ticktock
       raise Fuckup, "Must set Ticktock.account and Ticktock.user before using the message handler" if (!account || !user)
       raise Fuckup, "Message can't be blank" if message.blank?
       
-      params = Event::MessageParser.parse(:body => message)
+      params = Event::MessageParser.parse2(message)
       send(params[:action], params)
     end
     
-    def create(params)
+    def start(params)
       event = account.events.build
-      
-      event.attributes = {
-        :body => params[:body],
-        :subject => params[:subject],
-        :date => params[:date],
-        :duration => params[:duration]
-      }
+      event.set_attributes_from_message(params)
       event.save!
       event
     end
     
-    # Stubs for creating and working with Timers
-    # def start(params)
-    #   raise "Not implemented"
-    # end
-    # 
-    # def stop(params)
-    #   raise "Not implemented"
-    # end
-    # 
-    # def pause(params)
-    #   raise "Not implemented"
-    # end
+    def stop(params)
+      event = Ticktock.user.events.current
+      return if event.nil?
+      event.sleep!
+      event
+    end
+    
+    def current(params)
+      event = Ticktock.user.events.current
+    end
+    alias_method :status, :current
     
     def method_missing(method_name,*args,&block)
       [method_name, args]

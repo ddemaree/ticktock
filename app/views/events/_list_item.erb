@@ -19,6 +19,7 @@
 </div>
 
 <div class="body">
+	<%= event.state %>
 	<%= event_subject(event.subject, trackable_events_path(event.subject)) unless event.subject.nil? %>
 	
 	<%= event_message(event.body) %>
@@ -30,7 +31,7 @@
 
 <div id="quick_editor_for_<%= dom_id(event) %>" class="inline-event-editor">
 <% form_for event do |f| %>
-<%= f.text_area :quick_body, :rows => 1, :cols => 60 %>
+<%= f.text_area :message, :rows => 1, :cols => 60 %>
 <p class="save">
 	<button type="submit">Save changes</button> or <a href="#" class="cancel">cancel</a>
 </p>
