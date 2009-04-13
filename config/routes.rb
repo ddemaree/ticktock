@@ -23,22 +23,10 @@ ActionController::Routing::Routes.draw do |map|
     calendar.calendar_day   '/calendar/:year/:month/:day', :year => /\d{4}/, :month => /\d+/, :day => /\d+/
   end
   
-  map.with_options :controller => 'timers' do |timers|
-    timers.resources :timers, :member => {
-            :sleep => :post, :wake => :post, :finish => :post}
-    
-    # timers.start '/start', :action => 'start', 
-    #                 :conditions => {:method => :post}                        
-    # timers.stop  '/stop',  :action => 'stop', 
-    #                 :conditions => {:method => :post}             
-    # timers.stop  '/pause', :action => 'pause', 
-    #                 :conditions => {:method => :post}
-  end
-  
   map.with_options :controller => 'events' do |events|
-    events.resources :events
-    events.connect '/:year/w/:week/events', :action => 'index'
-    events.connect '/:year/w/:week/events.:format', :action => 'index'
+    events.resources :events, :member => { :sleep    => :post,
+                                           :wake     => :post,
+                                           :complete => :post }
   end
   
   map.namespace :account do |account|

@@ -1,18 +1,11 @@
 class EventsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   
+  before_filter :set_return_uri, :only => [:index, :show]
+  
   rescue_from ActiveRecord::RecordInvalid, :with => :respond_on_invalid_event
   
   def index
-    # session[:events_view] = {
-    #   :controller => 'events',
-    #   :page => params[:page],
-    #   :per_page => params[:per_page],
-    #   :tags => params[:tags],
-    #   :trackable_id => params[:trackable_id],
-    #   :starred => !!params[:starred]
-    # }
-    
     scoped_events = current_account.events.filtered(event_params)    
     @events = scoped_events.paginate(:all, :per_page => (params[:per_page] || 20), :page => params[:page])
     
@@ -38,21 +31,9 @@ class EventsController < ApplicationController
     end
   end
   
-  def add_multiple
-    @section_name = "new_event"
-    @event = current_account.events.build
-  end
-  
   def create
-    if params[:event].keys.any? { |k| !!((k.to_s =~ /^\d+$/) == 0)  }
-      return create_several_via_hash
-    elsif params[:events] && params[:events].is_a?(Array)
-      raise "Array format"
-    end
-    
-    # Single event in hash format is default
-    @event = current_account.events.build
-    @event.update_attributes! params[:event]
+    @event = current_account.events.build(params[:event])
+    @event.save!
     
     # TODO: Better flash copy here
     # FIXME: current_events_path can't seem to set root as current
@@ -73,27 +54,6 @@ class EventsController < ApplicationController
     
   end
   
-  def create_several_via_hash
-    @events = []
-    @unsaved_events = []
-    
-    params[:event].each do |key, params|
-      next if params[:body].blank?
-      
-      event = current_account.events.build
-      event.attributes = params
-      
-      if event.save
-        @events << event 
-      else
-        @unsaved_events << event
-      end
-    end
-    
-    flash[:notice] = "Created #{@events.length} event#{"s" if @events.length != 1}"
-    redirect_to(params[:return] == "yes" ? request.referrer : root_path)
-  end
-  
   def edit
     @event = current_account.events.find(params[:id])
     
@@ -101,7 +61,7 @@ class EventsController < ApplicationController
       format.html
       format.js {
         headers["X-JSON"] = @event.to_json
-        render :text => @event.quick_body
+        render :text => @event.message
       }
     end
   end
@@ -137,7 +97,7 @@ class EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to(current_events_path) }
+      format.html { redirect_to_param_or_default }
       format.xml  { head :ok }
       format.atom { head :ok }
     end

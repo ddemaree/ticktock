@@ -52,7 +52,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_events_path, :current_events_path_for
   
   def redirect_to_param_or_default(default=root_path)
-    redirect_to(params[:return] || params[:return_to] || default)
+    params[:return_to] ||= params[:return]
+    redirect_to(params[:return_to] || session[:return_to] || default)
   end
   
   def current_timer
@@ -137,6 +138,10 @@ protected
     session[:events_view] = {
       :controller => 'calendar'
     }
+  end
+  
+  def set_return_uri
+    session[:return_to] = request.request_uri
   end
   
 end

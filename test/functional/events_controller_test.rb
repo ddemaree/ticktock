@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventsControllerTest < ActionController::TestCase
+class EventsControllerTest < Ticktock::ControllerTest
   
   def self.should_render_the_new_form
     should_assign_to :event
@@ -22,8 +22,6 @@ class EventsControllerTest < ActionController::TestCase
   end
   
   # #   R O U T I N G   # #
-  should_route :post,   "/start",         :action => :start
-  should_route :post,   "/stop",          :action => :stop
   
   should_route :get,    "/events",        :action => :index
   should_route :get,    "/events/new",    :action => :new
@@ -33,28 +31,21 @@ class EventsControllerTest < ActionController::TestCase
   should_route :get,    "/events/1/edit", :action => :edit,    :id => 1
   should_route :delete, "/events/1",      :action => :destroy, :id => 1
   
-  def setup
-    @account   = accounts(:test_account)
-    @user      = @account.users.first
-    
-    # All requests are at account domain with logged-in user unless
-    # otherwise specified in the test method
-    @request.host    = "#{@account.domain}.ticktockapp.com"
-    @request.session = {:user_id => @user.id}
-  end
+  should_route :post, "/events/1/sleep",    :action => :sleep, :id => 1
+  should_route :post, "/events/1/wake",     :action => :wake,  :id => 1
+  should_route :post, "/events/1/complete", :action => :complete, :id => 1
   
   context "on GET to :index" do
     
     setup do
-      %w(2009-02-02 2009-02-04 2009-02-14 2009-02-28 2009-03-28).each do |day|
-        Factory(:event, :account => @account, :user => @user, :date => day.to_date, :start => nil, :stop => nil)
-      end
+      # %w(2009-02-02 2009-02-04 2009-02-14 2009-02-28 2009-03-28).each do |day|
+      #   Factory(:event, :account => @account, :user => @user, :date => day.to_date, :start => nil, :stop => nil)
+      # end
       
       get :index
     end
     
     should_show_events_index
-    
   end
   
   context "on GET to :new" do
@@ -63,26 +54,35 @@ class EventsControllerTest < ActionController::TestCase
   end
   
   context "on POST to :create" do
-    context "using batch array" do
-      setup { create_several_events_via_hash }
-      
-      should_assign_to :events
-      should_respond_with 302
-      should_redirect_to("the home page") { root_path }
-    
-      should "create multiple events" do
-        assert_equal 6, assigns(:events).length
-      end
-    end
-    
     context "with valid data" do
-      setup { create_new_event }
-      should_assign_to :event
-      should_respond_with 302
-      should_redirect_to('events index') { @controller.current_events_path_for(@event) }
+      context "for a new timer" do
+        setup { create_new_event }
+        
+        should_assign_to :event
+        should_respond_with 302
+        should_redirect_to("the default path") { root_path }
+        
+        should "create an active event" do
+          assert assigns(:event).active?, assigns(:event).state
+        end
+      end
       
-      should "set date to today's date" do
-        assert_equal Date.today, assigns(:event).date
+      context "for a completed event" do
+        setup do
+          create_new_event({
+            :body     => "Hello world!",
+            :date     => "2/3/2009",
+            :duration => ""
+          })
+        end
+        
+        should_assign_to :event
+        should_respond_with 302
+        should_redirect_to("the default path") { root_path }
+        
+        should "create a completed event" do
+          assert assigns(:event).completed?, assigns(:event).state
+        end
       end
     end
     
@@ -90,40 +90,7 @@ class EventsControllerTest < ActionController::TestCase
       setup { create_new_event(:body => "") }
       should_render_the_new_form
     end
-    
-    context "with body containing duration and duration" do
-      setup { create_new_event(:body => "Blah blah 1:45", :duration => "") }
-      #should_render_the_new_form
-      
-      should_respond_with 302
-      
-      should "assign duration based on message" do
-        assert_not_nil assigns(:event).duration
-        assert_equal   1.75.hours, assigns(:event).duration
-      end
-    end
-    
-    context "with nonblank date" do
-      setup { create_new_event(:date => "2007-11-03") }
-      should_assign_to :event
-      
-      should "set date to date provided" do
-        assert_equal "2007-11-03", assigns(:event).date.to_s(:db)
-      end
-    end
-    
-    context "with start time" do
-      setup { create_new_event(:start => "2007-11-03 11:00:05") }
-      should_assign_to :event
-      
-      should "set date to date provided" do
-        assert_equal "2007-11-03", assigns(:event).date.to_s(:db)
-      end
-      
-      should "set status to active" do
-        assert_equal "active", assigns(:event).state
-      end
-    end  
+  
   end
   
   context "on GET to :edit" do
@@ -149,7 +116,7 @@ class EventsControllerTest < ActionController::TestCase
       end
     
       should_respond_with :redirect
-      should_redirect_to("events index") { events_path }
+      should_redirect_to("default") { root_path }
     end
     
     context "with blank body" do
@@ -183,7 +150,7 @@ class EventsControllerTest < ActionController::TestCase
 
       should_assign_to :event
       should_respond_with :redirect
-      should_redirect_to('events index') { events_path }
+      should_redirect_to('default path') { root_path }
     end
   end
 
@@ -193,32 +160,6 @@ protected
     post :create, {
       :event => { :body => Faker::Lorem.paragraph }.merge(params)
     }
-  end
-  
-  def create_several_events_via_hash(params={})
-    events =
-      (0..5).inject({}) do |events, x|
-        events[x] = { 
-          :body => Faker::Lorem.paragraph,
-          :date => Date.today.to_s(:db),
-          :duration => "1 hour"
-        }.merge(params)
-        events
-      end
-    
-    post :create, {
-      :event => events
-    }
-  end
-
-  def start_new_event(params={})
-    post :start, {
-      :event => { :body => "Hello world" }
-    }.merge(params)
-  end
-  
-  def stop_event(format=nil)
-    post :stop, {:format => format}
   end
   
 end

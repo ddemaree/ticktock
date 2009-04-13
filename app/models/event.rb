@@ -4,6 +4,7 @@ class Event < ActiveRecord::Base
   
   # #   M I X I N S   # #
   include Event::Taggable
+  include Event::Filtering
   
   # #   S C O P E S   # #
   default_scope :order => "events.date DESC, events.start DESC, events.created_at DESC"
@@ -142,6 +143,14 @@ class Event < ActiveRecord::Base
     params
   end
   
+  def duration_as_string
+    Ticktock::Durations.duration_to_string(duration)
+  end
+  
+  def duration_as_string=(time)
+    self.duration = time
+  end
+  
   # This is its own message so we can easily set up new events without
   # having to route everything through self.message=, i.e. for new
   # events/timers created from the message handler. message= is for round-
@@ -175,7 +184,7 @@ protected
     
     # If date and nothing else are provided, this should be
     # handled as an untimed, completed event
-    if !date.blank? && start.blank? && duration.blank?
+    if !date.blank? && start.blank? && (duration.blank? || duration == 0)
       self.state = 'completed'
     
     # If a duration is provided, treat this as a past event;
@@ -206,6 +215,12 @@ protected
       self.start ||= Time.zone.now
       self.date  =   self.start.to_date
       self.calculate_hours
+    
+    # If none of the above apply…well, one of the above should
+    # have applied, so raise an error
+    else
+      raise Ticktock::Confrused, "What kind of event is this?"
+    
     end
   
   end
