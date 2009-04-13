@@ -35,8 +35,6 @@ class EventsController < ApplicationController
     @event = current_account.events.build(params[:event])
     @event.save!
     
-    # TODO: Better flash copy here
-    # FIXME: current_events_path can't seem to set root as current
     respond_to do |format|
       format.html { 
         redirect_to_param_or_default
@@ -82,10 +80,7 @@ class EventsController < ApplicationController
       format.html { redirect_to_param_or_default }
       format.xml  { head :ok }
       format.json { head :ok }
-      format.js {
-        headers["X-JSON"] = @event.to_json
-        render :partial => 'list_item', :locals => {:event => @event}
-      }
+      format.js   { render_fat_response and return }
     end
 
   rescue ActiveRecord::RecordInvalid
@@ -99,11 +94,53 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to_param_or_default }
       format.xml  { head :ok }
-      format.atom { head :ok }
+      format.json { head :ok }
     end
   end
   
+  def wake
+    @event = current_user.events.find(params[:id])
+    @event.wake!
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.xml  { render :xml  => @event.to_xml  }
+      format.json { render :json => @event.to_json }
+    end
+  rescue AASM::InvalidTransition => @e
+    respond_on_invalid_transition(@e, "Can't wake an event while it's #{@event.state}")
+  end
+  
+  def sleep
+    @event = current_user.events.find(params[:id])
+    @event.sleep!
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.xml  { render :xml  => @event.to_xml  }
+      format.json { render :json => @event.to_json }
+    end
+  rescue AASM::InvalidTransition => @e
+    respond_on_invalid_transition(@e, "Can't sleep an event while it's #{@event.state}")
+  end
+  
 protected
+
+  def render_fat_response
+    headers["X-JSON"] = @event.to_json
+    render :partial => 'list_item', :locals => {:event => @event}
+  end
+
+  def respond_on_invalid_transition(exception, message)
+    respond_to do |format|
+      format.html {
+        flash[:error] = message
+        redirect_to :back
+      }
+      format.json { render :json => exception, :status => :unprocessable_entity }
+      format.xml  { render :xml  => exception, :status => :unprocessable_entity }
+    end
+  end
   
   def respond_on_invalid_event
     respond_to do |format|

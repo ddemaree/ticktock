@@ -139,7 +139,7 @@ class EventsControllerTest < Ticktock::ControllerTest
       end
 
       should_assign_to :event
-      should_respond_with 406
+      should_respond_with 200
     end
     
     context "via browser" do
@@ -153,8 +153,83 @@ class EventsControllerTest < Ticktock::ControllerTest
       should_redirect_to('default path') { root_path }
     end
   end
+  
+  # Methods for waking/sleeping timer events
+  context "on POST to :wake" do
+    setup { @request.env["HTTP_REFERER"] = "http://#{@account.domain}.ticktockapp.com/" }
+    
+    context "with already active event" do
+      context "via browser" do
+        setup { wake_event :active_event }
+
+        should_respond_with 302
+        should_redirect_to("default path") { root_url }
+        should_set_the_flash_to "Can't wake an event while it's active"
+      end
+      
+      context "via API" do
+        setup { wake_event :active_event, :format => "json" }
+        
+        should_respond_with 422
+      end
+    end
+    
+    context "with sleeping event" do
+      context "via browser" do
+        setup { wake_event :sleeping_event }
+        should_respond_with 302
+        should_redirect_to("referer") { @request.referer }
+      end
+      
+      context "via the API" do
+        setup { wake_event :sleeping_event, :format => "json" }
+        should_respond_with :success
+      end
+    end
+  end
+  
+  context "on POST to :sleep" do
+    setup { @request.env["HTTP_REFERER"] = "http://#{@account.domain}.ticktockapp.com/" }
+    
+    context "with active event" do
+      context "via browser" do
+        setup { sleep_event :active_event }
+        should_respond_with 302
+        should_redirect_to("referer") { @request.referer }
+      end
+      
+      context "via API" do
+        setup { sleep_event :active_event, :format => "json" }
+        should_respond_with :success
+      end
+    end
+    
+    context "with already sleeping event" do
+      context "via browser" do
+        setup { sleep_event :sleeping_event }
+        should_respond_with 302
+        should_redirect_to("referer") { @request.referer }
+        should_set_the_flash_to "Can't sleep an event while it's sleeping"
+      end
+      
+      context "via the API" do
+        setup { sleep_event :sleeping_event, :format => "json" }
+        should_respond_with 422
+      end
+    end
+  end
 
 protected
+
+  def wake_event(factory, options={})
+    @event = Factory(factory)
+    post :wake, {:id => @event.id}.merge(options)
+  end
+  
+  def sleep_event(factory, options={})
+    @event = Factory(factory)
+    post :sleep, {:id => @event.id}.merge(options)
+  end
 
   def create_new_event(params={})
     post :create, {
