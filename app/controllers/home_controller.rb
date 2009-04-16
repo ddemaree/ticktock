@@ -8,11 +8,11 @@ class HomeController < ApplicationController
     
     @event = current_account.events.build
     
-    @current_range = ((Time.now - 2.weeks).beginning_of_day..Time.now.end_of_day)
+    @current_range = ((Time.now - 2.days).beginning_of_day..Time.now.end_of_day)
     
-    recent_events_scope = current_account.events.scoped(:conditions => {:date => @current_range})
+    recent_events_scope = current_account.events.scoped(:conditions => {:date => @current_range, :state => "completed"})
     
-    @recents         = recent_events_scope.all :limit => 20
+    @recents         = recent_events_scope.all
     @recent_count    = recent_events_scope.count
     @recent_duration = recent_events_scope.sum :duration
     

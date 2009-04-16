@@ -1,5 +1,47 @@
 namespace :ticktock do
   
+  task :finder => :environment do
+    Account.destroy_all :conditions => "domain != 'practical'"
+    [Event, Label, Tagging].each do |klass|
+      klass.destroy_all
+    end
+    
+    Ticktock.account = Account.find_by_domain("practical")
+    Ticktock.user    = Ticktock.account.users.first
+  end
+  
+  task :fake => :finder do
+    tags = %w(#admin #billable #bugfix #design #testing)
+    
+    wordlist  = Faker::Lorem.words(30)
+    wordlist += tags
+    wordlist.uniq!
+    
+    dates = ((Date.today - 90.days)..Date.today)
+    
+    (1..200).each do |x|
+      
+      
+      words = [*0..5].inject([]) do |string, x|
+        string << wordlist.rand; string
+      end
+      
+      msg = words.uniq.join(" ").capitalize
+      
+      puts msg
+      puts [*dates].rand
+      
+      Event.create!({
+        :body => msg,
+        :date => [*dates].rand,
+        :duration => ([*1..6].rand.hours + [0,15,30,45].rand.minutes),
+        :state => 'completed'
+      })
+    end
+    
+    
+  end
+  
   desc "Generates fake data for David to play with"
   task :fake_data => :environment do
     if defined?(Factory)

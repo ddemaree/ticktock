@@ -72,12 +72,16 @@
 		<h2>What you&rsquo;ve done recently</h2>
 
 		<%- if @recents.empty? -%>
-		<p>You haven't logged any events in the last two weeks.</p>
+		<p>You haven't logged any events in the last three days.</p>
 		<%- end -%>
 
+		<% @recents.group_by(&:date).each do |day, events| %>
+
+		<h3><%= relative_date day %></h3>
 		<ul class="events">
-			<%= render :partial => "/events/list_item", :as => :event, :collection => @recents, :locals => {:show_date => true, :return_to => request.request_uri} %>
+			<%= render :partial => "/events/list_item", :as => :event, :collection => events, :locals => {:show_date => true, :return_to => request.request_uri} %>
 		</ul>
+		<% end %>
 
 		</div>
 	</div>

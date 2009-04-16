@@ -55,20 +55,14 @@
 				
 				<ul>
 					<%= link_to_section "home", "Welcome", root_path %>
-					<%= link_to_section "events", "Diary", calendar_path %>
-					<%= link_to_section "reports" %>
+					<%= link_to_section "calendar", "Calendar", calendar_path %>
+					<%# link_to_section "reports" %>
 					<%= link_to_section 'trackables', "Projects" %>
 					<!-- <li>
 						<%= link_to_unless (section_name == "tags"), "Tags", nil %>	
 					</li> -->
 				</ul>
 				
-				<h3>Active Projects</h3>
-				<ul>
-				<% current_account.trackables.active.each do |project| %>
-				<li><%= link_to project, events_path(:project => project.nickname) %></li>
-				<% end %>
-				</ul>
 			</div>
 		</div>
 
@@ -77,17 +71,6 @@
 		</div>
 	</div>
 </div>
-
-<!-- <div class="wr">
-	<div id="footer" class="wr-c">
-		<div class="logo left">
-			<h4>TickTock</h4>
-		</div>
-		<div class="copyright right">
-			<p>&copy;2009 Practical Creative &amp; Code</p>
-		</div>
-	</div>
-</div> -->
 <script type="text/javascript" charset="utf-8">
 	new HoverObserver('workspace')
 </script>
